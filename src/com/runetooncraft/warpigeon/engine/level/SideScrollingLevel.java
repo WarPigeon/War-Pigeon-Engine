@@ -3,6 +3,7 @@ package com.runetooncraft.warpigeon.engine.level;
 import java.io.File;
 import java.util.Random;
 
+import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.entity.mob.Mob;
 import com.runetooncraft.warpigeon.engine.entity.mob.Player;
 
@@ -13,8 +14,8 @@ public class SideScrollingLevel extends Level {
 	private int GroundLevel,GroundSize;
 	private Player player;
 
-	public SideScrollingLevel(int width, int height, int GroundLevel, int GroundSize, int[] GroundIDS, Player player) {
-		super(width, height);
+	public SideScrollingLevel(int width, int height, int GroundLevel, int GroundSize, int[] GroundIDS, Player player, WPEngine4 engine) {
+		super(width, height, engine);
 		this.GroundIDS = GroundIDS;
 		this.GroundLevel = GroundLevel;
 		this.GroundSize = GroundSize;
@@ -22,8 +23,8 @@ public class SideScrollingLevel extends Level {
 		Setup();
 	}
 	
-	public SideScrollingLevel(int width, int height, File workingDir, String LevelName, int GroundLevel, int GroundSize, int[] GroundIDS, Player player) {
-		super(width, height, workingDir, LevelName);
+	public SideScrollingLevel(int width, int height, File workingDir, String LevelName, int GroundLevel, int GroundSize, int[] GroundIDS, Player player, WPEngine4 engine) {
+		super(width, height, workingDir, LevelName, engine);
 		this.GroundIDS = GroundIDS;
 		this.GroundLevel = GroundLevel;
 		this.GroundSize = GroundSize;

@@ -1,5 +1,6 @@
 package com.runetooncraft.warpigeon.engine;
 
+import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -141,6 +142,7 @@ public class WPEngine4 extends WPEngine3 {
 			
 			graphics = bs.getDrawGraphics();
 			graphics.drawImage(view, 0, 0, getWidth(), getHeight(), null);
+			DrawOtherImages(graphics);
 			graphics.dispose();
 			bs.show();
 			if(mouse.getButton() == 1) {
@@ -164,6 +166,7 @@ public class WPEngine4 extends WPEngine3 {
 			
 			graphics = bs.getDrawGraphics();
 			graphics.drawImage(view, 0, 0, getWidth(), getHeight(), null);
+			DrawOtherImages(graphics);
 			graphics.dispose();
 			bs.show();
 			break;
@@ -181,6 +184,7 @@ public class WPEngine4 extends WPEngine3 {
 			
 			graphics = bs.getDrawGraphics();
 			graphics.drawImage(view, 0, 0, getWidth(), getHeight(), null);
+			DrawOtherImages(graphics);
 			graphics.dispose();
 			bs.show();
 			break;
@@ -188,6 +192,10 @@ public class WPEngine4 extends WPEngine3 {
 	}
 
 	
+	public void DrawOtherImages(Graphics graphics) {
+		
+	}
+
 	public void DefineScreen(int PixelWidth, int PixelHeight, int ImageToPixelRatio, int scale) {
 		if(state.equals(State.LOADING_SCREEN)) {
 			LoadingScreen = new ScreenEngineLoading(getUnscaledWidth(),getUnscaledHeight(), PixelWidth, PixelHeight, ImageToPixelRatio, scale, MediaList);

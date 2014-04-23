@@ -166,6 +166,7 @@ public class PigionSDK {
 	
 
 	private void addLayer() {
+		engine.getLevel().render = false;
 		int width = engine.getLevel().getWidth();
 		int height = engine.getLevel().getHeight();
 		int LayerNumber = engine.getLevel().Layers + 1;
@@ -178,6 +179,7 @@ public class PigionSDK {
 		}
 		engine.getLevel().LayerList.add(Layer);
 		selectedLayer.addItem("Layer" + LayerNumber);
+		engine.getLevel().render = true;
 	}
 	
 

@@ -133,7 +133,7 @@ public abstract class Mob extends Entity {
 			sprite = RightAnims[0];
 		}
 	}
-	private boolean collision(int xa, int ya) {
+	public boolean collision(int xa, int ya) {
 		boolean solid = false;
 		
 		for(int i = 0; i < 4; i++) {

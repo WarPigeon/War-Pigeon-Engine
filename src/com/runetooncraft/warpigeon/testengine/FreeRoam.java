@@ -37,7 +37,7 @@ public class FreeRoam extends WPEngine4 {
 		KL = new KeyListener();
 		SetClassInstance(this,false);
 //		level = new RandomLevel(64,64, DataFolder, "Testy");
-		level = new Level(DataFolder, "broship");
+		level = new Level(DataFolder, "broship", this);
 		setEngineKeyListener(KL);
 		Sprite[] ForwardAnims = new Sprite[2];
 		Sprite[] BackwardAnims = new Sprite[2];

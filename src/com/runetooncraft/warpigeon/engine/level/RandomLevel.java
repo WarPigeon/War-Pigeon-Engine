@@ -3,16 +3,18 @@ package com.runetooncraft.warpigeon.engine.level;
 import java.io.File;
 import java.util.Random;
 
+import com.runetooncraft.warpigeon.engine.WPEngine4;
+
 public class RandomLevel extends Level {
 
 	private static final Random random = new Random();
 	
-	public RandomLevel(int width, int height) {
-		super(width, height);
+	public RandomLevel(int width, int height, WPEngine4 engine) {
+		super(width, height, engine);
 	}
 	
-	public RandomLevel(int width, int height, File workingDir, String LevelName) {
-		super(width, height, workingDir, LevelName);
+	public RandomLevel(int width, int height, File workingDir, String LevelName, WPEngine4 engine) {
+		super(width, height, workingDir, LevelName, engine);
 	}
 	
 	protected void generateLevel() {

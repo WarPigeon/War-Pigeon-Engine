@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.runetooncraft.warpigeon.engine.WPEngine1;
+import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.entity.mob.Mob;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.utils.FileSystem;
@@ -22,6 +23,7 @@ public class Level {
 	public static ArrayList<int[]> LayerList = new ArrayList<int[]>();
 	public static HashMap<Integer, Tile> TileIDS = new HashMap<Integer, Tile>();
 	public static Tile VoidTile;
+	public static Tile LoadingTile = null;
 	public static Tile EmptyTile = new EmptyTile(null, -1);
 	public static int PDR = 5;
 	public static String name = "UnNamed";
@@ -32,13 +34,15 @@ public class Level {
 	public boolean render = true;
 	public boolean GravityEnabled = false;
 	public Gravity gravity = null;
+	public WPEngine4 engine;
 	/**
 	 * Level constructor.
 	 * Make sure to set individual TileID's using the TileIDS hashmap.
 	 * @param width
 	 * @param height
 	 */
-	public Level(int width, int height) {
+	public Level(int width, int height, WPEngine4 engine) {
+		this.engine = engine;
 		TileIDS.put(-1, EmptyTile);
 		this.width = width;
 		this.height = height;
@@ -63,7 +67,8 @@ public class Level {
 	 * @param height
 	 * @param workingDir
 	 */
-	public Level(int width, int height, File workingDir, String LevelName) {
+	public Level(int width, int height, File workingDir, String LevelName, WPEngine4 engine) {
+		this.engine = engine;
 		TileIDS.put(-1, EmptyTile);
 		name = LevelName;
 		this.workingDir = new File(workingDir.getPath() + "/Levels/" + name + "/");
@@ -80,7 +85,8 @@ public class Level {
 	 * Loads a level from file.
 	 * @param path
 	 */
-	public Level(File Dir, String LevelName) {
+	public Level(File Dir, String LevelName, WPEngine4 engine) {
+		this.engine = engine;
 		TileIDS.put(-1, EmptyTile);
 		LoadLevelFile(Dir,LevelName);
 	}
@@ -195,16 +201,16 @@ public class Level {
 	 * Renders what the level is scrolled to.
 	 */
 	public void render(int xScroll, int yScroll, ScreenEngine2D screen) {
+		xScroll = xScroll - screen.width / 2;
+		yScroll = yScroll - screen.height / 2;
+		screen.setOffset(xScroll, yScroll);
+		x0double = xScroll;
+		x0 = xScroll >> PDR;
+		x1 = (xScroll + screen.width + screen.ImageToPixelRatio) >> PDR;
+		y0double = yScroll;
+		y0 = yScroll >> PDR;
+		y1 = (yScroll + screen.height + screen.ImageToPixelRatio) >> PDR;
 		if(render) {
-			xScroll = xScroll - screen.width / 2;
-			yScroll = yScroll - screen.height / 2;
-			screen.setOffset(xScroll, yScroll);
-			x0double = xScroll;
-			x0 = xScroll >> PDR;
-			x1 = (xScroll + screen.width + screen.ImageToPixelRatio) >> PDR;
-			y0double = yScroll;
-			y0 = yScroll >> PDR;
-			y1 = (yScroll + screen.height + screen.ImageToPixelRatio) >> PDR;
 			for (int y = y0; y < y1; y++) {
 				for (int x = x0; x < x1; x++) {
 					getTile(x,y).render(x,y,screen, 1);
@@ -212,6 +218,16 @@ public class Level {
 			}
 			if(GravityEnabled) {
 				gravity.Update();
+			}
+		} else {
+			for (int y = y0; y < y1; y++) {
+				for (int x = x0; x < x1; x++) {
+					if(LoadingTile == null) {
+						VoidTile.render(x,y,screen, 1);
+					} else {
+						LoadingTile.render(x,y,screen, 1);
+					}
+				}
 			}
 		}
 	}

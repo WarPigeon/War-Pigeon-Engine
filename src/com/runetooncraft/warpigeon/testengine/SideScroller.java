@@ -47,7 +47,7 @@ public class SideScroller extends WPEngine4 {
 		player = new PlayerMain(KL, 0, 0, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims);
 		int[] GroundIDS = new int[1];
 		GroundIDS[0] = 4;
-		level = new SideScrollingLevel(64,20, DataFolder, "Testy", 5, 2, GroundIDS, player);
+		level = new SideScrollingLevel(64,20, DataFolder, "Testy", 5, 2, GroundIDS, player, this);
 		player.init(level,this);
 		PackFrame();
 		start();
