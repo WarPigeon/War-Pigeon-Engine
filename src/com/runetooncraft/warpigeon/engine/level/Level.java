@@ -208,9 +208,6 @@ public class Level {
 			for (int y = y0; y < y1; y++) {
 				for (int x = x0; x < x1; x++) {
 					getTile(x,y).render(x,y,screen, 1);
-					for(int[] layer: LayerList) {
-						getTileIntArray(layer,x,y).render(x, y, screen, 2);
-					}
 				}
 			}
 			if(GravityEnabled) {
@@ -218,6 +215,27 @@ public class Level {
 			}
 		}
 	}
+	
+	public void renderUpperLayers(int xScroll, int yScroll, ScreenEngine2D screen) {
+		if(render) {
+			xScroll = xScroll - screen.width / 2;
+			yScroll = yScroll - screen.height / 2;
+			screen.setOffset(xScroll, yScroll);
+			x0double = xScroll;
+			x0 = xScroll >> PDR;
+			x1 = (xScroll + screen.width + screen.ImageToPixelRatio) >> PDR;
+			y0double = yScroll;
+			y0 = yScroll >> PDR;
+			y1 = (yScroll + screen.height + screen.ImageToPixelRatio) >> PDR;
+				for (int y = y0; y < y1; y++) {
+					for (int x = x0; x < x1; x++) {
+						for(int[] layer: LayerList) {
+							getTileIntArray(layer,x,y).render(x, y, screen, 2);
+						}
+					}
+				}
+			}
+		}
 	
 	public Tile getTile(int x, int y) {
 		if(x < 0 || y < 0 || x >= width || y >= height) return VoidTile;

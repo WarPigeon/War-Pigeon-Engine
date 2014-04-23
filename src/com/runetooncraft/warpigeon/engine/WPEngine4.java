@@ -134,6 +134,7 @@ public class WPEngine4 extends WPEngine3 {
 			screen.ClearBuffer();
 			RenderLevelState();
 			privateRender();
+			RenderLevelStateUpperLayers();
 			for (int i = 0; i < pixels.length; i++) {
 				pixels[i] = screen.pixels[i];
 			}
@@ -197,7 +198,7 @@ public class WPEngine4 extends WPEngine3 {
 	}
 
 	/**
-	 * Renders the level according to the game state
+	 * Renders the level First layer according to the game state
 	 */
 	private void RenderLevelState() {
 		switch(gametype) {
@@ -206,6 +207,20 @@ public class WPEngine4 extends WPEngine3 {
 		break;
 		case PIGION_SDK:
 			level.render(SDKx, SDKy, screen);
+		break;
+		}
+	}
+	
+	/**
+	 * Renders the level upper Layers after the players and npc's are rendered
+	 */
+	private void RenderLevelStateUpperLayers() {
+		switch(gametype) {
+		case FREE_ROAM_TILE_BASED:
+			level.renderUpperLayers(player.x, player.y, screen);
+		break;
+		case PIGION_SDK:
+			level.renderUpperLayers(SDKx, SDKy, screen);
 		break;
 		}
 	}
