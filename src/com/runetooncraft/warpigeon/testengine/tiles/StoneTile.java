@@ -1,0 +1,19 @@
+package com.runetooncraft.warpigeon.testengine.tiles;
+
+import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
+import com.runetooncraft.warpigeon.engine.graphics.Sprite;
+import com.runetooncraft.warpigeon.engine.level.Tile;
+
+public class StoneTile extends Tile {
+
+	public StoneTile(Sprite sprite, int id) {
+		super(sprite, id, "StoneTile");
+		Collide = true;
+	}
+
+	public void render(int x, int y, ScreenEngine2D screen, int Layer) {
+		int PDR = screen.ImageToPixelRatio;
+		screen.renderTile(x * PDR, y * PDR, this);
+	}
+
+}
