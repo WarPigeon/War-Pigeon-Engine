@@ -35,6 +35,11 @@ public class Level {
 	public boolean GravityEnabled = false;
 	public Gravity gravity = null;
 	public WPEngine4 engine;
+	
+	public void ExpandLevel(int xExpand, int yExpand) {
+		HashMap<TileCoordinate,Tile> TileMap = new HashMap<TileCoordinate,Tile>();
+		
+	}
 	/**
 	 * Level constructor.
 	 * Make sure to set individual TileID's using the TileIDS hashmap.
