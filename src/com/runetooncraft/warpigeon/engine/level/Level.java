@@ -46,7 +46,11 @@ public class Level {
 			for(int yt = 0; yt < height; yt++) {
 				for(int xt = 0; xt < width; xt++) {
 					Tc = new TileCoordinate(xt,yt);
-					TileMap.put(Tc, getTileLayer(layer,xt,yt));
+					if(layer == 1) {
+						TileMap.put(Tc, getTile(xt,yt));
+					} else {
+						TileMap.put(Tc, getTileLayer(layer,xt,yt));
+					}
 				}
 			}
 			LayerMap.put(layer, TileMap);

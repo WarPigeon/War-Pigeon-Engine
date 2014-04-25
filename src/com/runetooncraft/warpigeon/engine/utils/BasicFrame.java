@@ -28,6 +28,7 @@ public class BasicFrame extends JFrame implements ComponentListener {
 	public SDKPanel sdkpanel;
 	public JComboBox selectedLayer;
 	public JPanel GamePanel;
+	public ExpandLevel expandLevel;
 	public GridBagLayout gridBagLayout;
 	public Newlevel newlevel;
 	public OpenLevel openlevel = new OpenLevel();
@@ -39,6 +40,8 @@ public class BasicFrame extends JFrame implements ComponentListener {
 	public NewTile newtile = new NewTile();
 	private JMenu mnTile;
 	private JMenuItem mntmNewTile;
+	private JMenu mnLevel;
+	public JMenuItem mntmExpand;
 	/**
 	 * Create the frame.
 	 */
@@ -57,7 +60,7 @@ public class BasicFrame extends JFrame implements ComponentListener {
 		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
-		
+		expandLevel = new ExpandLevel();
 		GamePanel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.insets = new Insets(0, 0, 5, 5);
@@ -131,6 +134,12 @@ public class BasicFrame extends JFrame implements ComponentListener {
 			}
 		});
 		mnTile.add(mntmNewTile);
+		
+		mnLevel = new JMenu("Level");
+		menuBar.add(mnLevel);
+		
+		mntmExpand = new JMenuItem("Expand");
+		mnLevel.add(mntmExpand);
 		
 		JSplitPane splitPane = new JSplitPane();
 		

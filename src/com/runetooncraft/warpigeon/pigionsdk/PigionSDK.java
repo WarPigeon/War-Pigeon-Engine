@@ -53,6 +53,7 @@ import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.Level;
 import com.runetooncraft.warpigeon.engine.level.Tile;
+import com.runetooncraft.warpigeon.engine.utils.ExpandLevel;
 import com.runetooncraft.warpigeon.engine.utils.YamlConfig;
 import com.runetooncraft.warpigeon.pigionsdk.tilesdk.NewTile;
 
@@ -125,8 +126,39 @@ public class PigionSDK {
 				deleteLayer();
 			}
 		});
+		
+		engine.getBasicFrame().mntmExpand.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				expandFrame();
+			}
+		});
+		
+		engine.getBasicFrame().expandLevel.btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TryExpandFrame();
+			}
+		});
 	}
 	
+	public void expandFrame() {
+		ExpandLevel EL = engine.getBasicFrame().expandLevel;
+		EL.widthField.setText(Integer.toString(engine.getLevel().getWidth()));
+		EL.heightField.setText(Integer.toString(engine.getLevel().getHeight()));
+		EL.setVisible(true);
+	}
+	
+	public void TryExpandFrame() {
+		ExpandLevel EL = engine.getBasicFrame().expandLevel;
+		int ExpandX = Integer.parseInt(EL.widthField.getText());
+		int ExpandY = Integer.parseInt(EL.heightField.getText());
+		
+		if(ExpandX >= engine.getLevel().getWidth() && ExpandY >= engine.getLevel().getHeight()) {
+			engine.getLevel().ExpandLevel(ExpandX, ExpandY);
+		} else {
+			JOptionPane.showMessageDialog(null, "You cannot shrink the level from this menu.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+		}
+	}
 	
 	public void Update() {
 		Collection<Tile> set = engine.getLevel().TileIDS.values();
