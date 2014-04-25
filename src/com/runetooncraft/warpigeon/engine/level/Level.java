@@ -37,8 +37,35 @@ public class Level {
 	public WPEngine4 engine;
 	
 	public void ExpandLevel(int xExpand, int yExpand) {
+		render = false;
+		HashMap<Integer,HashMap<TileCoordinate,Tile>> LayerMap = new HashMap<Integer,HashMap<TileCoordinate,Tile>>();
 		HashMap<TileCoordinate,Tile> TileMap = new HashMap<TileCoordinate,Tile>();
+		TileCoordinate Tc;
 		
+		for(int layer = 1; layer <= Layers; layer++) {
+			for(int yt = 0; yt < height; yt++) {
+				for(int xt = 0; xt < width; xt++) {
+					Tc = new TileCoordinate(xt,yt);
+					TileMap.put(Tc, getTileLayer(layer,xt,yt));
+				}
+			}
+			LayerMap.put(layer, TileMap);
+			TileMap = new HashMap<TileCoordinate,Tile>();
+		}
+		
+		NewLevel(width + xExpand, height + yExpand, workingDir, name);
+		render = false;
+		Layers = LayerMap.size();
+		for(int clayer = 1; clayer <= Layers; clayer++) {
+			if(LayerList.size() < clayer) {
+				LayerList.add(new int[width * height]);
+			}
+			
+			for(TileCoordinate coords: TileMap.keySet()) {
+				setTile(coords, TileMap.get(coords), clayer);
+			}
+		}
+		render = true;
 	}
 	/**
 	 * Level constructor.
