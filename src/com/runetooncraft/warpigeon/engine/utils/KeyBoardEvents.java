@@ -11,6 +11,7 @@ public class KeyBoardEvents implements KeyListener, FocusListener {
 	public boolean up, down, left, right;
 	public boolean ReleasedUP , ReleasedDown, ReleasedLeft, ReleasedRight;
 	public boolean stallListen = false;
+	public boolean KeyPressed = false;
 	
 	/**
 	 * Write key data here
@@ -20,14 +21,13 @@ public class KeyBoardEvents implements KeyListener, FocusListener {
 	}
 	
 	public void keyPressed(KeyEvent event) {
-		if(!stallListen) {
+			KeyPressed = true;
 			Keys[event.getKeyCode()] = true;
-		}
 	}
 
 	public void keyReleased(KeyEvent event) {
-		if(!stallListen) {
 			Keys[event.getKeyCode()] = false;
+		if(!stallListen) {
 			if(event.getKeyCode() == KeyEvent.VK_UP || event.getKeyCode() == KeyEvent.VK_W) {
 				ReleasedUP = true;
 			} else if(event.getKeyCode() == KeyEvent.VK_DOWN || event.getKeyCode() == KeyEvent.VK_S) {

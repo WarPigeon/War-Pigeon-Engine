@@ -60,11 +60,24 @@ public class Player extends Mob {
 		//}
 	}
 	
+	public int getXTilePos() {
+		return x / 16;
+	}
+	
+	public int getYTilePos() {
+		return y / 16;
+	}
+	
 	public void render(ScreenEngine2D screen) {
 		screen.renderPlayer(x - screen.XMid, y - screen.YMid, sprite);
 	}
 	
 	public void render(int x, int y, ScreenEngine2D screen) {
 		screen.renderPlayer(x - screen.XMid, y - screen.YMid, sprite);
+	}
+	
+	
+	public void setdir(int dir) {
+		this.dir = dir;
 	}
 }

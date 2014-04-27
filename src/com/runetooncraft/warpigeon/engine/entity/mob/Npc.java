@@ -4,7 +4,7 @@ import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 
 public class Npc extends Mob {
-	boolean up,down,left,right = false;
+	public boolean up,down,left,right = false;
 	int TileSize;
 	public Npc(Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims,int XPosition, int YPosition, int TileSize) {
 		super(ForwardAnims, BackwardAnims, LeftAnims, RightAnims);

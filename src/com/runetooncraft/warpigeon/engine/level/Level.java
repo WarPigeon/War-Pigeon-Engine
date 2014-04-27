@@ -203,12 +203,20 @@ public class Level {
 						width = Integer.parseInt((String) config.get("Width"));
 						height = Integer.parseInt((String) config.get("Height"));
 						Layers = Integer.parseInt((String) config.get("Layers"));
-						tiles = FileSystem.LoadDatFile(Layer1);
+						int[] tilesload = FileSystem.LoadDatFile(Layer1);
+						tiles = new int[width * height];
+						for(int tilenumber = 0; tilenumber < (width * height); tilenumber++) {
+							tiles[tilenumber] = tilesload[tilenumber];
+						}
 						for(int i = 2; i<=Layers; i++) {
 							String LayerString = "Layer" + i + ".dat";
 							File LayerFile = new File(workingDir, LayerString);
-							int[] Layer = FileSystem.LoadDatFile(LayerFile);
-							LayerList.add(Layer);
+							int[] Layerload = FileSystem.LoadDatFile(LayerFile);
+							int[] layer = new int[width * height];
+							for(int tilenumber = 0; tilenumber < (width * height); tilenumber++) {
+								layer[tilenumber] = Layerload[tilenumber];
+							}
+							LayerList.add(layer);
 						}
 					} catch(Exception e) {
 						e.printStackTrace();
@@ -348,7 +356,6 @@ public class Level {
 				}
 			}
 		}).start();
-		System.out.println("Level save complete.");
 	}
 	
 	/**

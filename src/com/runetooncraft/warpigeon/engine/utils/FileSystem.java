@@ -15,6 +15,13 @@ import java.util.List;
 public class FileSystem {
 	
 	public static void SaveDatFile(int[] ints, File file) {
+		file.delete();
+		System.out.println(ints.length);
+		try {
+			file.createNewFile();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		DataOutputStream out = null;
 		try {
 			out = new DataOutputStream(new FileOutputStream(file));
@@ -25,6 +32,7 @@ public class FileSystem {
 			e.printStackTrace();
 		} finally {
 			Close(out);
+			System.out.println("Level save complete.");
 		}
 	}
 	

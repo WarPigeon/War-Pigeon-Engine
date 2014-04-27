@@ -10,10 +10,10 @@ public abstract class Mob extends Entity {
 	protected int dir = 0;
 	protected int AnimationLocation = 0;
 	protected boolean moving = false;
-	protected static Sprite[] ForwardAnims;
-	protected static Sprite[] BackwardAnims;
-	protected static Sprite[] LeftAnims;
-	protected static Sprite[] RightAnims;
+	protected Sprite[] ForwardAnims;
+	protected Sprite[] BackwardAnims;
+	protected Sprite[] LeftAnims;
+	protected Sprite[] RightAnims;
 	protected int AnimationCooldown = 10;
 	private int AnimationCooldownToggle = 0;
 	public int xas,yas;
