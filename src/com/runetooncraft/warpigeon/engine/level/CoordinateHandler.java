@@ -78,17 +78,6 @@ public class CoordinateHandler {
 		int Scale = screen.scale / 1000;
 		int LeftBoundXScrollTile = level.getLeftBoundXScroll();
 		int TopBoundsYScrollTile = level.getTopBoundYScroll();
-		if(LeftBoundXScrollTile < 0) {
-			System.out.println(x + " / " + level.TileIDS.get(1).sprite.SIZEX);
-			double TileClickPosition = (((double) x) / ((double) level.TileIDS.get(1).sprite.SIZEX));
-			System.out.println("= " + TileClickPosition);
-			long iPart = (long) TileClickPosition;
-			double fraction = TileClickPosition - iPart;
-			System.out.println(fraction);
-			if(fraction >= 0.5) {
-				LeftBoundXScrollTile += 1;
-			}
-		}
 		int x0 = x / (screen.PixelWidth * Scale);
 		int y0 = y / (screen.PixelHeight * Scale);
 		x0 = x0 + (LeftBoundXScrollTile);

@@ -348,6 +348,7 @@ public class Level {
 				}
 			}
 		}).start();
+		System.out.println("Level save complete.");
 	}
 	
 	/**
