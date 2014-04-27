@@ -7,7 +7,6 @@ import com.runetooncraft.warpigeon.engine.utils.KeyBoardEvents;
 
 
 public class KeyListener extends KeyBoardEvents{
-	public boolean stallListen = false;
 	
 	public void update() {
 		if(!stallListen) {
@@ -20,8 +19,10 @@ public class KeyListener extends KeyBoardEvents{
 	
 	@Override
 	public void focusLost(FocusEvent e) {
-		for (int i = 0; i < Keys.length; i++) {
-			Keys[i] = false;
+		if(!stallListen) {
+			for (int i = 0; i < Keys.length; i++) {
+				Keys[i] = false;
+			}
 		}
 	}
 }
