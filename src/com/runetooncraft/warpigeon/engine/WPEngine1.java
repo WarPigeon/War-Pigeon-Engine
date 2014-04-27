@@ -9,7 +9,7 @@ public class WPEngine1 extends BasicGameWindow implements Runnable {
 	protected boolean running = false;
 	private boolean ShowFPSLimit = false;
 	private String WindowTitle = "";
-	public static String Version = "v0.1.15";
+	public static String Version = "v0.1.16";
 	/**
 	 * War-Pigion Engine 1 is the most basic engine that all of the other engines base themselves off of.
 	 * 
