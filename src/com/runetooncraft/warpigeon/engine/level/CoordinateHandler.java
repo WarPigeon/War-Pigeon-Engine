@@ -75,7 +75,7 @@ public class CoordinateHandler {
 	}
 	
 	public TileCoordinate getTileCoordinateAtMouse(int x, int y, ScreenEngine2D screen, Level level) {
-//		int Scale = screen.scale / 1000;
+		int Scale = screen.scale / 1000;
 		int LeftBoundXScrollTile = level.getLeftBoundXScroll();
 		int TopBoundsYScrollTile = level.getTopBoundYScroll();
 		if(LeftBoundXScrollTile < 0) {
@@ -89,8 +89,8 @@ public class CoordinateHandler {
 				LeftBoundXScrollTile += 1;
 			}
 		}
-		int x0 = x / (screen.PixelWidth);
-		int y0 = y / (screen.PixelHeight);
+		int x0 = x / (screen.PixelWidth * Scale);
+		int y0 = y / (screen.PixelHeight * Scale);
 		x0 = x0 + (LeftBoundXScrollTile);
 		y0 = y0 + (TopBoundsYScrollTile);
 		if(x0 < 0) {
