@@ -61,7 +61,9 @@ public class Level {
 		render = false;
 		Layers = LayerMap.size();
 		for(int clayer = 1; clayer <= Layers; clayer++) {
-			if(LayerList.size() < clayer) {
+			if(clayer == 1) {
+				tiles = new int[width * height];
+			} else if(LayerList.size() < clayer) {
 				LayerList.add(new int[width * height]);
 			}
 			
