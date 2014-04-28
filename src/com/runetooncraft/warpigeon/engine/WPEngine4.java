@@ -136,6 +136,7 @@ public class WPEngine4 extends WPEngine3 {
 			RenderLevelState();
 			privateRender();
 			RenderLevelStateUpperLayers();
+			privateRenderAfterUpperLayers();
 			for (int i = 0; i < pixels.length; i++) {
 				pixels[i] = screen.pixels[i];
 			}
@@ -192,6 +193,11 @@ public class WPEngine4 extends WPEngine3 {
 	}
 
 	
+	public void privateRenderAfterUpperLayers() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void DrawOtherImages(Graphics graphics) {
 		
 	}

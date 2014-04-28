@@ -184,6 +184,7 @@ public class Level {
 		render = false;
 		name = LevelName;
 		workingDir = new File(Dir.getPath() + "/Levels/" + name + "/");
+		LayerList = new ArrayList<int[]>();
 		if(!workingDir.exists()) {
 			System.out.println("Level " + name + " does not exist, generating level with size 64*64.");
 			GenLevelDefault();
