@@ -76,8 +76,8 @@ public class PigionSDK {
 		this.engine = engine;
 		selectedtile = engine.getSDKFrame().BottomPanel.selectedtile;
 		selectedtile2 = engine.getSDKFrame().BottomPanel.selectedtile2;
-		selectedLayer = engine.getSDKFrame().selectedLayer; //Stopped here
-		DeleteLayer = engine.getBasicFrame().DeleteLayer;
+		selectedLayer = engine.getSDKFrame().BottomPanel.selectedLayer; //Stopped here
+		DeleteLayer = engine.getSDKFrame().DeleteLayer;
 		TileSelection = (com.runetooncraft.warpigeon.pigionsdk.TileSelection) engine.getBasicFrame().TileSelection;
 		selectedLayer.addItem("Layer1");
 		for(int i = 2; i <= engine.getLevel().Layers; i++) {
@@ -85,55 +85,55 @@ public class PigionSDK {
 		}
 		Update();
 		
-		engine.getBasicFrame().newlevel.okButton.addActionListener(new ActionListener() {
+		engine.getSDKFrame().newlevel.okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				NewLevel();
 			}
 		});
 		
-		engine.getBasicFrame().mntmSave.addActionListener(new ActionListener() {
+		engine.getSDKFrame().mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SaveLevel();
 			}
 		});
 		
-		engine.getBasicFrame().OpenLevel.addActionListener(new ActionListener() {
+		engine.getSDKFrame().OpenLevel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				OpenLevel();
 			}
 		});
 		
-		engine.getBasicFrame().openlevel.cancelButton.addActionListener(new ActionListener() {
+		engine.getSDKFrame().openlevel.cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CloseOpenLevel();
 			}
 		});
 		
-		engine.getBasicFrame().openlevel.okButton.addActionListener(new ActionListener() {
+		engine.getSDKFrame().openlevel.okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				OpenLevelFile();
 			}
 		});
 		
-		engine.getBasicFrame().AddLayer.addActionListener(new ActionListener() {
+		engine.getSDKFrame().AddLayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addLayer();
 			}
 		});
 		
-		engine.getBasicFrame().DeleteLayer.addActionListener(new ActionListener() {
+		engine.getSDKFrame().DeleteLayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				deleteLayer();
 			}
 		});
 		
-		engine.getBasicFrame().mntmExpand.addActionListener(new ActionListener() {
+		engine.getSDKFrame().mntmExpand.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				expandFrame();
 			}
 		});
 		
-		engine.getBasicFrame().expandLevel.btnOk.addActionListener(new ActionListener() {
+		engine.getSDKFrame().expandLevel.btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TryExpandFrame();
 			}

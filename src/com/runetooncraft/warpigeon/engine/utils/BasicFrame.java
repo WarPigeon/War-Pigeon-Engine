@@ -26,7 +26,6 @@ import javax.swing.JLabel;
 public class BasicFrame extends JFrame implements ComponentListener {
 
 	public SDKPanel sdkpanel;
-	public JComboBox selectedLayer;
 	public JPanel GamePanel;
 	public ExpandLevel expandLevel;
 	public GridBagLayout gridBagLayout;
@@ -80,22 +79,6 @@ public class BasicFrame extends JFrame implements ComponentListener {
 		gbc_panel2.gridx = 0;
 		gbc_panel2.gridy = 1;
 		getContentPane().add(sdkpanel, gbc_panel2);
-		
-		JLabel lblLayer = new JLabel("Layer:");
-		GridBagConstraints gbc_lblLayer = new GridBagConstraints();
-		gbc_lblLayer.insets = new Insets(0, 0, 5, 5);
-		gbc_lblLayer.gridx = 19;
-		gbc_lblLayer.gridy = 3;
-		sdkpanel.add(lblLayer, gbc_lblLayer);
-		
-		selectedLayer = new JComboBox();
-		GridBagConstraints gbc_selectedLayer = new GridBagConstraints();
-		gbc_selectedLayer.gridwidth = 5;
-		gbc_selectedLayer.insets = new Insets(0, 0, 5, 0);
-		gbc_selectedLayer.fill = GridBagConstraints.HORIZONTAL;
-		gbc_selectedLayer.gridx = 21;
-		gbc_selectedLayer.gridy = 3;
-		sdkpanel.add(selectedLayer, gbc_selectedLayer);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
