@@ -72,11 +72,11 @@ public class PigionSDK {
 	private WPEngine4 engine;
 	private LevelAlreadyExists exists = new LevelAlreadyExists();
 	public PigionSDK(WPEngine4 engine) {
-		engine.getBasicFrame().newtile.SDK = this;
+		engine.getSDKFrame().newtile.SDK = this;
 		this.engine = engine;
-		selectedtile = engine.getBasicFrame().sdkpanel.selectedtile;
-		selectedtile2 = engine.getBasicFrame().sdkpanel.selectedtile2;
-		selectedLayer = engine.getBasicFrame().selectedLayer;
+		selectedtile = engine.getSDKFrame().BottomPanel.selectedtile;
+		selectedtile2 = engine.getSDKFrame().BottomPanel.selectedtile2;
+		selectedLayer = engine.getSDKFrame().selectedLayer; //Stopped here
 		DeleteLayer = engine.getBasicFrame().DeleteLayer;
 		TileSelection = (com.runetooncraft.warpigeon.pigionsdk.TileSelection) engine.getBasicFrame().TileSelection;
 		selectedLayer.addItem("Layer1");
@@ -161,26 +161,26 @@ public class PigionSDK {
 	}
 	
 	public void Update() {
-		Collection<Tile> set = engine.getLevel().TileIDS.values();
-		String lastname = "";
-		int SetNumber = 0;
-		for(Tile t: set) {
-			TileSelectionList.add(t);
-			if(t.getName() == lastname) {
-				SetNumber++;
-				selectedtile.addItem(t.getName() + Integer.toString(SetNumber));
-				selectedtile2.addItem(t.getName() + Integer.toString(SetNumber));
-			} else {
-				selectedtile.addItem(t.getName());
-				selectedtile2.addItem(t.getName());
-//				selectedtile.addItem(t.sprite.toBufferedImage());
-//				selectedtile2.addItem(t.sprite.toBufferedImage());
-				SetNumber = 0;
-			}
-			lastname = (String) t.getName();
-		}
-		
-		UpdateTileSelection();
+//		Collection<Tile> set = engine.getLevel().TileIDS.values();
+//		String lastname = "";
+//		int SetNumber = 0;
+//		for(Tile t: set) {
+//			TileSelectionList.add(t);
+//			if(t.getName() == lastname) {
+//				SetNumber++;
+//				selectedtile.addItem(t.getName() + Integer.toString(SetNumber));
+//				selectedtile2.addItem(t.getName() + Integer.toString(SetNumber));
+//			} else {
+//				selectedtile.addItem(t.getName());
+//				selectedtile2.addItem(t.getName());
+////				selectedtile.addItem(t.sprite.toBufferedImage());
+////				selectedtile2.addItem(t.sprite.toBufferedImage());
+//				SetNumber = 0;
+//			}
+//			lastname = (String) t.getName();
+//		}
+//		
+//		UpdateTileSelection();
 	}
 	
 	private void OpenLevel() {
