@@ -14,6 +14,7 @@ public class BasicGameWindow extends Canvas implements Window {
 	int scale = 3;
 	JFrame frame;
 	BasicFrame BFrame;
+	SDKFrame SDK;
 	Dimension size = null;
 	/**
 	 * for PigionSDK
@@ -25,14 +26,17 @@ public class BasicGameWindow extends Canvas implements Window {
 			this.height = Height;
 			this.scale = Scale;
 			size = new Dimension(width * (scale / 1000), height * (scale / 1000));
-			BFrame = new BasicFrame();
+			//BFrame = new BasicFrame();
+			SDK = new SDKFrame();
 			setPreferredSize(size);
-			frame = BFrame;
+			//frame = BFrame;
+			frame = SDK;
 			System.out.println(size.width + "," + size.height);
 			Dimension WholeFrame = new Dimension(size.width,size.height);
 			frame.setSize(WholeFrame);
-			BFrame.gridBagLayout.columnWidths = new int[]{size.width, 0};
-			BFrame.gridBagLayout.rowHeights = new int[]{size.height, 116, 0};
+			//BFrame.gridBagLayout.columnWidths = new int[]{size.width, 0};
+			//BFrame.gridBagLayout.rowHeights = new int[]{size.height, 116, 0};
+			SDK.setGameSize(size.width,size.height);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
@@ -100,7 +104,8 @@ public class BasicGameWindow extends Canvas implements Window {
 	 */
 	public void SetClassInstance(Canvas extendedclass, Boolean PigionSDK) {
 		if(PigionSDK) {
-			BFrame.GamePanel.add(extendedclass);
+			//BFrame.GamePanel.add(extendedclass);
+			SDK.GamePanel.add(extendedclass);
 		} else { 
 			frame.add(extendedclass);
 		}
@@ -150,5 +155,12 @@ public class BasicGameWindow extends Canvas implements Window {
 	 */
 	public BasicFrame getBasicFrame() {
 		return BFrame;
+	}
+	
+	/**
+	 * Returns SKKFrame instanse
+	 */
+	public SDKFrame getSDKFrame() {
+		return SDK;
 	}
 }

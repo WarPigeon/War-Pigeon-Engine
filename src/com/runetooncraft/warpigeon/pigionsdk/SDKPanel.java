@@ -15,6 +15,7 @@ public class SDKPanel extends JPanel {
 
 		public JComboBox selectedtile;
 		public JComboBox selectedtile2;
+		public JComboBox selectedLayer;
 		
 	public SDKPanel() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -58,7 +59,22 @@ public class SDKPanel extends JPanel {
 		gbc_comboBox2.gridx = 13;
 		gbc_comboBox2.gridy = 3;
 		add(selectedtile2, gbc_comboBox2);
-
+	
+		JLabel lblLayer = new JLabel("Layer:");
+		GridBagConstraints gbc_lblLayer = new GridBagConstraints();
+		gbc_lblLayer.insets = new Insets(0, 0, 5, 5);
+		gbc_lblLayer.gridx = 19;
+		gbc_lblLayer.gridy = 3;
+		add(lblLayer, gbc_lblLayer);
+		
+		selectedLayer = new JComboBox();
+		GridBagConstraints gbc_selectedLayer = new GridBagConstraints();
+		gbc_selectedLayer.gridwidth = 5;
+		gbc_selectedLayer.insets = new Insets(0, 0, 5, 0);
+		gbc_selectedLayer.fill = GridBagConstraints.HORIZONTAL;
+		gbc_selectedLayer.gridx = 21;
+		gbc_selectedLayer.gridy = 3;
+		add(selectedLayer, gbc_selectedLayer);
 	}
 
 }

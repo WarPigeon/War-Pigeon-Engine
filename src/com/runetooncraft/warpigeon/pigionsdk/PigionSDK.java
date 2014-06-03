@@ -72,12 +72,12 @@ public class PigionSDK {
 	private WPEngine4 engine;
 	private LevelAlreadyExists exists = new LevelAlreadyExists();
 	public PigionSDK(WPEngine4 engine) {
-		engine.getBasicFrame().newtile.SDK = this;
+		engine.getSDKFrame().newtile.SDK = this;
 		this.engine = engine;
-		selectedtile = engine.getBasicFrame().sdkpanel.selectedtile;
-		selectedtile2 = engine.getBasicFrame().sdkpanel.selectedtile2;
-		selectedLayer = engine.getBasicFrame().selectedLayer;
-		DeleteLayer = engine.getBasicFrame().DeleteLayer;
+		selectedtile = engine.getSDKFrame().BottomPanel.selectedtile;
+		selectedtile2 = engine.getSDKFrame().BottomPanel.selectedtile2;
+		selectedLayer = engine.getSDKFrame().BottomPanel.selectedLayer; //Stopped here
+		DeleteLayer = engine.getSDKFrame().DeleteLayer;
 		TileSelection = (com.runetooncraft.warpigeon.pigionsdk.TileSelection) engine.getBasicFrame().TileSelection;
 		selectedLayer.addItem("Layer1");
 		for(int i = 2; i <= engine.getLevel().Layers; i++) {
@@ -85,55 +85,55 @@ public class PigionSDK {
 		}
 		Update();
 		
-		engine.getBasicFrame().newlevel.okButton.addActionListener(new ActionListener() {
+		engine.getSDKFrame().newlevel.okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				NewLevel();
 			}
 		});
 		
-		engine.getBasicFrame().mntmSave.addActionListener(new ActionListener() {
+		engine.getSDKFrame().mntmSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SaveLevel();
 			}
 		});
 		
-		engine.getBasicFrame().OpenLevel.addActionListener(new ActionListener() {
+		engine.getSDKFrame().OpenLevel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				OpenLevel();
 			}
 		});
 		
-		engine.getBasicFrame().openlevel.cancelButton.addActionListener(new ActionListener() {
+		engine.getSDKFrame().openlevel.cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CloseOpenLevel();
 			}
 		});
 		
-		engine.getBasicFrame().openlevel.okButton.addActionListener(new ActionListener() {
+		engine.getSDKFrame().openlevel.okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				OpenLevelFile();
 			}
 		});
 		
-		engine.getBasicFrame().AddLayer.addActionListener(new ActionListener() {
+		engine.getSDKFrame().AddLayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addLayer();
 			}
 		});
 		
-		engine.getBasicFrame().DeleteLayer.addActionListener(new ActionListener() {
+		engine.getSDKFrame().DeleteLayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				deleteLayer();
 			}
 		});
 		
-		engine.getBasicFrame().mntmExpand.addActionListener(new ActionListener() {
+		engine.getSDKFrame().mntmExpand.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				expandFrame();
 			}
 		});
 		
-		engine.getBasicFrame().expandLevel.btnOk.addActionListener(new ActionListener() {
+		engine.getSDKFrame().expandLevel.btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TryExpandFrame();
 			}
@@ -161,26 +161,26 @@ public class PigionSDK {
 	}
 	
 	public void Update() {
-		Collection<Tile> set = engine.getLevel().TileIDS.values();
-		String lastname = "";
-		int SetNumber = 0;
-		for(Tile t: set) {
-			TileSelectionList.add(t);
-			if(t.getName() == lastname) {
-				SetNumber++;
-				selectedtile.addItem(t.getName() + Integer.toString(SetNumber));
-				selectedtile2.addItem(t.getName() + Integer.toString(SetNumber));
-			} else {
-				selectedtile.addItem(t.getName());
-				selectedtile2.addItem(t.getName());
-//				selectedtile.addItem(t.sprite.toBufferedImage());
-//				selectedtile2.addItem(t.sprite.toBufferedImage());
-				SetNumber = 0;
-			}
-			lastname = (String) t.getName();
-		}
-		
-		UpdateTileSelection();
+//		Collection<Tile> set = engine.getLevel().TileIDS.values();
+//		String lastname = "";
+//		int SetNumber = 0;
+//		for(Tile t: set) {
+//			TileSelectionList.add(t);
+//			if(t.getName() == lastname) {
+//				SetNumber++;
+//				selectedtile.addItem(t.getName() + Integer.toString(SetNumber));
+//				selectedtile2.addItem(t.getName() + Integer.toString(SetNumber));
+//			} else {
+//				selectedtile.addItem(t.getName());
+//				selectedtile2.addItem(t.getName());
+////				selectedtile.addItem(t.sprite.toBufferedImage());
+////				selectedtile2.addItem(t.sprite.toBufferedImage());
+//				SetNumber = 0;
+//			}
+//			lastname = (String) t.getName();
+//		}
+//		
+//		UpdateTileSelection();
 	}
 	
 	private void OpenLevel() {
