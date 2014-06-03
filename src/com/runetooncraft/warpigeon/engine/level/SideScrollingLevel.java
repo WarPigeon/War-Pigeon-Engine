@@ -62,7 +62,7 @@ public class SideScrollingLevel extends Level {
 		
 		Mob[] mobBoard = new Mob[1];
 		mobBoard[0] = player;
-		gravity = new Gravity(2, mobBoard);
+		gravity = new Gravity(100, mobBoard);
 		GravityEnabled = true;
 	}
 }

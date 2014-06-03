@@ -20,6 +20,7 @@ public class Level {
 	
 	protected int width, height;
 	protected int[] tiles;
+	protected int PSpawnX, PSpawnY;
 	public static ArrayList<int[]> LayerList = new ArrayList<int[]>();
 	public static HashMap<Integer, Tile> TileIDS = new HashMap<Integer, Tile>();
 	public static Tile VoidTile;

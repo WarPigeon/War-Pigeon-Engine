@@ -19,6 +19,9 @@ public abstract class Mob extends Entity {
 	public int xas,yas;
 	protected boolean Sideways = false;
 	
+	//Don't worry about this unless the game is a sidescroller
+	public int weight = 0;
+	
 	public Mob(Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims) {
 		this.ForwardAnims = ForwardAnims;
 		this.BackwardAnims = BackwardAnims;

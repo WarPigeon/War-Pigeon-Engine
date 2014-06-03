@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="res"/>
-	<classpathentry kind="lib" path="C:/Users/Marcus/Downloads/yamlbeans-1.04.jar" sourcepath="A:/Downloads/yamlbeans-master.zip"/>
-	<classpathentry kind="lib" path="C:/Users/Marcus/Downloads/jna-4.0.0.jar"/>
+	<classpathentry kind="lib" path="A:/Eclipse/downloads/yamlbeans-1.04.jar" sourcepath="A:/Downloads/yamlbeans-master.zip"/>
+	<classpathentry kind="lib" path="A:/Eclipse/downloads/jna-4.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

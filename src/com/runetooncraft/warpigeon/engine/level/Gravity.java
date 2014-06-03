@@ -10,41 +10,39 @@ public class Gravity {
 
 	private Mob[] GravityBoard;
 	private int Multiplier = 0;
-	private ArrayList<UpdateGravity> UpdateList = new ArrayList<UpdateGravity>();
+	ArrayList<Mob> UpdateList = new ArrayList<Mob>();
+	boolean initiated = false;
+	long lastTime = System.nanoTime();
+	long timer = System.currentTimeMillis();
+	double ns;
+	double delta = 0;
 	
 	public Gravity(int Multiplier, Mob[] GravityBoard) {
 		this.GravityBoard = GravityBoard;
 		this.Multiplier = Multiplier;
-		
+		ns = 1000000000.0 / Multiplier;
 		for(Mob mob: GravityBoard) {
-			UpdateList.add(new UpdateGravity(mob, Multiplier));
+			UpdateList.add(mob);
 		}
+		initiated = true;
 	}
 	
 	public void Update() {
-		for(UpdateGravity ug: UpdateList) {
-			ug.run();
-		}
-	}
-	
-	private class UpdateGravity implements Runnable {
-		Mob mob;
-		double FallingMultiplier = 0;
-		double InitalMultiplier = 0;
-		
-		public UpdateGravity(Mob mob, int Multiplier) {
-			this.mob = mob;
-			this.InitalMultiplier = Multiplier / 6000;
-			this.FallingMultiplier = Multiplier / 6000;
-		}
-		
-		public void run() { 
-			System.out.println("run");
-			if(!mob.checkCollideBelow()) {
-				mob.moveNoAnimate(mob.xas, (int)(mob.yas - FallingMultiplier));
-				FallingMultiplier += InitalMultiplier;
-			} else {
-				FallingMultiplier = InitalMultiplier;
+		for(Mob mob: UpdateList) {
+			if(initiated) {
+				long now = System.nanoTime();
+				delta += (now - lastTime) / ns;
+				lastTime = now;
+				while (delta >= 1) {
+					if(!mob.checkCollideBelow()) {
+						mob.moveNoAnimate(0, (int)(1));
+						ns = ns / mob.weight; //Multiplier * weight
+					} else {
+						ns = 1000000000.0 / Multiplier;
+					}
+					
+					delta--;
+				}
 			}
 		}
 	}
