@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.runetooncraft.warpigeon.engine.GameType;
 import com.runetooncraft.warpigeon.engine.WPEngine1;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.entity.mob.Mob;
@@ -36,6 +37,8 @@ public class Level {
 	public boolean GravityEnabled = false;
 	public Gravity gravity = null;
 	public WPEngine4 engine;
+	public HashMap<Integer,Boolean> RenderLayers = new HashMap<Integer,Boolean>(); //Only used if isSDK is true
+	private boolean isSDK;
 	
 	public void ExpandLevel(int xExpand, int yExpand) {
 		render = false;
@@ -88,6 +91,11 @@ public class Level {
 		tiles = new int[width * height];
 		int[] Layer2 = new int[width * height];
 		LayerList.add(Layer2);
+		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
+		if(isSDK) {
+			RenderLayers.put(1, true);
+			RenderLayers.put(2, true);
+		}	
 		generateLevel();
 	}
 	
@@ -117,6 +125,11 @@ public class Level {
 		tiles = new int[width * height];
 		int[] Layer2 = new int[width * height];
 		LayerList.add(Layer2);
+		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
+		if(isSDK) {
+			RenderLayers.put(1, true);
+			RenderLayers.put(2, true);
+		}
 		generateLevel();
 	}
 
@@ -127,6 +140,7 @@ public class Level {
 	public Level(File Dir, String LevelName, WPEngine4 engine) {
 		this.engine = engine;
 		TileIDS.put(-1, EmptyTile);
+		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		LoadLevelFile(Dir,LevelName);
 	}
 	
@@ -143,6 +157,11 @@ public class Level {
 		tiles = new int[width * height];
 		int[] Layer2 = new int[width * height];
 		LayerList.add(Layer2);
+		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
+		if(isSDK) {
+			RenderLayers.put(1, true);
+			RenderLayers.put(2, true);
+		}
 		generateLevel();
 		render = true;
 	}
@@ -153,6 +172,7 @@ public class Level {
 		this.height = 64;
 		tiles = new int[width * height];
 		int[] Layer2 = new int[width * height];
+		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		generateLevel();
 	}
 	
@@ -186,6 +206,11 @@ public class Level {
 		name = LevelName;
 		workingDir = new File(Dir.getPath() + "/Levels/" + name + "/");
 		LayerList = new ArrayList<int[]>();
+		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
+		if(isSDK) {
+			RenderLayers.put(1, true);
+			RenderLayers.put(2, true);
+		}
 		if(!workingDir.exists()) {
 			System.out.println("Level " + name + " does not exist, generating level with size 64*64.");
 			GenLevelDefault();
@@ -258,39 +283,63 @@ public class Level {
 		y0double = yScroll;
 		y0 = yScroll >> PDR;
 		y1 = (yScroll + screen.height + screen.ImageToPixelRatio) >> PDR;
-		if(render) {
-			for (int y = y0; y < y1; y++) {
-				for (int x = x0; x < x1; x++) {
-					getTile(x,y).render(x,y,screen, 1);
-				}
-			}
-			if(GravityEnabled) {
-				gravity.Update();
-			}
-		} else {
-			for (int y = y0; y < y1; y++) {
-				for (int x = x0; x < x1; x++) {
-					if(LoadingTile == null) {
-						VoidTile.render(x,y,screen, 1);
-					} else {
-						LoadingTile.render(x,y,screen, 1);
+			if(!isSDK) {
+				if(render) {
+					for (int y = y0; y < y1; y++) {
+						for (int x = x0; x < x1; x++) {
+							getTile(x,y).render(x,y,screen, 1);
+						}
 					}
+					if(GravityEnabled) {
+						gravity.Update();
+					}
+				} else {
+					for (int y = y0; y < y1; y++) {
+						for (int x = x0; x < x1; x++) {
+							if(LoadingTile == null) {
+								VoidTile.render(x,y,screen, 1);
+							} else {
+								LoadingTile.render(x,y,screen, 1);
+							}
+						}
+					}	
+				}
+			} else {
+				if(render && RenderLayers.get(1)) {
+					for (int y = y0; y < y1; y++) {
+						for (int x = x0; x < x1; x++) {
+							getTile(x,y).render(x,y,screen, 1);
+						}
+					}
+					if(GravityEnabled) {
+						gravity.Update();
+					}
+				} else {
+					for (int y = y0; y < y1; y++) {
+						for (int x = x0; x < x1; x++) {
+							if(LoadingTile == null) {
+								VoidTile.render(x,y,screen, 1);
+							} else {
+								LoadingTile.render(x,y,screen, 1);
+							}
+						}
+					}	
 				}
 			}
-		}
 	}
 	
 	public void renderUpperLayers(int xScroll, int yScroll, ScreenEngine2D screen) {
 		if(render) {
-			xScroll = xScroll - screen.width / 2;
-			yScroll = yScroll - screen.height / 2;
-			screen.setOffset(xScroll, yScroll);
-			x0double = xScroll;
-			x0 = xScroll >> PDR;
-			x1 = (xScroll + screen.width + screen.ImageToPixelRatio) >> PDR;
-			y0double = yScroll;
-			y0 = yScroll >> PDR;
-			y1 = (yScroll + screen.height + screen.ImageToPixelRatio) >> PDR;
+			if(!isSDK) {
+				xScroll = xScroll - screen.width / 2;
+				yScroll = yScroll - screen.height / 2;
+				screen.setOffset(xScroll, yScroll);
+				x0double = xScroll;
+				x0 = xScroll >> PDR;
+				x1 = (xScroll + screen.width + screen.ImageToPixelRatio) >> PDR;
+				y0double = yScroll;
+				y0 = yScroll >> PDR;
+				y1 = (yScroll + screen.height + screen.ImageToPixelRatio) >> PDR;
 				for (int y = y0; y < y1; y++) {
 					for (int x = x0; x < x1; x++) {
 						for(int[] layer: LayerList) {
@@ -298,8 +347,29 @@ public class Level {
 						}
 					}
 				}
+			} else {
+				xScroll = xScroll - screen.width / 2;
+				yScroll = yScroll - screen.height / 2;
+				screen.setOffset(xScroll, yScroll);
+				x0double = xScroll;
+				x0 = xScroll >> PDR;
+				x1 = (xScroll + screen.width + screen.ImageToPixelRatio) >> PDR;
+				y0double = yScroll;
+				y0 = yScroll >> PDR;
+				y1 = (yScroll + screen.height + screen.ImageToPixelRatio) >> PDR;
+				for (int y = y0; y < y1; y++) {
+					for (int x = x0; x < x1; x++) {
+						for(int Layer = 0; Layer < LayerList.size(); Layer++) {
+							int[] layer = LayerList.get(Layer);
+							if(RenderLayers.get(Layer + 2)) {
+								getTileIntArray(layer,x,y).render(x, y, screen, 2);
+							}
+						}
+					}
+				}
 			}
 		}
+	}
 	
 	public Tile getTile(int x, int y) {
 		if(x < 0 || y < 0 || x >= width || y >= height) return VoidTile;

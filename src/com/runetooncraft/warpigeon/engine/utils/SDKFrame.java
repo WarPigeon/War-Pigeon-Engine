@@ -15,12 +15,14 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JCheckBoxMenuItem;
 
 public class SDKFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	public GridBagLayout gridBagLayout;
 	public JPanel GamePanel, RightSidePanel;
 	public SDKBotPanel BottomPanel;
+	public SDKTopRightPanel TopRightPanel;
 	public JPanel TileSelection = new TileSelection();
 	public NewTile newtile = new NewTile();
 	public Newlevel newlevel = new Newlevel();
@@ -29,7 +31,7 @@ public class SDKFrame extends JFrame {
 	public JMenuItem mntmSave = new JMenuItem("Save");
 	public JMenuItem OpenLevel, AddLayer, DeleteLayer, mntmNewTile, mntmExpand;
 	public JMenu mnLevel, mnTile;
-	private JPanel TopRightPanel;
+	public JMenu mnRenderLayers;
 	
 	public SDKFrame() {
 		gridBagLayout = new GridBagLayout();
@@ -39,7 +41,7 @@ public class SDKFrame extends JFrame {
 		gridBagLayout.rowWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 		
-		TopRightPanel = new JPanel();
+		TopRightPanel = new SDKTopRightPanel();
 		GridBagConstraints gbc_TopRightPanel = new GridBagConstraints();
 		gbc_TopRightPanel.insets = new Insets(0, 0, 5, 0);
 		gbc_TopRightPanel.fill = GridBagConstraints.BOTH;
@@ -91,6 +93,9 @@ public class SDKFrame extends JFrame {
 		
 		JMenu mnLayer = new JMenu("Layer");
 		menuBar.add(mnLayer);
+		
+		mnRenderLayers = new JMenu("Render Layers");
+		mnLayer.add(mnRenderLayers);
 		
 		AddLayer = new JMenuItem("Add Layer");
 		mnLayer.add(AddLayer);

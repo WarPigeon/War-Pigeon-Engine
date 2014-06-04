@@ -10,6 +10,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,11 +30,13 @@ import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -58,13 +62,13 @@ import com.runetooncraft.warpigeon.engine.utils.YamlConfig;
 import com.runetooncraft.warpigeon.pigionsdk.tilesdk.NewTile;
 
 public class PigionSDK {
-	JComboBox selectedtile;
-	JComboBox selectedtile2;
-	JComboBox selectedLayer;
-	JMenuItem DeleteLayer;
-	TileSelection TileSelection;
-	TableRowSorter sorter;
-	TileTableModel model;
+	private JComboBox selectedtile,selectedtile2,selectedLayer;
+	private JMenuItem DeleteLayer;
+	private TileSelection TileSelection;
+	private TableRowSorter sorter;
+	private TileTableModel model;
+	private JMenu mnRenderLayers;
+	private ArrayList<JCheckBoxMenuItem> LayersEnabled = new ArrayList<JCheckBoxMenuItem>();
 	
 	ArrayList<Tile> TileSelectionList = new ArrayList<Tile>();
 	public static int Mouse1TileID = 0;
@@ -79,9 +83,18 @@ public class PigionSDK {
 		selectedLayer = engine.getSDKFrame().BottomPanel.selectedLayer; //Stopped here
 		DeleteLayer = engine.getSDKFrame().DeleteLayer;
 		TileSelection = (com.runetooncraft.warpigeon.pigionsdk.TileSelection) engine.getSDKFrame().TileSelection;
+		mnRenderLayers = engine.getSDKFrame().mnRenderLayers;
 		selectedLayer.addItem("Layer1");
+		JCheckBoxMenuItem CheckItem = new JCheckBoxMenuItem("Layer1");
+		CheckItem.setSelected(true);
+		mnRenderLayers.add(CheckItem);
+		LayersEnabled.add(CheckItem);
 		for(int i = 2; i <= engine.getLevel().Layers; i++) {
 			selectedLayer.addItem("Layer" + i);
+			JCheckBoxMenuItem item = new JCheckBoxMenuItem("Layer" + i);
+			item.setSelected(true);
+			mnRenderLayers.add(item);
+			LayersEnabled.add(item);
 		}
 		Update();
 		
@@ -138,6 +151,20 @@ public class PigionSDK {
 				TryExpandFrame();
 			}
 		});
+		int itemNumber = -1;
+		for(final JCheckBoxMenuItem item : LayersEnabled) {
+			itemNumber++;
+			final int ITEM = itemNumber;
+			item.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent e) {
+					changeRenderLayer(ITEM, item.isSelected());
+				}
+			});
+		}
+	}
+	
+	private void changeRenderLayer(int itemNumber, boolean selected) {
+		engine.getLevel().RenderLayers.put(itemNumber, selected);
 	}
 	
 	public void expandFrame() {
