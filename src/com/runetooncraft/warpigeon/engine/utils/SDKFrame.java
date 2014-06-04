@@ -16,6 +16,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JSeparator;
+import javax.swing.JSplitPane;
 
 public class SDKFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -32,6 +34,7 @@ public class SDKFrame extends JFrame {
 	public JMenuItem OpenLevel, AddLayer, DeleteLayer, mntmNewTile, mntmExpand;
 	public JMenu mnLevel, mnTile;
 	public JMenu mnRenderLayers;
+	private JSplitPane splitPane;
 	
 	public SDKFrame() {
 		gridBagLayout = new GridBagLayout();
@@ -121,7 +124,7 @@ public class SDKFrame extends JFrame {
 		mnLevel.add(mntmExpand);
 	}
 	
-	public void setGameSize(int widthPixels, int heightPixels) {
+	public void setGameSize(int widthPixels, int heightPixels, int scale) {
 		int[] Widths = gridBagLayout.columnWidths;
 		int[] Heights = gridBagLayout.rowHeights;
 		gridBagLayout.columnWidths = new int[]{widthPixels, Widths[1], Widths[2]};
@@ -131,6 +134,9 @@ public class SDKFrame extends JFrame {
 		int width = 0,height = 0;
 		for (int i: gridBagLayout.columnWidths) {width+=i;}
 		for (int i : gridBagLayout.rowHeights) {height+=i;}
+		TopRightPanel.HeightPane.setValue(Integer.toString(heightPixels/ (scale / 1000)));
+		TopRightPanel.WidthPane.setValue(Integer.toString(widthPixels / (scale / 1000)));
+		TopRightPanel.ScalePane.setValue(Integer.toString(scale));
 		setSize(width, height);
 	}
 }

@@ -16,8 +16,8 @@ import com.runetooncraft.warpigeon.pigionsdk.PigionSDK;
 public class WPEngine4 extends WPEngine3 {
 	private static final long serialVersionUID = 1L;
 	
-	private enum State {
-		MAIN_MENU,EDIT,PLAY,LOADING_SCREEN;
+	public enum State {
+		MAIN_MENU,EDIT,PLAY,LOADING_SCREEN,SCREEN_RESETTING;
 	}
 	
 	public GameType gametype;

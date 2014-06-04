@@ -151,6 +151,13 @@ public class PigionSDK {
 				TryExpandFrame();
 			}
 		});
+		
+		engine.getSDKFrame().TopRightPanel.SetDimension.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TryExpandGameFrame();
+			}
+			
+		});
 		int itemNumber = -1;
 		for(final JCheckBoxMenuItem item : LayersEnabled) {
 			itemNumber++;
@@ -161,6 +168,15 @@ public class PigionSDK {
 				}
 			});
 		}
+	}
+	
+	private void TryExpandGameFrame() {
+		SDKTopRightPanel panel = engine.getSDKFrame().TopRightPanel;
+		int width = Integer.parseInt(panel.WidthPane.getText().replaceAll("\\s+",""));
+		int height = Integer.parseInt(panel.HeightPane.getText().replaceAll("\\s+",""));
+		int scale = Integer.parseInt(panel.ScalePane.getText().replaceAll("\\s+",""));
+		Dimension size = new Dimension(width * (scale / 1000), height * (scale / 1000));
+		engine.setDimension(size,scale,engine);
 	}
 	
 	private void changeRenderLayer(int itemNumber, boolean selected) {

@@ -6,18 +6,19 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 import com.runetooncraft.warpigeon.engine.GameType;
+import com.runetooncraft.warpigeon.engine.WPEngine4;
 
 public class BasicGameWindow extends Canvas implements Window {
 	private static final long serialVersionUID = 1L;
 	int width = 300;
 	int height = width / 16 * 9;
-	int scale = 3;
+	public int scale = 3;
 	JFrame frame;
 	BasicFrame BFrame;
 	SDKFrame SDK;
 	Dimension size = null;
 	private GameType gametype;
-	private Dimension GameFrame;
+	public Dimension GameFrame;
 	/**
 	 * for PigionSDK
 	 */
@@ -39,7 +40,7 @@ public class BasicGameWindow extends Canvas implements Window {
 			SDK.GamePanel.setSize(GameFrame);
 			//BFrame.gridBagLayout.columnWidths = new int[]{size.width, 0};
 			//BFrame.gridBagLayout.rowHeights = new int[]{size.height, 116, 0};
-			SDK.setGameSize(GameFrame.width,GameFrame.height);
+			SDK.setGameSize(GameFrame.width,GameFrame.height, scale);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
@@ -56,16 +57,38 @@ public class BasicGameWindow extends Canvas implements Window {
 			frame.setVisible(true);
 		}
 	}
+	
+	public void setDimension(Dimension dimension, int scale, WPEngine4 engine) {
+		engine.state = engine.state.SCREEN_RESETTING;
+		this.scale = scale;
+		GameFrame = dimension;
+		this.width = GameFrame.width;
+		this.height = GameFrame.height;
+		setPreferredSize(GameFrame);
+		SDK.GamePanel.setSize(GameFrame);
+		SDK.setGameSize(GameFrame.width,GameFrame.height, scale);
+		createBufferStrategy(3);
+		engine.state = engine.state.PLAY;
+	}
+	
 	@Override
 	public void SetWidth(int width) {
 		this.width = width;
 		size.setSize(this.width * scale, this.height * scale);
+		GameFrame = new Dimension(size.width,size.height);
+		setPreferredSize(GameFrame);
+		SDK.GamePanel.setSize(GameFrame);
+		SDK.setGameSize(GameFrame.width,GameFrame.height, scale);
 	}
 
 	@Override
 	public void SetHeight(int height) {
 		this.height = height;
 		size.setSize(this.width * scale, this.height * scale);
+		GameFrame = new Dimension(size.width,size.height);
+		setPreferredSize(GameFrame);
+		SDK.GamePanel.setSize(GameFrame);
+		SDK.setGameSize(GameFrame.width,GameFrame.height, scale);
 	}
 
 	@Override
