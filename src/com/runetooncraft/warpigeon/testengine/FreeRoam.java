@@ -78,8 +78,8 @@ public class FreeRoam extends WPEngine4 {
 		workingDirectory = workingDirectory + "/WarPigeon/TestGame1";
 		File DataFolder = new File(workingDirectory);
 		
-		new FreeRoam(427, 240, 3000, 32, 32, 32, DataFolder);
-		//new FreeRoam(1280, 720, 1000, 32, 32, 32, DataFolder);
+		//new FreeRoam(427, 240, 3000, 32, 32, 32, DataFolder);
+		new FreeRoam(1280, 720, 1000, 32, 32, 32, DataFolder);
 	}
 	
 	public void update() {

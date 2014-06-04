@@ -10,6 +10,7 @@ import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine3D;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngineLoading;
 import com.runetooncraft.warpigeon.engine.utils.MediaFile;
+import com.runetooncraft.warpigeon.engine.utils.MouseEvents;
 import com.runetooncraft.warpigeon.pigionsdk.PigionSDK;
 
 public class WPEngine4 extends WPEngine3 {

@@ -131,7 +131,6 @@ public class SDKFrame extends JFrame {
 		int width = 0,height = 0;
 		for (int i: gridBagLayout.columnWidths) {width+=i;}
 		for (int i : gridBagLayout.rowHeights) {height+=i;}
-		
-		setBounds(0, 0, width, height);
+		setSize(width, height);
 	}
 }

@@ -25,6 +25,7 @@ public class ScreenEngine2D {
 	public ScreenEngine2D(int width, int height, int PixelWidth, int PixelHeight, int ImageToPixelRatio, int scale) {
 		this.width = width;
 		this.height = height;
+		System.out.println("2D War-Pigion engine started with x:" + width + " y:" + height + ".");
 		this.PixelWidth = PixelWidth;
 		this.PixelHeight = PixelHeight;
 		this.pixels = new int[ width * height ];

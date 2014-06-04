@@ -1,8 +1,12 @@
 package com.runetooncraft.warpigeon.engine.utils;
 
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
+import com.runetooncraft.warpigeon.engine.GameType;
+import com.runetooncraft.warpigeon.engine.WPEngine4;
 
 public class MouseEvents implements MouseListener, MouseMotionListener {
 

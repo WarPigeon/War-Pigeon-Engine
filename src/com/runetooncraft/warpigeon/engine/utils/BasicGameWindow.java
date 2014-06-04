@@ -16,11 +16,14 @@ public class BasicGameWindow extends Canvas implements Window {
 	BasicFrame BFrame;
 	SDKFrame SDK;
 	Dimension size = null;
+	private GameType gametype;
+	private Dimension GameFrame;
 	/**
 	 * for PigionSDK
 	 */
 	
 	public BasicGameWindow(int Width, int Height, int Scale, GameType gametype) {
+		this.gametype = gametype;
 		if(gametype.equals(GameType.PIGION_SDK)) {
 			this.width = Width;
 			this.height = Height;
@@ -28,15 +31,16 @@ public class BasicGameWindow extends Canvas implements Window {
 			size = new Dimension(width * (scale / 1000), height * (scale / 1000));
 			//BFrame = new BasicFrame();
 			SDK = new SDKFrame();
-			setPreferredSize(size);
 			//frame = BFrame;
 			frame = SDK;
 			System.out.println(size.width + "," + size.height);
-			Dimension WholeFrame = new Dimension(size.width,size.height);
-			frame.setSize(WholeFrame);
+			GameFrame = new Dimension(size.width,size.height);
+			setPreferredSize(GameFrame);
+			SDK.GamePanel.add(this);
+			SDK.GamePanel.setSize(GameFrame);
 			//BFrame.gridBagLayout.columnWidths = new int[]{size.width, 0};
 			//BFrame.gridBagLayout.rowHeights = new int[]{size.height, 116, 0};
-			SDK.setGameSize(size.width,size.height);
+			SDK.setGameSize(GameFrame.width,GameFrame.height);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
@@ -67,11 +71,17 @@ public class BasicGameWindow extends Canvas implements Window {
 
 	@Override
 	public int getWidth() {
+		if(gametype.equals(GameType.PIGION_SDK)) {
+			return GameFrame.width;
+		}
 		return frame.getWidth(); //because scaling is not included
 	}
 
 	@Override
 	public int getHeight() {
+		if(gametype.equals(GameType.PIGION_SDK)) {
+			return GameFrame.height;
+		}
 		return frame.getHeight();
 	}
 	
@@ -105,7 +115,7 @@ public class BasicGameWindow extends Canvas implements Window {
 	public void SetClassInstance(Canvas extendedclass, Boolean PigionSDK) {
 		if(PigionSDK) {
 			//BFrame.GamePanel.add(extendedclass);
-			SDK.GamePanel.add(extendedclass);
+			//SDK.GamePanel.add(extendedclass);
 		} else { 
 			frame.add(extendedclass);
 		}

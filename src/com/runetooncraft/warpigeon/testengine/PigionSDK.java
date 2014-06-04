@@ -43,7 +43,7 @@ public class PigionSDK extends WPEngine4 {
 		BackwardAnims[0] = Sprites.CRIPSY_BACKWARD_ANIM1;
 		BackwardAnims[1] = Sprites.CRIPSY_BACKWARD_ANIM2;
 //		player = new PlayerMain(KL, 0, 0, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims);
-		PackFrame();
+		//PackFrame();
 		start();
 //		getScreenEngine2D().SetSpriteWall(Sprites.Grass);
 //		getScreenEngine2D().RandomAllPixelColors();
@@ -75,7 +75,7 @@ public class PigionSDK extends WPEngine4 {
 		workingDirectory = workingDirectory + "/WarPigeon/TestGame1";
 		File DataFolder = new File(workingDirectory);
 		
-		new PigionSDK(1000, 500, 1000, 32, 32, 32, DataFolder);
+		new PigionSDK(640, 360, 2000, 32, 32, 32, DataFolder);
 	}
 	
 	public void update() {
