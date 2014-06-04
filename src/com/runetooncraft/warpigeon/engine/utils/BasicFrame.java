@@ -25,7 +25,7 @@ import javax.swing.JLabel;
 
 public class BasicFrame extends JFrame implements ComponentListener {
 
-	public SDKPanel sdkpanel;
+	public SDKBotPanel sdkpanel;
 	public JPanel GamePanel;
 	public ExpandLevel expandLevel;
 	public GridBagLayout gridBagLayout;
@@ -35,7 +35,7 @@ public class BasicFrame extends JFrame implements ComponentListener {
 	public JMenuItem OpenLevel;
 	public JMenuItem AddLayer;
 	public JMenuItem DeleteLayer;
-	public JFrame TileSelection = new TileSelection();
+	public JPanel TileSelection = new TileSelection();
 	public NewTile newtile = new NewTile();
 	private JMenu mnTile;
 	private JMenuItem mntmNewTile;
@@ -71,7 +71,7 @@ public class BasicFrame extends JFrame implements ComponentListener {
 		gbc_panel.gridx = 0;
 		gbc_panel.gridy = 1;
 		
-		sdkpanel = new SDKPanel();
+		sdkpanel = new SDKBotPanel();
 		GridBagLayout gridBagLayout_1 = (GridBagLayout) sdkpanel.getLayout();
 		gridBagLayout_1.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0};
 		GridBagConstraints gbc_panel2 = new GridBagConstraints();

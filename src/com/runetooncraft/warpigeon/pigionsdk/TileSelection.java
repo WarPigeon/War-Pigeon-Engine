@@ -12,12 +12,13 @@ import java.awt.Insets;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
-public class TileSelection extends JFrame {
+public class TileSelection extends JPanel {
 	public JTable table;
 	public JScrollPane pane;
 	private JLabel lblFilterText;
@@ -29,8 +30,6 @@ public class TileSelection extends JFrame {
 	public TileSelection() {
 		URL iconURL = getClass().getResource("/warpigeon.png");
 		ImageIcon icon = new ImageIcon(iconURL);
-		setIconImage(icon.getImage());
-		setTitle("Tile Selection");
 		initialize();
 	}
 
@@ -44,13 +43,12 @@ public class TileSelection extends JFrame {
 			e.printStackTrace();
 		}
 		setBounds(100, 100, 450, 511);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{86, 0, 86, 124, 0};
 		gridBagLayout.rowHeights = new int[]{0, 316, 31, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
-		getContentPane().setLayout(gridBagLayout);
+		setLayout(gridBagLayout);
 		
 		table = new JTable();
 		pane = new JScrollPane(table);
@@ -61,7 +59,7 @@ public class TileSelection extends JFrame {
 		gbc_table.fill = GridBagConstraints.BOTH;
 		gbc_table.gridx = 0;
 		gbc_table.gridy = 0;
-		getContentPane().add(pane, gbc_table);
+		add(pane, gbc_table);
 		
 		lblFilterText = new JLabel("Filter Tile name:");
 		GridBagConstraints gbc_lblFilterText = new GridBagConstraints();
@@ -69,7 +67,7 @@ public class TileSelection extends JFrame {
 		gbc_lblFilterText.insets = new Insets(0, 0, 0, 5);
 		gbc_lblFilterText.gridx = 0;
 		gbc_lblFilterText.gridy = 2;
-		getContentPane().add(lblFilterText, gbc_lblFilterText);
+		add(lblFilterText, gbc_lblFilterText);
 		
 		FilterText = new JTextField();
 		GridBagConstraints gbc_FilterText = new GridBagConstraints();
@@ -78,7 +76,7 @@ public class TileSelection extends JFrame {
 		gbc_FilterText.fill = GridBagConstraints.HORIZONTAL;
 		gbc_FilterText.gridx = 1;
 		gbc_FilterText.gridy = 2;
-		getContentPane().add(FilterText, gbc_FilterText);
+		add(FilterText, gbc_FilterText);
 		FilterText.setColumns(10);
 	}
 

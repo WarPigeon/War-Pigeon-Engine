@@ -78,7 +78,7 @@ public class PigionSDK {
 		selectedtile2 = engine.getSDKFrame().BottomPanel.selectedtile2;
 		selectedLayer = engine.getSDKFrame().BottomPanel.selectedLayer; //Stopped here
 		DeleteLayer = engine.getSDKFrame().DeleteLayer;
-		TileSelection = (com.runetooncraft.warpigeon.pigionsdk.TileSelection) engine.getBasicFrame().TileSelection;
+		TileSelection = (com.runetooncraft.warpigeon.pigionsdk.TileSelection) engine.getSDKFrame().TileSelection;
 		selectedLayer.addItem("Layer1");
 		for(int i = 2; i <= engine.getLevel().Layers; i++) {
 			selectedLayer.addItem("Layer" + i);
@@ -141,14 +141,14 @@ public class PigionSDK {
 	}
 	
 	public void expandFrame() {
-		ExpandLevel EL = engine.getBasicFrame().expandLevel;
+		ExpandLevel EL = engine.getSDKFrame().expandLevel;
 		EL.widthField.setText(Integer.toString(engine.getLevel().getWidth()));
 		EL.heightField.setText(Integer.toString(engine.getLevel().getHeight()));
 		EL.setVisible(true);
 	}
 	
 	public void TryExpandFrame() {
-		ExpandLevel EL = engine.getBasicFrame().expandLevel;
+		ExpandLevel EL = engine.getSDKFrame().expandLevel;
 		int ExpandX = Integer.parseInt(EL.widthField.getText());
 		int ExpandY = Integer.parseInt(EL.heightField.getText());
 		
@@ -161,30 +161,30 @@ public class PigionSDK {
 	}
 	
 	public void Update() {
-//		Collection<Tile> set = engine.getLevel().TileIDS.values();
-//		String lastname = "";
-//		int SetNumber = 0;
-//		for(Tile t: set) {
-//			TileSelectionList.add(t);
-//			if(t.getName() == lastname) {
-//				SetNumber++;
-//				selectedtile.addItem(t.getName() + Integer.toString(SetNumber));
-//				selectedtile2.addItem(t.getName() + Integer.toString(SetNumber));
-//			} else {
-//				selectedtile.addItem(t.getName());
-//				selectedtile2.addItem(t.getName());
-////				selectedtile.addItem(t.sprite.toBufferedImage());
-////				selectedtile2.addItem(t.sprite.toBufferedImage());
-//				SetNumber = 0;
-//			}
-//			lastname = (String) t.getName();
-//		}
-//		
-//		UpdateTileSelection();
+		Collection<Tile> set = engine.getLevel().TileIDS.values();
+		String lastname = "";
+		int SetNumber = 0;
+		for(Tile t: set) {
+			TileSelectionList.add(t);
+			if(t.getName() == lastname) {
+				SetNumber++;
+				selectedtile.addItem(t.getName() + Integer.toString(SetNumber));
+				selectedtile2.addItem(t.getName() + Integer.toString(SetNumber));
+			} else {
+				selectedtile.addItem(t.getName());
+				selectedtile2.addItem(t.getName());
+//				selectedtile.addItem(t.sprite.toBufferedImage());
+//				selectedtile2.addItem(t.sprite.toBufferedImage());
+				SetNumber = 0;
+			}
+			lastname = (String) t.getName();
+		}
+		
+		UpdateTileSelection();
 	}
 	
 	private void OpenLevel() {
-		OpenLevel openlevel = engine.getBasicFrame().openlevel;
+		OpenLevel openlevel = engine.getSDKFrame().openlevel;
 		openlevel.SelectedLevel.removeAllItems();
 		File Dir = new File(engine.getWorkingDir() + "/Levels/");
 		String[] Levels = Dir.list();
@@ -236,7 +236,7 @@ public class PigionSDK {
 	}
 	
 	private void OpenLevelFile() {
-		OpenLevel openlevel = engine.getBasicFrame().openlevel;
+		OpenLevel openlevel = engine.getSDKFrame().openlevel;
 		engine.getLevel().LoadLevelFile(engine.getWorkingDir(), (String) openlevel.SelectedLevel.getSelectedItem());
 		openlevel.setVisible(false);
 		selectedLayer.removeAllItems();
@@ -248,7 +248,7 @@ public class PigionSDK {
 	
 
 	private void CloseOpenLevel() {
-		engine.getBasicFrame().openlevel.setVisible(false);
+		engine.getSDKFrame().openlevel.setVisible(false);
 	}
 	
 	private void SaveLevel() {
@@ -256,7 +256,7 @@ public class PigionSDK {
 	}
 
 	private void NewLevel() {
-		final Newlevel nl = engine.getBasicFrame().newlevel;
+		final Newlevel nl = engine.getSDKFrame().newlevel;
 		File f = new File(engine.getWorkingDir().getPath() + "/Levels/" + nl.Name.getText() + "/");
 		if(!f.exists()) {
 		engine.getLevel().NewLevel(Integer.parseInt(nl.width.getText()), Integer.parseInt(nl.height.getText()), engine.getWorkingDir(), nl.Name.getText());
@@ -381,7 +381,7 @@ public class PigionSDK {
 			}
 			
 			if(config == null) {
-				JOptionPane.showMessageDialog(engine.getBasicFrame(), "There was an error with processing the yml config file");
+				JOptionPane.showMessageDialog(engine.getSDKFrame(), "There was an error with processing the yml config file");
 				return;
 			}
 			
