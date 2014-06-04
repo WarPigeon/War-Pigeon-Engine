@@ -33,7 +33,6 @@ public class BasicGameWindow extends Canvas implements Window {
 			SDK = new SDKFrame();
 			//frame = BFrame;
 			frame = SDK;
-			System.out.println(size.width + "," + size.height);
 			GameFrame = new Dimension(size.width,size.height);
 			setPreferredSize(GameFrame);
 			SDK.GamePanel.add(this);
