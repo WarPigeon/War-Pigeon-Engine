@@ -34,7 +34,7 @@ public class SDKFrame extends JFrame {
 	public JMenuItem OpenLevel, AddLayer, DeleteLayer, mntmNewTile, mntmExpand;
 	public JMenu mnLevel, mnTile;
 	public JMenu mnRenderLayers;
-	private JSplitPane splitPane;
+	public SDKTopPanel TopPanel;
 	
 	public SDKFrame() {
 		gridBagLayout = new GridBagLayout();
@@ -43,6 +43,14 @@ public class SDKFrame extends JFrame {
 		gridBagLayout.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
+		
+		TopPanel = new SDKTopPanel();
+		GridBagConstraints gbc_TopPanel = new GridBagConstraints();
+		gbc_TopPanel.insets = new Insets(0, 0, 5, 5);
+		gbc_TopPanel.fill = GridBagConstraints.BOTH;
+		gbc_TopPanel.gridx = 0;
+		gbc_TopPanel.gridy = 0;
+		getContentPane().add(TopPanel, gbc_TopPanel);
 		
 		TopRightPanel = new SDKTopRightPanel();
 		GridBagConstraints gbc_TopRightPanel = new GridBagConstraints();

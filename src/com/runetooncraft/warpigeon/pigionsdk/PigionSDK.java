@@ -46,6 +46,8 @@ import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -158,6 +160,16 @@ public class PigionSDK {
 			}
 			
 		});
+		
+		engine.getSDKFrame().TopPanel.overlayCheck.addChangeListener(new ChangeListener() {
+
+			public void stateChanged(ChangeEvent e) {
+				overlayCheck();
+			}
+			
+		});
+		
+		
 		int itemNumber = -1;
 		for(final JCheckBoxMenuItem item : LayersEnabled) {
 			itemNumber++;
@@ -168,6 +180,12 @@ public class PigionSDK {
 				}
 			});
 		}
+	}
+	
+
+	private void overlayCheck() {
+		JCheckBox check = engine.getSDKFrame().TopPanel.overlayCheck;
+			engine.getLevel().overlayEnabled = check.isSelected();
 	}
 	
 	private void TryExpandGameFrame() {
@@ -246,6 +264,12 @@ public class PigionSDK {
 		int height = engine.getLevel().getHeight();
 		int LayerNumber = engine.getLevel().Layers + 1;
 		engine.getLevel().Layers += 1;
+		selectedLayer.addItem("Layer" + engine.getLevel().Layers);
+		JCheckBoxMenuItem item = new JCheckBoxMenuItem("Layer" + engine.getLevel().Layers);
+		item.setSelected(true);
+		mnRenderLayers.add(item);
+		LayersEnabled.add(item);
+		engine.getLevel().RenderLayers.put(engine.getLevel().Layers, true);
 		int[] Layer = new int[width * height];
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
@@ -274,6 +298,10 @@ public class PigionSDK {
 		for(int i = 2; i<= engine.getLevel().Layers; i++) {
 			selectedLayer.addItem("Layer" + i);
 		}
+		JCheckBoxMenuItem item = LayersEnabled.get(Layerid);
+		mnRenderLayers.remove(item);
+		LayersEnabled.remove(item);
+		engine.getLevel().RenderLayers.remove(Layerid);
 		engine.getLevel().render = true;
 	}
 	}

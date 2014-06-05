@@ -99,7 +99,7 @@ public class ScreenEngine2D {
 				if (xa < 0) xa = 0;
 //				pixels[xa+ya*width] = tile.sprite.pixels[x+y*tile.sprite.SIZE];
 				int col = tile.sprite.pixels[x+y*tile.sprite.SIZE];
-				if (col != 0xFFFF00D0) pixels[xa + ya * width] = col;	
+				if (col != 0xFFFF00D0) pixels[xa + ya * width] = col;
 //				} else {
 //					pixels[xa + ya * width] = pixels[(xa + ya * width) - 32];
 //				}
