@@ -13,6 +13,7 @@ import com.runetooncraft.warpigeon.engine.WPEngine1;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.entity.mob.Mob;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
+import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.utils.FileSystem;
 import com.runetooncraft.warpigeon.engine.utils.YamlConfig;
 import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
@@ -21,6 +22,7 @@ public class Level {
 	
 	protected int width, height;
 	protected int[] tiles;
+	protected Tile overlayTile;
 	protected int PSpawnX, PSpawnY;
 	public static ArrayList<int[]> LayerList = new ArrayList<int[]>();
 	public static HashMap<Integer, Tile> TileIDS = new HashMap<Integer, Tile>();
@@ -39,6 +41,7 @@ public class Level {
 	public WPEngine4 engine;
 	public HashMap<Integer,Boolean> RenderLayers = new HashMap<Integer,Boolean>(); //Only used if isSDK is true
 	private boolean isSDK;
+	public boolean overlayEnabled = false;
 	
 	public void ExpandLevel(int xExpand, int yExpand) {
 		render = false;
@@ -97,8 +100,20 @@ public class Level {
 			RenderLayers.put(2, true);
 		}	
 		generateLevel();
+		setupOverlay();
 	}
 	
+	private void setupOverlay() {
+		int spriteSize = VoidTile.sprite.SIZE;
+		Sprite Overlaysprite = new Sprite(spriteSize,0xFFFF00D0);
+		for(int i = 0; i <= 32; i++) {
+			Overlaysprite.pixels[i * spriteSize] = 0xFF808080;
+			Overlaysprite.pixels[(i * spriteSize)] = 0xFF808080;
+			Overlaysprite.pixels[(i * spriteSize) + 31] = 0xFF808080;
+			Overlaysprite.pixels[((spriteSize * spriteSize) - (31)) + i] = 0xFF808080;
+		}
+		overlayTile = new Tile(Overlaysprite, -2, "Overlay");
+	}
 	public int getWidth() {
 		return width;
 	}
@@ -131,6 +146,7 @@ public class Level {
 			RenderLayers.put(2, true);
 		}
 		generateLevel();
+		setupOverlay();
 	}
 
 	/**
@@ -142,6 +158,7 @@ public class Level {
 		TileIDS.put(-1, EmptyTile);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		LoadLevelFile(Dir,LevelName);
+		setupOverlay();
 	}
 	
 	public void NewLevel(int width, int height, File workingDir, String LevelName) {
@@ -163,6 +180,7 @@ public class Level {
 			RenderLayers.put(2, true);
 		}
 		generateLevel();
+		setupOverlay();
 		render = true;
 	}
 	
@@ -174,6 +192,7 @@ public class Level {
 		int[] Layer2 = new int[width * height];
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		generateLevel();
+		setupOverlay();
 	}
 	
 	public void setTile(TileCoordinate coords, Tile tile, int Layer) {
@@ -364,6 +383,9 @@ public class Level {
 							if(RenderLayers.get(Layer + 2)) {
 								getTileIntArray(layer,x,y).render(x, y, screen, 2);
 							}
+						}
+						if(overlayEnabled) {
+							overlayTile.render(x,y, screen, 50);
 						}
 					}
 				}
