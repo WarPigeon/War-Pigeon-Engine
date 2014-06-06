@@ -4,6 +4,7 @@
   <artifactId>WP</artifactId>
   <version>0.1.42</version>
   <name>WPEngine</name>
+  <packaging>jar</packaging>
   <build>
     <plugins>
       <plugin>
