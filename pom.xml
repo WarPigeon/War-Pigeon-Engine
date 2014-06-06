@@ -37,6 +37,7 @@
                             <descriptorRef>jar-with-dependencies</descriptorRef>
                         </descriptorRefs>
                         <finalName>${artifactId}-${version}-SDK</finalName>
+                        <appendAssemblyId>false</appendAssemblyId>
                     </configuration>
                     <executions>
                         <execution>
