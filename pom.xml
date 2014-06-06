@@ -10,7 +10,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
+				<version>3.1</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
@@ -29,11 +29,6 @@
   		<groupId>com.esotericsoftware.yamlbeans</groupId>
   		<artifactId>yamlbeans</artifactId>
   		<version>1.08</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.apache.maven.plugins</groupId>
-  		<artifactId>maven-assembly-plugin</artifactId>
-  		<version>2.4</version>
   	</dependency>
   	<dependency>
   		<groupId>org.apache.maven.plugins</groupId>
