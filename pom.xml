@@ -8,13 +8,17 @@
     <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.0</version>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
-	  </plugin>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>com.runetooncraft.warpigeon.testengine.PigionSDK</mainClass>
+            </manifest>
+         </archive>
+       </configuration>
+    </plugin>
     </plugins>
   </build>
   <dependencies>
