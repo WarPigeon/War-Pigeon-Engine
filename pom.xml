@@ -14,9 +14,10 @@
           <source>1.7</source>
           <target>1.7</target>
           <archive>
-          		<manifest>
-            		<mainClass>com.runetooncraft.warpigeon.pigionsdk.PigionSDK</mainClass>
-         		</manifest>
+            <manifest>
+            <mainClass>com.runetooncraft.warpigeon.testengine.PigionSDK</mainClass>
+            <addClasspath>true</addClasspath>
+            </manifest>
           </archive>
         </configuration>
 	  </plugin>
