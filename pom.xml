@@ -6,6 +6,11 @@
   <name>WPEngine</name>
   <build>
   		<sourceDirectory>${basedir}/src</sourceDirectory>
+  		<resources>
+     		<resource>
+       			<directory>${basedir}/res</directory>
+     	</resource>
+   </resources>
 		<pluginManagement>
 		  <plugins>
                 <plugin>
