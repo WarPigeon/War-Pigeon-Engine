@@ -6,6 +6,7 @@
   <name>WPEngine</name>
   
   <build>
+  		<sourceDirectory>${basedir}/src</sourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
