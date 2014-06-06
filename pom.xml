@@ -6,19 +6,10 @@
   <name>WPEngine</name>
   <build>
     <plugins>
-	  <plugin>
-	  	<groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.0</version>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
-	  </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>1.6</version>
+        <version>2.3</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -29,6 +20,9 @@
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>com.runetooncraft.warpigeon.testengine.PigionSDK</mainClass>
+                </transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                    <resource>src</resource>
                 </transformer>
               </transformers>
             </configuration>
@@ -51,12 +45,7 @@
   	<dependency>
 		<groupId>org.apache.maven.plugins</groupId>
 		<artifactId>maven-shade-plugin</artifactId>
-		<version>1.6</version>
-	</dependency>
-	<dependency>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-compiler-plugin</artifactId>
-		<version>3.0</version>
+		<version>2.3</version>
 	</dependency>
   </dependencies>
 </project>
