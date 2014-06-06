@@ -20,9 +20,8 @@
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>com.runetooncraft.warpigeon.testengine.PigionSDK</mainClass>
-                </transformer>
-                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                    <resource>src</resource>
+                  <X-Compile-Source-JDK>${maven.compile.source}</X-Compile-Source-JDK>
+                  <X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>
                 </transformer>
               </transformers>
             </configuration>
