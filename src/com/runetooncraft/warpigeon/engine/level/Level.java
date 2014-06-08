@@ -314,7 +314,7 @@ public class Level {
 						}
 					}
 					if(GravityEnabled) {
-						gravity.Update();
+						gravity.Update(); //test
 					}
 				} else {
 					for (int y = y0; y < y1; y++) {
