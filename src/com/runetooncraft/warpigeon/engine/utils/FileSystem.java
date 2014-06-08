@@ -16,7 +16,6 @@ public class FileSystem {
 	
 	public static void SaveDatFile(int[] ints, File file) {
 		file.delete();
-		System.out.println(ints.length);
 		try {
 			file.createNewFile();
 		} catch (IOException e1) {
@@ -32,7 +31,6 @@ public class FileSystem {
 			e.printStackTrace();
 		} finally {
 			Close(out);
-			System.out.println("Level save complete.");
 		}
 	}
 	

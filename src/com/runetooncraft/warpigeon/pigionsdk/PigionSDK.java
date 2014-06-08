@@ -170,7 +170,7 @@ public class PigionSDK {
 		});
 		
 		
-		int itemNumber = -1;
+		int itemNumber = 0;
 		for(final JCheckBoxMenuItem item : LayersEnabled) {
 			itemNumber++;
 			final int ITEM = itemNumber;
@@ -264,11 +264,17 @@ public class PigionSDK {
 		int height = engine.getLevel().getHeight();
 		int LayerNumber = engine.getLevel().Layers + 1;
 		engine.getLevel().Layers += 1;
-		selectedLayer.addItem("Layer" + engine.getLevel().Layers);
 		JCheckBoxMenuItem item = new JCheckBoxMenuItem("Layer" + engine.getLevel().Layers);
 		item.setSelected(true);
 		mnRenderLayers.add(item);
 		LayersEnabled.add(item);
+		item.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				boolean selected = false;
+				if(e.getStateChange() == 1) selected = true;
+				changeRenderLayer(engine.getLevel().Layers, selected);
+			}
+		});
 		engine.getLevel().RenderLayers.put(engine.getLevel().Layers, true);
 		int[] Layer = new int[width * height];
 		for (int y = 0; y < height; y++) {

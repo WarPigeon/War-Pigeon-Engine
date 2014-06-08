@@ -184,6 +184,7 @@ public class Level {
 		generateLevel();
 		setupOverlay();
 		render = true;
+		System.out.println(LevelName + " generated, Bounds{" + width + "," + height + "}, Layers{" + Layers + "}, in workingDir{" + this.workingDir + "}");
 	}
 	
 	private void GenLevelDefault() {
@@ -274,6 +275,7 @@ public class Level {
 			}
 		}
 		render = true;
+		System.out.println(LevelName + " loaded, Bounds{" + width + "," + height + "}, Layers{" + Layers + "}, in workingDir{" + this.workingDir + "}");
 	}
 
 	protected void generateLevel() {
@@ -452,6 +454,7 @@ public class Level {
 				}
 			}
 		}).start();
+		System.out.println("Level save complete.");
 	}
 	
 	/**

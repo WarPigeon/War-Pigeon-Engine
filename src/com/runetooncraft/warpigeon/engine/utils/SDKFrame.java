@@ -140,7 +140,6 @@ public class SDKFrame extends JFrame {
 		height = 100 + heightPixels + Heights[2] + Heights[3];
 		setSize(width, height);
 		this.setBounds(0, 0, width, height);
-		System.out.println("Height was attempted set at " + height + " and ended at " + getHeight() + ".");
 		
 		gridBagLayout.columnWidths = new int[]{widthPixels, Widths[1], Widths[2]};
 		gridBagLayout.rowHeights = new int[]{Heights[0], heightPixels, Heights[2], Heights[3]};

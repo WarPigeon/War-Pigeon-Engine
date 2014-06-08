@@ -12,7 +12,6 @@ public class CoordinateHandler {
 		int[] i = new int[2];
 		i[0] = x0;
 		i[1] = y0;
-		System.out.println(x0 + "," + y0);
 		return i;
 	}
 	
