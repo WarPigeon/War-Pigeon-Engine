@@ -132,11 +132,11 @@ public class SDKFrame extends JFrame {
 		mnLevel.add(mntmExpand);
 	}
 	
-	public void setGameSize(int widthPixels, int heightPixels, int scale) {
+	public void setGameSize(int widthPixels, int heightPixels, int scale) { //delete this comment
 		int[] Widths = gridBagLayout.columnWidths;
 		int[] Heights = gridBagLayout.rowHeights;
 		int width = 0,height = 0;
-		width = widthPixels + Widths[1] + Widths[2];
+		width = widthPixels + Widths[1] + Widths[2]; 
 		height = 100 + heightPixels + Heights[2] + Heights[3];
 		setSize(width, height);
 		this.setBounds(0, 0, width, height);
