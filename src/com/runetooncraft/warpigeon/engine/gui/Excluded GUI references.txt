@@ -1,3 +1,71 @@
+------------------------------------BUTTON-------------------------------------
+
+package com.runetooncraft.warpigeon.engine.gui;
+
+import java.util.List;
+
+import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
+import com.runetooncraft.warpigeon.engine.graphics.Sprite;
+
+public class Button implements Component {
+
+	protected Gui gui;
+	protected int XMin;
+	protected int YMin;
+	protected int XMax;
+	protected int YMax;
+	protected Sprite sprite;
+	protected ScreenEngine2D screen;
+	
+	public Button(Gui gui, int Xp, int Yp, Sprite sprite) {
+		this.gui = gui;
+		this.XMin = Xp;
+		this.YMin = Yp;
+		this.XMax = Xp + sprite.getWidth();
+		this.YMax = Yp + sprite.getHeight();
+		this.sprite = sprite;
+	}
+	
+	public Gui getGui() {
+		return gui;
+	}
+
+	public void BoundsClicked() {
+		
+	}
+	
+	public boolean IsInBounds(int x, int y) {
+		System.out.println("X: " + XMin + "," +  XMax + " Y:" + YMin + "," + YMax);
+		if (x >= XMin && x <= XMax && y >= YMin && y <= YMax) {
+			System.out.println("YE feund me beunds!");
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void render(ScreenEngine2D screen) {
+		System.out.println("X: " + XMin + "," +  XMax + " Y:" + YMin + "," + YMax);
+		screen.renderSprite(XMin, YMin, sprite, false);
+		this.screen = screen;
+	}
+
+	private void UpdatePositions(int Xp, int Yp) {
+		this.XMin = Xp;
+		this.YMin = Yp;
+		this.XMax = Xp + sprite.getWidth();
+		this.YMax = Yp + sprite.getHeight();
+	}
+
+	@Override
+	public boolean IsClickable() {
+		return true;
+	}
+
+}
+
+------------------------------------SideGUI-------------------------------------
+
 package com.runetooncraft.warpigeon.engine.gui;
 
 import java.util.ArrayList;
@@ -87,7 +155,7 @@ public class SideGui extends Gui{
 		if(x >= XMin && x <= XMax && y >= YMin && y <= YMax) {
 //			System.out.println("YE feund me beunds!");
 			for(Component c : Components) {
-				if(c.IsButton()) {
+				if(c.IsClickable()) {
 					Button b = (Button) c;
 					if(b.IsInBounds(x, y)) {
 						b.BoundsClicked();
@@ -100,3 +168,44 @@ public class SideGui extends Gui{
 	}
 
 }
+
+------------------------------------SIDEGUIEXTENDBUTTON-------------------------------------
+
+package com.runetooncraft.warpigeon.engine.gui;
+
+import java.util.List;
+
+import com.runetooncraft.warpigeon.engine.graphics.Sprite;
+
+public class SideGuiExtendButton extends Button {
+
+	private SideGui Sgui = (SideGui) gui;
+	private Sprite ExtendGUISprite;
+	private Sprite DetractGUISprite;
+	/**
+	 * 
+	 * @param gui
+	 * @param Bounds
+	 * @param RenderX
+	 * @param RenderY
+	 * @param ExtendGUISprite
+	 * @param DetractGUISprite
+	 */
+	public SideGuiExtendButton(Gui gui, int RenderX, int RenderY, Sprite ExtendGUISprite, Sprite DetractGUISprite) {
+		super(gui, RenderX, RenderY, ExtendGUISprite);
+		this.ExtendGUISprite = ExtendGUISprite;
+		this.DetractGUISprite = DetractGUISprite;
+	}
+	
+	public void BoundsClicked() {
+		if(Sgui.isExtended()) {
+			Sgui.DetractGUI();
+			sprite = ExtendGUISprite;
+		} else { 
+			Sgui.ExtendGUI();
+			sprite = DetractGUISprite;
+		}
+	}
+}
+
+----------------------------------------------------------------------------------

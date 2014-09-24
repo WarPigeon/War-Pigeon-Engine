@@ -39,7 +39,7 @@ public class SDKFrame extends JFrame {
 	public SDKFrame() {
 		gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{818, 600, 0};
-		gridBagLayout.rowHeights = new int[]{100, 457, 50, 0};
+		gridBagLayout.rowHeights = new int[]{100, 457, 100, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
@@ -140,6 +140,9 @@ public class SDKFrame extends JFrame {
 		height = 100 + heightPixels + Heights[2] + Heights[3];
 		setSize(width, height);
 		this.setBounds(0, 0, width, height);
+		
+		System.out.println("Setting columnWidths to " + widthPixels + "," + Widths[1] + "," + Widths[2]);
+		System.out.println("Setting rowHeights to " + Heights[0] + "," + heightPixels + "," + Heights[2] + "," + Heights[3]);
 		
 		gridBagLayout.columnWidths = new int[]{widthPixels, Widths[1], Widths[2]};
 		gridBagLayout.rowHeights = new int[]{Heights[0], heightPixels, Heights[2], Heights[3]};

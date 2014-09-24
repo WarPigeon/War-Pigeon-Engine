@@ -22,8 +22,8 @@ public interface Component {
 	public void render(ScreenEngine2D screen);
 	
 	/**
-	 * Checks if the component is a button
+	 * Checks if the component is Clickable
 	 * @return
 	 */
-	public boolean IsButton();
+	public boolean IsClickable();
 }
