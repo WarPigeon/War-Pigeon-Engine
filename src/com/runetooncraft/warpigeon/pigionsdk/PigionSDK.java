@@ -57,6 +57,7 @@ import javax.swing.table.TableRowSorter;
 
 import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
+import com.runetooncraft.warpigeon.engine.level.CollisionType;
 import com.runetooncraft.warpigeon.engine.level.Level;
 import com.runetooncraft.warpigeon.engine.level.Tile;
 import com.runetooncraft.warpigeon.engine.level.Layer.Layer;
@@ -338,7 +339,7 @@ public class PigionSDK {
 		final Newlevel nl = engine.getSDKFrame().newlevel;
 		File f = new File(engine.getWorkingDir().getPath() + "/Levels/" + nl.Name.getText() + "/");
 		if(!f.exists()) {
-		engine.getLevel().NewLevel(Integer.parseInt(nl.width.getText()), Integer.parseInt(nl.height.getText()), engine.getWorkingDir(), nl.Name.getText());
+		engine.getLevel().NewLevel(Integer.parseInt(nl.width.getText()), Integer.parseInt(nl.height.getText()), engine.getWorkingDir(), nl.Name.getText(), CollisionType.BASIC); //SET COLLISIONTYPE PARAMATER LATER!!!
 		selectedLayer.removeAllItems();
 		selectedLayer.addItem("Layer1");
 		for(int i = 2; i<= engine.getLevel().Layers; i++) {
@@ -349,7 +350,7 @@ public class PigionSDK {
 			exists.setVisible(true);			
 			exists.okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					NewLevelNoCheck(Integer.parseInt(nl.width.getText()), Integer.parseInt(nl.height.getText()), engine.getWorkingDir(), nl.Name.getText());
+					NewLevelNoCheck(Integer.parseInt(nl.width.getText()), Integer.parseInt(nl.height.getText()), engine.getWorkingDir(), nl.Name.getText(), CollisionType.BASIC); //SET COLLISIONTYPE PARAMATER LATER!!!
 					exists.dispose();
 					nl.dispose();
 				}
@@ -364,8 +365,8 @@ public class PigionSDK {
 	}
 	
 	
-	private void NewLevelNoCheck(int width, int height, File WorkingDir, String name) {
-		engine.getLevel().NewLevel(width, height, WorkingDir, name);
+	private void NewLevelNoCheck(int width, int height, File WorkingDir, String name, CollisionType colltype) {
+		engine.getLevel().NewLevel(width, height, WorkingDir, name, colltype);
 	}
 	
 	public Tile GetMouse1SelectedTile() {

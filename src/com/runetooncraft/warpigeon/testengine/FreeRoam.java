@@ -36,8 +36,9 @@ public class FreeRoam extends WPEngine4 {
 		SetWindowTitle("War-Pigion Engine4 - FreeRoam demo");
 		KL = new KeyListener();
 		SetClassInstance(this,false);
-		level = new RandomLevel(64,64, DataFolder, "Testy", this);
-//		level = new Level(DataFolder, "cheesecake", this);
+//		level = new RandomLevel(64,64, DataFolder, "Testy", this);
+		level = new Level(DataFolder, "Testy", this);
+		
 		setEngineKeyListener(KL);
 		Sprite[] ForwardAnims = new Sprite[2];
 		Sprite[] BackwardAnims = new Sprite[2];

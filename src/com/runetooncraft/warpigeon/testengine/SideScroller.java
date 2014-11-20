@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import com.runetooncraft.warpigeon.engine.GameType;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
+import com.runetooncraft.warpigeon.engine.level.CollisionType;
 import com.runetooncraft.warpigeon.engine.level.CoordinateHandler;
 import com.runetooncraft.warpigeon.engine.level.Level;
 import com.runetooncraft.warpigeon.engine.level.RandomLevel;
@@ -47,7 +48,7 @@ public class SideScroller extends WPEngine4 {
 		player = new PlayerMain(KL, 0, 0, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims);
 		int[] GroundIDS = new int[1];
 		GroundIDS[0] = 4;
-		level = new SideScrollingLevel(64,20, DataFolder, "Testy", 5, 2, GroundIDS, player, this);
+		level = new SideScrollingLevel(64,20, DataFolder, "Testy", 5, 2, GroundIDS, player, this, CollisionType.BASIC);
 		player.init(level,this);
 		player.weight = 2;
 		PackFrame();

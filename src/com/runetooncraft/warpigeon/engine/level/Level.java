@@ -1,24 +1,19 @@
 package com.runetooncraft.warpigeon.engine.level;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.runetooncraft.warpigeon.engine.GameType;
 import com.runetooncraft.warpigeon.engine.WPEngine1;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
-import com.runetooncraft.warpigeon.engine.entity.mob.Mob;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.Layer.*;
 import com.runetooncraft.warpigeon.engine.utils.FileSystem;
 import com.runetooncraft.warpigeon.engine.utils.YamlConfig;
-import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 
 public class Level {
 	
@@ -27,6 +22,7 @@ public class Level {
 	protected BasicTile overlayTile;
 	protected int PSpawnX, PSpawnY;
 	public static ArrayList<Layer> LayerList = new ArrayList<Layer>();
+	public static ArrayList<Layer> collisionLayers = new ArrayList<Layer>();
 	public static HashMap<Integer, Tile> TileIDS = new HashMap<Integer, Tile>();
 	public static Tile VoidTile;
 	public static Tile LoadingTile = null;
@@ -67,7 +63,7 @@ public class Level {
 			TileMap = new HashMap<TileCoordinate,Tile>();
 		}
 		
-		NewLevel(width + xExpand, height + yExpand, workingDir, name);
+		NewLevel(width + xExpand, height + yExpand, workingDir, name, colltype);
 		render = false;
 		Layers = LayerMap.size();
 		for(int clayer = 1; clayer <= Layers; clayer++) {
@@ -89,8 +85,9 @@ public class Level {
 	 * @param width
 	 * @param height
 	 */
-	public Level(int width, int height, WPEngine4 engine) {
+	public Level(int width, int height, WPEngine4 engine, CollisionType colltype) {
 		this.engine = engine;
+		this.colltype = colltype;
 		TileIDS.put(-1, EmptyTile);
 		this.width = width;
 		this.height = height;
@@ -137,8 +134,9 @@ public class Level {
 	 * @param height
 	 * @param workingDir
 	 */
-	public Level(int width, int height, File workingDir, String LevelName, WPEngine4 engine) {
+	public Level(int width, int height, File workingDir, String LevelName, WPEngine4 engine, CollisionType colltype) {
 		this.engine = engine;
+		this.colltype = colltype;
 		TileIDS.put(-1, EmptyTile);
 		name = LevelName;
 		this.workingDir = new File(workingDir.getPath() + "/Levels/" + name + "/");
@@ -169,7 +167,8 @@ public class Level {
 		setupOverlay();
 	}
 	
-	public void NewLevel(int width, int height, File workingDir, String LevelName) {
+	public void NewLevel(int width, int height, File workingDir, String LevelName, CollisionType colltype) {
+		this.colltype = colltype;
 		render = false;
 		Layers = 2;
 		LayerList.clear();
@@ -196,11 +195,13 @@ public class Level {
 	/**
 	 * Generates a default level
 	 * 64x64
+	 * Basic collision type
 	 */
 	private void GenLevelDefault() {
 		workingDir.mkdirs();
 		this.width = 64;
 		this.height = 64;
+		colltype = CollisionType.BASIC;
 		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
@@ -264,6 +265,7 @@ public class Level {
 						width = Integer.parseInt((String) config.get("Width"));
 						height = Integer.parseInt((String) config.get("Height"));
 						Layers = Integer.parseInt((String) config.get("Layers"));
+						colltype = CollisionType.valueOf((String) config.get("CollisionType"));
 						int[] tilesload = FileSystem.LoadDatFile(Layer1);
 						mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 						for(int tilenumber = 0; tilenumber < (width * height); tilenumber++) {
@@ -287,7 +289,13 @@ public class Level {
 			}
 		}
 		render = true;
-		System.out.println(LevelName + " loaded, Bounds{" + width + "," + height + "}, Layers{" + Layers + "}, in workingDir{" + this.workingDir + "}");
+		System.out.println( "\"" + LevelName + "\" loaded \n"
+				+ "--------------------\n"
+				+ "Bounds{" + width + "," + height + "} \n"
+				+ "Layers{" + Layers + "} \n"
+				+ "Collision{" + colltype +"} \n"
+				+ "workingDir{" + this.workingDir + "}\n"
+				+ "--------------------\n");
 	}
 
 	protected void generateLevel() {
@@ -459,6 +467,7 @@ public class Level {
 					config.put("Width", width);
 					config.put("Height", height);
 					config.put("Layers", Layers);
+					config.put("CollisionType", colltype);
 					configYML.setMap(config);
 					configYML.save();
 				} catch (IOException e) {

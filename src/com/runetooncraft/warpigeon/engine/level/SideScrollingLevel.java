@@ -15,8 +15,8 @@ public class SideScrollingLevel extends Level {
 	private int GroundLevel,GroundSize;
 	private Player player;
 
-	public SideScrollingLevel(int width, int height, int GroundLevel, int GroundSize, int[] GroundIDS, Player player, WPEngine4 engine) {
-		super(width, height, engine);
+	public SideScrollingLevel(int width, int height, int GroundLevel, int GroundSize, int[] GroundIDS, Player player, WPEngine4 engine, CollisionType colltype) {
+		super(width, height, engine, colltype);
 		this.GroundIDS = GroundIDS;
 		this.GroundLevel = GroundLevel;
 		this.GroundSize = GroundSize;
@@ -24,8 +24,8 @@ public class SideScrollingLevel extends Level {
 		Setup();
 	}
 	
-	public SideScrollingLevel(int width, int height, File workingDir, String LevelName, int GroundLevel, int GroundSize, int[] GroundIDS, Player player, WPEngine4 engine) {
-		super(width, height, workingDir, LevelName, engine);
+	public SideScrollingLevel(int width, int height, File workingDir, String LevelName, int GroundLevel, int GroundSize, int[] GroundIDS, Player player, WPEngine4 engine, CollisionType colltype) {
+		super(width, height, workingDir, LevelName, engine, colltype);
 		this.GroundIDS = GroundIDS;
 		this.GroundLevel = GroundLevel;
 		this.GroundSize = GroundSize;
