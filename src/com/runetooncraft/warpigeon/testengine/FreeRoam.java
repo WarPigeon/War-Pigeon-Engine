@@ -37,7 +37,7 @@ public class FreeRoam extends WPEngine4 {
 		KL = new KeyListener();
 		SetClassInstance(this,false);
 //		level = new RandomLevel(64,64, DataFolder, "Testy");
-		level = new Level(DataFolder, "broship", this);
+		level = new Level(DataFolder, "cheesecake", this);
 		setEngineKeyListener(KL);
 		Sprite[] ForwardAnims = new Sprite[2];
 		Sprite[] BackwardAnims = new Sprite[2];
@@ -45,7 +45,7 @@ public class FreeRoam extends WPEngine4 {
 		ForwardAnims[1] = Sprites.CRIPSY_FORWARD_ANIM2;
 		BackwardAnims[0] = Sprites.CRIPSY_BACKWARD_ANIM1;
 		BackwardAnims[1] = Sprites.CRIPSY_BACKWARD_ANIM2;
-		player = new PlayerMain(KL, 0, 0, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims);
+		player = new PlayerMain(KL, 128, 128, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims);
 		player.init(level,this);
 		PackFrame();
 		start();
@@ -78,8 +78,8 @@ public class FreeRoam extends WPEngine4 {
 		workingDirectory = workingDirectory + "/WarPigeon/TestGame1";
 		File DataFolder = new File(workingDirectory);
 		
-		//new FreeRoam(427, 240, 3000, 32, 32, 32, DataFolder);
-		new FreeRoam(1280, 720, 1000, 32, 32, 32, DataFolder);
+		new FreeRoam(427, 240, 3000, 32, 32, 32, DataFolder);
+		//new FreeRoam(1280, 720, 3000, 32, 32, 32, DataFolder);
 	}
 	
 	public void update() {

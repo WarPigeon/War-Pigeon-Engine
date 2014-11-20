@@ -43,6 +43,7 @@ public class Level {
 	public HashMap<Integer,Boolean> RenderLayers = new HashMap<Integer,Boolean>(); //Only used if isSDK is true
 	private boolean isSDK;
 	public boolean overlayEnabled = false;
+	public CollisionType colltype = null; //Set this on level creation, set config values and create collision layers
 	
 	public void ExpandLevel(int xExpand, int yExpand) {
 		render = false;
@@ -104,6 +105,9 @@ public class Level {
 		setupOverlay();
 	}
 	
+	/**
+	 * PigionSDK Tile Overlay
+	 */
 	private void setupOverlay() {
 		int spriteSize = VoidTile.sprite.SIZE;
 		Sprite Overlaysprite = new Sprite(spriteSize,0xFFFF00D0);
@@ -116,6 +120,7 @@ public class Level {
 		}
 		overlayTile = new BasicTile(Overlaysprite, -2, "Overlay", false);
 	}
+	
 	public int getWidth() {
 		return width;
 	}
@@ -187,6 +192,10 @@ public class Level {
 		System.out.println(LevelName + " generated, Bounds{" + width + "," + height + "}, Layers{" + Layers + "}, in workingDir{" + this.workingDir + "}");
 	}
 	
+	/**
+	 * Generates a default level
+	 * 64x64
+	 */
 	private void GenLevelDefault() {
 		workingDir.mkdirs();
 		this.width = 64;
@@ -197,6 +206,7 @@ public class Level {
 		generateLevel();
 		setupOverlay();
 	}
+	
 	
 	public void setTile(TileCoordinate coords, Tile tile, int Layer) {
 			int Tiley = coords.tileY() * (width);

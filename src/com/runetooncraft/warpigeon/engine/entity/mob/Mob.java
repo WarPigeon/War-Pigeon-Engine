@@ -28,8 +28,6 @@ public abstract class Mob extends Entity {
 		this.LeftAnims = LeftAnims;
 		this.RightAnims = RightAnims;
 	}
-	public void move() {
-	}
 	
 	public void update() {
 	}
