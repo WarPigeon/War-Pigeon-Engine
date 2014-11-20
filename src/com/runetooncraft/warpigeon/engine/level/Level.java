@@ -15,6 +15,7 @@ import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.entity.mob.Mob;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
+import com.runetooncraft.warpigeon.engine.level.Layer.*;
 import com.runetooncraft.warpigeon.engine.utils.FileSystem;
 import com.runetooncraft.warpigeon.engine.utils.YamlConfig;
 import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
@@ -22,10 +23,10 @@ import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 public class Level {
 	
 	protected int width, height;
-	protected int[] tiles;
+	protected Layer tiles;
 	protected BasicTile overlayTile;
 	protected int PSpawnX, PSpawnY;
-	public static ArrayList<int[]> LayerList = new ArrayList<int[]>();
+	public static ArrayList<Layer> LayerList = new ArrayList<Layer>();
 	public static HashMap<Integer, Tile> TileIDS = new HashMap<Integer, Tile>();
 	public static Tile VoidTile;
 	public static Tile LoadingTile = null;
@@ -71,9 +72,9 @@ public class Level {
 		Layers = LayerMap.size();
 		for(int clayer = 1; clayer <= Layers; clayer++) {
 			if(clayer == 1) {
-				tiles = new int[width * height];
+				tiles = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 			} else if(LayerList.size() < clayer) {
-				LayerList.add(new int[width * height]);
+				LayerList.add(new Layer(new int[width * height],LayerType.DEFAULT_LAYER));
 			}
 			
 			for(TileCoordinate coords: TileMap.keySet()) {
@@ -93,8 +94,8 @@ public class Level {
 		TileIDS.put(-1, EmptyTile);
 		this.width = width;
 		this.height = height;
-		tiles = new int[width * height];
-		int[] Layer2 = new int[width * height];
+		tiles = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		if(isSDK) {
@@ -144,8 +145,8 @@ public class Level {
 		this.workingDir.mkdirs();
 		this.width = width;
 		this.height = height;
-		tiles = new int[width * height];
-		int[] Layer2 = new int[width * height];
+		tiles = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		if(isSDK) {
@@ -178,8 +179,8 @@ public class Level {
 		this.workingDir.mkdirs();
 		this.width = width;
 		this.height = height;
-		tiles = new int[width * height];
-		int[] Layer2 = new int[width * height];
+		tiles = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		if(isSDK) {
@@ -200,8 +201,9 @@ public class Level {
 		workingDir.mkdirs();
 		this.width = 64;
 		this.height = 64;
-		tiles = new int[width * height];
-		int[] Layer2 = new int[width * height];
+		tiles = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		generateLevel();
 		setupOverlay();
@@ -214,18 +216,18 @@ public class Level {
 			if((Tiley + Tilex) <= (width * height)) {
 				int ChosenTile = Tiley + Tilex;
 				if(Layer == 1) {
-					tiles[ChosenTile] = tile.getTileID();
+					tiles.tiles[ChosenTile] = tile.getTileID();
 				} else {
 					int TileID = tile.getTileID();
 					if(TileID == VoidTile.getTileID()) TileID = -1;
-					int[] SelectedLayer = LayerList.get((Layer - 2));
-					SelectedLayer[ChosenTile] = TileID;
+					Layer SelectedLayer = LayerList.get((Layer - 2));
+					SelectedLayer.tiles[ChosenTile] = TileID;
 				}
 			}
 	}
 	
 	public Tile getTile(TileCoordinate coords) {
-		return TileIDS.get(tiles[coords.x() * (coords.y() * height)]);
+		return TileIDS.get(tiles.tiles[coords.x() * (coords.y() * height)]);
 	}
 	
 	private void CorruptLevel() {
@@ -237,7 +239,7 @@ public class Level {
 		render = false;
 		name = LevelName;
 		workingDir = new File(Dir.getPath() + "/Levels/" + name + "/");
-		LayerList = new ArrayList<int[]>();
+		LayerList = new ArrayList<Layer>();
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		if(isSDK) {
 			RenderLayers.put(1, true);
@@ -263,17 +265,17 @@ public class Level {
 						height = Integer.parseInt((String) config.get("Height"));
 						Layers = Integer.parseInt((String) config.get("Layers"));
 						int[] tilesload = FileSystem.LoadDatFile(Layer1);
-						tiles = new int[width * height];
+						tiles = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 						for(int tilenumber = 0; tilenumber < (width * height); tilenumber++) {
-							tiles[tilenumber] = tilesload[tilenumber];
+							tiles.tiles[tilenumber] = tilesload[tilenumber];
 						}
 						for(int i = 2; i<=Layers; i++) {
 							String LayerString = "Layer" + i + ".dat";
 							File LayerFile = new File(workingDir, LayerString);
-							int[] Layerload = FileSystem.LoadDatFile(LayerFile);
-							int[] layer = new int[width * height];
+							int[] Tilesload = FileSystem.LoadDatFile(LayerFile);
+							Layer layer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 							for(int tilenumber = 0; tilenumber < (width * height); tilenumber++) {
-								layer[tilenumber] = Layerload[tilenumber];
+								layer.tiles[tilenumber] = Tilesload[tilenumber];
 							}
 							LayerList.add(layer);
 						}
@@ -375,8 +377,8 @@ public class Level {
 				y1 = (yScroll + screen.height + screen.ImageToPixelRatio) >> PDR;
 				for (int y = y0; y < y1; y++) {
 					for (int x = x0; x < x1; x++) {
-						for(int[] layer: LayerList) {
-							getTileIntArray(layer,x,y).render(x, y, screen, 2);
+						for(Layer layer: LayerList) {
+							getTileIntArray(layer.tiles,x,y).render(x, y, screen, 2);
 						}
 					}
 				}
@@ -393,7 +395,7 @@ public class Level {
 				for (int y = y0; y < y1; y++) {
 					for (int x = x0; x < x1; x++) {
 						for(int Layer = 0; Layer < LayerList.size(); Layer++) {
-							int[] layer = LayerList.get(Layer);
+							int[] layer = LayerList.get(Layer).tiles;
 							if(RenderLayers.get(Layer + 2)) {
 								getTileIntArray(layer,x,y).render(x, y, screen, 2);
 							}
@@ -409,15 +411,15 @@ public class Level {
 	
 	public Tile getTile(int x, int y) {
 		if(x < 0 || y < 0 || x >= width || y >= height) return VoidTile;
-		if(tiles[x + y * width] < TileIDS.size()) {
-			return TileIDS.get(tiles[x + y * width]);
+		if(tiles.tiles[x + y * width] < TileIDS.size()) {
+			return TileIDS.get(tiles.tiles[x + y * width]);
 		} else {
 			return VoidTile;
 		}
 	}
 	
 	public Tile getTileLayer(int Layer, int x, int y) {
-		int[] SelectedLayer = LayerList.get((Layer - 2));
+		int[] SelectedLayer = LayerList.get((Layer - 2)).tiles;
 		if(x < 0 || y < 0 || x >= width || y >= height) return VoidTile;
 		if(SelectedLayer[x + y * width] < TileIDS.size()) {
 			return TileIDS.get(SelectedLayer[x + y * width]);
@@ -441,10 +443,10 @@ public class Level {
 		new Thread(new Runnable() {
 			public void run() {
 				File Layer1 = new File(workingDir, "Layer1.dat");
-				FileSystem.SaveDatFile(tiles, Layer1);
+				FileSystem.SaveDatFile(tiles.tiles, Layer1);
 				for(int i = 2; i<=Layers; i++) {
 					File layer = new File(workingDir, ("Layer" + i + ".dat"));
-					FileSystem.SaveDatFile(LayerList.get((i - 2)), layer);
+					FileSystem.SaveDatFile(LayerList.get((i - 2)).tiles, layer);
 				}
 				File LevelConfig = new File(workingDir, "level.yml");
 				try {

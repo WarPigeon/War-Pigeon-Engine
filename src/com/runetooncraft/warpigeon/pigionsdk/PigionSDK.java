@@ -59,6 +59,8 @@ import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.Level;
 import com.runetooncraft.warpigeon.engine.level.Tile;
+import com.runetooncraft.warpigeon.engine.level.Layer.Layer;
+import com.runetooncraft.warpigeon.engine.level.Layer.LayerType;
 import com.runetooncraft.warpigeon.engine.utils.ExpandLevel;
 import com.runetooncraft.warpigeon.engine.utils.YamlConfig;
 import com.runetooncraft.warpigeon.pigionsdk.tilesdk.NewTile;
@@ -276,10 +278,10 @@ public class PigionSDK {
 			}
 		});
 		engine.getLevel().RenderLayers.put(engine.getLevel().Layers, true);
-		int[] Layer = new int[width * height];
+		Layer Layer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-					Layer[x+y*width] = engine.getLevel().EmptyTile.getTileID();
+					Layer.tiles[x+y*width] = engine.getLevel().EmptyTile.getTileID();
 			}
 		}
 		engine.getLevel().LayerList.add(Layer);

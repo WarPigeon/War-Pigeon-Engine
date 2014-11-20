@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Random;
 
 import com.runetooncraft.warpigeon.engine.WPEngine4;
+import com.runetooncraft.warpigeon.engine.level.Layer.Layer;
 
 public class RandomLevel extends Level {
 
@@ -20,9 +21,9 @@ public class RandomLevel extends Level {
 	protected void generateLevel() {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				tiles[x+y*width] = random.nextInt(3); //Very basic
-				for(int[] Layer: LayerList) {
-					Layer[x+y*width] = EmptyTile.getTileID();
+				tiles.tiles[x+y*width] = random.nextInt(3); //Very basic
+				for(Layer Layer: LayerList) {
+					Layer.tiles[x+y*width] = EmptyTile.getTileID();
 				}
 			}
 		}
