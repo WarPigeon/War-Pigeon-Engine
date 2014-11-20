@@ -7,8 +7,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="res"/>
-	<classpathentry kind="lib" path="C:/Users/Marcus/SkyDrive/Eclipse/downloads/yamlbeans-1.08.jar" sourcepath="A:/Downloads/yamlbeans-master.zip"/>
-	<classpathentry kind="lib" path="C:/Users/Marcus/SkyDrive/Eclipse/downloads/jna-4.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/MarcusJR/Libraries/yamlbeans-1.08.jar" sourcepath="A:/Downloads/yamlbeans-master.zip"/>
+	<classpathentry kind="lib" path="C:/Users/MarcusJR/Libraries/jna-4.1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
