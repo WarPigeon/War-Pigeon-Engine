@@ -21,7 +21,7 @@ public class RandomLevel extends Level {
 	protected void generateLevel() {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				tiles.tiles[x+y*width] = random.nextInt(3); //Very basic
+				mainLayer.tiles[x+y*width] = random.nextInt(3); //Very basic
 				for(Layer Layer: LayerList) {
 					Layer.tiles[x+y*width] = EmptyTile.getTileID();
 				}

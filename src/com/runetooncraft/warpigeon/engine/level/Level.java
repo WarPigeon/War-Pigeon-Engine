@@ -23,7 +23,7 @@ import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 public class Level {
 	
 	protected int width, height;
-	protected Layer tiles;
+	protected Layer mainLayer;
 	protected BasicTile overlayTile;
 	protected int PSpawnX, PSpawnY;
 	public static ArrayList<Layer> LayerList = new ArrayList<Layer>();
@@ -72,7 +72,7 @@ public class Level {
 		Layers = LayerMap.size();
 		for(int clayer = 1; clayer <= Layers; clayer++) {
 			if(clayer == 1) {
-				tiles = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+				mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 			} else if(LayerList.size() < clayer) {
 				LayerList.add(new Layer(new int[width * height],LayerType.DEFAULT_LAYER));
 			}
@@ -94,7 +94,7 @@ public class Level {
 		TileIDS.put(-1, EmptyTile);
 		this.width = width;
 		this.height = height;
-		tiles = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
@@ -145,7 +145,7 @@ public class Level {
 		this.workingDir.mkdirs();
 		this.width = width;
 		this.height = height;
-		tiles = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
@@ -179,7 +179,7 @@ public class Level {
 		this.workingDir.mkdirs();
 		this.width = width;
 		this.height = height;
-		tiles = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
@@ -201,7 +201,7 @@ public class Level {
 		workingDir.mkdirs();
 		this.width = 64;
 		this.height = 64;
-		tiles = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
@@ -216,7 +216,7 @@ public class Level {
 			if((Tiley + Tilex) <= (width * height)) {
 				int ChosenTile = Tiley + Tilex;
 				if(Layer == 1) {
-					tiles.tiles[ChosenTile] = tile.getTileID();
+					mainLayer.tiles[ChosenTile] = tile.getTileID();
 				} else {
 					int TileID = tile.getTileID();
 					if(TileID == VoidTile.getTileID()) TileID = -1;
@@ -227,7 +227,7 @@ public class Level {
 	}
 	
 	public Tile getTile(TileCoordinate coords) {
-		return TileIDS.get(tiles.tiles[coords.x() * (coords.y() * height)]);
+		return TileIDS.get(mainLayer.tiles[coords.x() * (coords.y() * height)]);
 	}
 	
 	private void CorruptLevel() {
@@ -265,9 +265,9 @@ public class Level {
 						height = Integer.parseInt((String) config.get("Height"));
 						Layers = Integer.parseInt((String) config.get("Layers"));
 						int[] tilesload = FileSystem.LoadDatFile(Layer1);
-						tiles = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+						mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 						for(int tilenumber = 0; tilenumber < (width * height); tilenumber++) {
-							tiles.tiles[tilenumber] = tilesload[tilenumber];
+							mainLayer.tiles[tilenumber] = tilesload[tilenumber];
 						}
 						for(int i = 2; i<=Layers; i++) {
 							String LayerString = "Layer" + i + ".dat";
@@ -411,8 +411,8 @@ public class Level {
 	
 	public Tile getTile(int x, int y) {
 		if(x < 0 || y < 0 || x >= width || y >= height) return VoidTile;
-		if(tiles.tiles[x + y * width] < TileIDS.size()) {
-			return TileIDS.get(tiles.tiles[x + y * width]);
+		if(mainLayer.tiles[x + y * width] < TileIDS.size()) {
+			return TileIDS.get(mainLayer.tiles[x + y * width]);
 		} else {
 			return VoidTile;
 		}
@@ -443,7 +443,7 @@ public class Level {
 		new Thread(new Runnable() {
 			public void run() {
 				File Layer1 = new File(workingDir, "Layer1.dat");
-				FileSystem.SaveDatFile(tiles.tiles, Layer1);
+				FileSystem.SaveDatFile(mainLayer.tiles, Layer1);
 				for(int i = 2; i<=Layers; i++) {
 					File layer = new File(workingDir, ("Layer" + i + ".dat"));
 					FileSystem.SaveDatFile(LayerList.get((i - 2)).tiles, layer);
