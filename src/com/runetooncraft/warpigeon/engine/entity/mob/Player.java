@@ -38,25 +38,25 @@ public class Player extends Mob {
 		if (input.right) xa++;
 		
 		if(input.ReleasedUP) {
-			sprite = BackwardAnims[0];
+			if(animate) sprite = BackwardAnims[0];
 			AnimationLocation = 0;
 			input.ReleasedUP = false;
 		}
 		
 		if(input.ReleasedDown) {
-			sprite = ForwardAnims[0];
+			if(animate) sprite = ForwardAnims[0];
 			AnimationLocation = 0;
 			input.ReleasedDown = false;
 		}
 		
 		if(input.ReleasedLeft) {
-			sprite = LeftAnims[0];
+			if(animate) sprite = LeftAnims[0];
 			AnimationLocation = 0;
 			input.ReleasedLeft= false;
 		}
 		
 		if(input.ReleasedRight) {
-			sprite = RightAnims[0];
+			if(animate) sprite = RightAnims[0];
 			AnimationLocation = 0;
 			input.ReleasedRight = false;
 		}
