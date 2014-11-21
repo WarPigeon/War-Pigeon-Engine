@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>War-Pigion-Engine</groupId>
   <artifactId>WP</artifactId>
-  <version>0.1.42</version>
+  <version>0.1.43</version>
   <name>WPEngine</name>
   <build>
   		<sourceDirectory>${basedir}/src</sourceDirectory>
@@ -36,7 +36,7 @@
                         <descriptorRefs>
                             <descriptorRef>jar-with-dependencies</descriptorRef>
                         </descriptorRefs>
-                        <finalName>${artifactId}-${version}-SDK</finalName>
+                        <finalName>${project.artifactId}-${project.version}-SDK</finalName>
                         <appendAssemblyId>false</appendAssemblyId>
                     </configuration>
                     <executions>
@@ -63,7 +63,7 @@
   	<dependency>
   		<groupId>net.java.dev.jna</groupId>
   		<artifactId>jna</artifactId>
-  		<version>4.0.0</version>
+  		<version>4.1.0</version>
   	</dependency>
   	<dependency>
   		<groupId>com.esotericsoftware.yamlbeans</groupId>
