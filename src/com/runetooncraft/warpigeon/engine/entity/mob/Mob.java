@@ -64,7 +64,7 @@ public abstract class Mob extends Entity {
 	}
 	
 	public void move(int xa, int ya) {
-		if(animate = false) {
+		if(!animate) {
 			moveNoAnimate(xa,ya);
 			return;
 		}
