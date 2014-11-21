@@ -10,6 +10,7 @@ public abstract class Mob extends Entity {
 	protected int dir = 0;
 	protected int AnimationLocation = 0;
 	protected boolean moving = false;
+	protected boolean animate = false;
 	protected Sprite[] ForwardAnims;
 	protected Sprite[] BackwardAnims;
 	protected Sprite[] LeftAnims;
@@ -27,6 +28,11 @@ public abstract class Mob extends Entity {
 		this.BackwardAnims = BackwardAnims;
 		this.LeftAnims = LeftAnims;
 		this.RightAnims = RightAnims;
+		animate = true;
+	}
+	
+	public Mob() {
+		animate = false;
 	}
 	
 	public void update() {
@@ -58,6 +64,11 @@ public abstract class Mob extends Entity {
 	}
 	
 	public void move(int xa, int ya) {
+		if(animate = false) {
+			moveNoAnimate(xa,ya);
+			return;
+		}
+		
 		boolean Collide = true;
 //		if(xa != 0 && ya == 0 || xa == 0 && ya != 0) {
 //			move(xa,0);

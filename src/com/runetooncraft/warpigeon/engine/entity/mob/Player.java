@@ -1,5 +1,7 @@
 package com.runetooncraft.warpigeon.engine.entity.mob;
 
+import java.util.Random;
+
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.TileCoordinate;
@@ -15,6 +17,14 @@ public class Player extends Mob {
 		super(ForwardAnims, BackwardAnims, LeftAnims, RightAnims);
 		this.input = input;
 		sprite = ForwardAnims[0];
+		this.x = x;
+		this.y = y;
+	}
+	
+	public Player(int x, int y, KeyBoardEvents input, int playerSize) {
+		super();
+		this.input = input;
+		sprite = new Sprite(playerSize,new Random().nextInt(0xffffff));
 		this.x = x;
 		this.y = y;
 	}

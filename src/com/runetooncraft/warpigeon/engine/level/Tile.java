@@ -7,7 +7,7 @@ public class Tile {
 
 	public int x,y;
 	public TileCollide collideMap = new TileCollide();
-	public Sprite sprite;
+	protected Sprite sprite;
 	private int TileID;
 	private String name;
 	protected Boolean Collide = false;
@@ -38,5 +38,9 @@ public class Tile {
 
 	public Object getName() {
 		return name;
+	}
+	
+	public Sprite getSprite() {
+		return sprite;
 	}
 }

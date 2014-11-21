@@ -22,7 +22,7 @@ import com.runetooncraft.warpigeon.engine.utils3d.KeyListener;
 import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 
 public class FreeRoam extends WPEngine4 {
-	KeyListener KL;;
+	KeyListener KL;
 	Sprites sprites = new Sprites();
 	Tiles tiles = new Tiles();
 	CoordinateHandler CH = new CoordinateHandler();

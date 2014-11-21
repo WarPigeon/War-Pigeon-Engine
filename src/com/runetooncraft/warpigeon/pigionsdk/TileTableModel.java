@@ -39,7 +39,7 @@ public class TileTableModel extends AbstractTableModel {
 		this.Columns = Columns;
 		for(Tile t: tiles) {
 			try{
-				BufferedImage image = t.sprite.toBufferedImage();
+				BufferedImage image = t.getSprite().toBufferedImage();
 				ImageIcon imageIcon = new ImageIcon(image);
 				TileIcons.add(imageIcon);
 			} catch (NullPointerException e) {
