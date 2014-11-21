@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import com.runetooncraft.warpigeon.engine.GameType;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
+import com.runetooncraft.warpigeon.engine.level.CollisionType;
 import com.runetooncraft.warpigeon.engine.level.CoordinateHandler;
 import com.runetooncraft.warpigeon.engine.level.Level;
 import com.runetooncraft.warpigeon.engine.level.RandomLevel;
@@ -36,8 +37,8 @@ public class FreeRoam extends WPEngine4 {
 		SetWindowTitle("War-Pigion Engine4 - FreeRoam demo");
 		KL = new KeyListener();
 		SetClassInstance(this,false);
-//		level = new RandomLevel(64,64, DataFolder, "Testy", this);
-		level = new Level(DataFolder, "Testy", this);
+		level = new RandomLevel(64,64, DataFolder, "Testy2", this, CollisionType.BASIC);
+//		level = new Level(DataFolder, "cheesecake", this);
 		
 		setEngineKeyListener(KL);
 		Sprite[] ForwardAnims = new Sprite[2];

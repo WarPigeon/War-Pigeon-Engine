@@ -23,7 +23,7 @@ import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 public class TileTableModel extends AbstractTableModel {
 
 	private List<Tile> tiles;
-	private List<ImageIcon> TileIcons = new ArrayList<ImageIcon>(); //
+	private List<ImageIcon> TileIcons = new ArrayList<ImageIcon>();
 	private int Columns;
 	
 	public boolean isCellEditable(int rowIndex, int columnIndex) {

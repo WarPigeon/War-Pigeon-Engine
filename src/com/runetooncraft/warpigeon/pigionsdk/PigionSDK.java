@@ -229,19 +229,19 @@ public class PigionSDK {
 		String lastname = "";
 		int SetNumber = 0;
 		for(Tile t: set) {
-			TileSelectionList.add(t);
-			if(t.getName() == lastname) {
-				SetNumber++;
-				selectedtile.addItem(t.getName() + Integer.toString(SetNumber));
-				selectedtile2.addItem(t.getName() + Integer.toString(SetNumber));
-			} else {
-				selectedtile.addItem(t.getName());
-				selectedtile2.addItem(t.getName());
-//				selectedtile.addItem(t.sprite.toBufferedImage());
-//				selectedtile2.addItem(t.sprite.toBufferedImage());
+			if(t.getTileID() >= 0) {
+				TileSelectionList.add(t);
+				if(t.getName() == lastname) {
+					SetNumber++;
+					selectedtile.addItem(t.getName() + Integer.toString(SetNumber));
+					selectedtile2.addItem(t.getName() + Integer.toString(SetNumber));
+				} else {
+					selectedtile.addItem(t.getName());
+					selectedtile2.addItem(t.getName());
 				SetNumber = 0;
+				}
+				lastname = (String) t.getName();
 			}
-			lastname = (String) t.getName();
 		}
 		
 		UpdateTileSelection();
@@ -339,7 +339,7 @@ public class PigionSDK {
 		final Newlevel nl = engine.getSDKFrame().newlevel;
 		File f = new File(engine.getWorkingDir().getPath() + "/Levels/" + nl.Name.getText() + "/");
 		if(!f.exists()) {
-		engine.getLevel().NewLevel(Integer.parseInt(nl.width.getText()), Integer.parseInt(nl.height.getText()), engine.getWorkingDir(), nl.Name.getText(), CollisionType.BASIC); //SET COLLISIONTYPE PARAMATER LATER!!!
+		engine.getLevel().NewLevel(Integer.parseInt(nl.width.getText()), Integer.parseInt(nl.height.getText()), engine.getWorkingDir(), nl.Name.getText(), (CollisionType) nl.collTypebox.getSelectedItem()); 
 		selectedLayer.removeAllItems();
 		selectedLayer.addItem("Layer1");
 		for(int i = 2; i<= engine.getLevel().Layers; i++) {
@@ -350,7 +350,7 @@ public class PigionSDK {
 			exists.setVisible(true);			
 			exists.okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					NewLevelNoCheck(Integer.parseInt(nl.width.getText()), Integer.parseInt(nl.height.getText()), engine.getWorkingDir(), nl.Name.getText(), CollisionType.BASIC); //SET COLLISIONTYPE PARAMATER LATER!!!
+					NewLevelNoCheck(Integer.parseInt(nl.width.getText()), Integer.parseInt(nl.height.getText()), engine.getWorkingDir(), nl.Name.getText(), (CollisionType) nl.collTypebox.getSelectedItem()); 
 					exists.dispose();
 					nl.dispose();
 				}
@@ -392,7 +392,9 @@ public class PigionSDK {
 		Collection<Tile> set = engine.getLevel().TileIDS.values();
 		List<Tile> TileList = new ArrayList<Tile>();
 		for(Tile t: set) {
-			TileList.add(t);
+			if(t.getTileID() >= 0) {
+				TileList.add(t);
+			}
 		}
 		model = new TileTableModel(TileList, 5);
 		sorter = new TableRowSorter<TileTableModel>(model);
@@ -422,7 +424,7 @@ public class PigionSDK {
 		
 	}
 	
-    private void FilterTextTable() {
+   private void FilterTextTable() {
 		RowFilter<TileTableModel, Object> rf = null;
 		try {
 			rf = RowFilter.regexFilter("(?i)" + TileSelection.FilterText.getText(), 0);

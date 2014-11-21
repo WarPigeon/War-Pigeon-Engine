@@ -94,6 +94,7 @@ public class Level {
 		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
+		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		if(isSDK) {
 			RenderLayers.put(1, true);
@@ -103,6 +104,15 @@ public class Level {
 		setupOverlay();
 	}
 	
+	private void advancedCollLayers() {
+		Layer layer1_collision = new Layer(new int[width * height], LayerType.COLLISION_LAYER, "Layer1_Collision");
+		collisionLayers.add(layer1_collision);
+		
+		for(int i = 2; i<=Layers; i++) {
+			Layer layeri_collision = new Layer(new int[width * height], LayerType.COLLISION_LAYER, "Layer" + i +"_Collision");
+			collisionLayers.add(layeri_collision);
+		}
+	}
 	/**
 	 * PigionSDK Tile Overlay
 	 */
@@ -128,7 +138,7 @@ public class Level {
 	}
 	
 	/**
-	 * Level constructor.
+	 * Creates a new level.
 	 * Make sure to set individual TileID's using the TileIDS hashmap.
 	 * @param width
 	 * @param height
@@ -146,6 +156,7 @@ public class Level {
 		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
+		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		if(isSDK) {
 			RenderLayers.put(1, true);
@@ -182,6 +193,7 @@ public class Level {
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
+		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		if(isSDK) {
 			RenderLayers.put(1, true);
 			RenderLayers.put(2, true);
@@ -189,7 +201,13 @@ public class Level {
 		generateLevel();
 		setupOverlay();
 		render = true;
-		System.out.println(LevelName + " generated, Bounds{" + width + "," + height + "}, Layers{" + Layers + "}, in workingDir{" + this.workingDir + "}");
+		System.out.println( "\"" + LevelName + "\" generated \n"
+				+ "--------------------\n"
+				+ "Bounds{" + width + "," + height + "} \n"
+				+ "Layers{" + Layers + "} \n"
+				+ "Collision{" + colltype +"} \n"
+				+ "workingDir{" + this.workingDir + "}\n"
+				+ "--------------------\n");
 	}
 	
 	/**
@@ -217,7 +235,9 @@ public class Level {
 			if((Tiley + Tilex) <= (width * height)) {
 				int ChosenTile = Tiley + Tilex;
 				if(Layer == 1) {
-					mainLayer.tiles[ChosenTile] = tile.getTileID();
+					if(mainLayer.tiles.length > 0) {
+						mainLayer.tiles[ChosenTile] = tile.getTileID();
+					}
 				} else {
 					int TileID = tile.getTileID();
 					if(TileID == VoidTile.getTileID()) TileID = -1;
@@ -266,11 +286,13 @@ public class Level {
 						height = Integer.parseInt((String) config.get("Height"));
 						Layers = Integer.parseInt((String) config.get("Layers"));
 						colltype = CollisionType.valueOf((String) config.get("CollisionType"));
+						
 						int[] tilesload = FileSystem.LoadDatFile(Layer1);
 						mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 						for(int tilenumber = 0; tilenumber < (width * height); tilenumber++) {
 							mainLayer.tiles[tilenumber] = tilesload[tilenumber];
 						}
+						
 						for(int i = 2; i<=Layers; i++) {
 							String LayerString = "Layer" + i + ".dat";
 							File LayerFile = new File(workingDir, LayerString);
@@ -281,6 +303,27 @@ public class Level {
 							}
 							LayerList.add(layer);
 						}
+						
+						if(colltype == CollisionType.ADVANCED_COLLBOX) {
+							File Layer1_collision_file = new File(workingDir, "Layer1_Collision");
+							int[] Layer1_collision_file_load = FileSystem.LoadDatFile(Layer1_collision_file);
+							Layer Layer1_collision = new Layer(new int[width * height],LayerType.COLLISION_LAYER);
+							for(int tilenumber = 0; tilenumber < (width * height); tilenumber++) {
+								Layer1_collision.tiles[tilenumber] = Layer1_collision_file_load[tilenumber];
+							}
+							collisionLayers.add(Layer1_collision);
+							
+							for(int i = 2; i<=Layers; i++) {
+								File Layeri_collision_file = new File(workingDir, "Layer" + i + "_Collision");
+								int[] Layeri_collision_file_load = FileSystem.LoadDatFile(Layeri_collision_file);
+								Layer Layeri_collision = new Layer(new int[width * height],LayerType.COLLISION_LAYER);
+								for(int tilenumber = 0; tilenumber < (width * height); tilenumber++) {
+									Layeri_collision.tiles[tilenumber] = Layeri_collision_file_load[tilenumber];
+								}
+								collisionLayers.add(Layer1_collision);
+							}
+						}
+						
 					} catch(Exception e) {
 						e.printStackTrace();
 						CorruptLevel();
@@ -404,7 +447,7 @@ public class Level {
 					for (int x = x0; x < x1; x++) {
 						for(int Layer = 0; Layer < LayerList.size(); Layer++) {
 							int[] layer = LayerList.get(Layer).tiles;
-							if(RenderLayers.get(Layer + 2)) {
+							if(RenderLayers.get(Layer + 1)) {
 								getTileIntArray(layer,x,y).render(x, y, screen, 2);
 							}
 							if(overlayEnabled && !(x < 0 || y < 0 || x >= width || y >= height)) {
@@ -456,6 +499,13 @@ public class Level {
 					File layer = new File(workingDir, ("Layer" + i + ".dat"));
 					FileSystem.SaveDatFile(LayerList.get((i - 2)).tiles, layer);
 				}
+				if(colltype == CollisionType.ADVANCED_COLLBOX) {
+					for(Layer layer: collisionLayers) {
+						File layer_file = new File(workingDir, (layer.name + ".dat"));
+						FileSystem.SaveDatFile(layer.tiles, layer_file);
+					}
+				}
+				
 				File LevelConfig = new File(workingDir, "level.yml");
 				try {
 					LevelConfig.createNewFile();

@@ -10,12 +10,12 @@ public class RandomLevel extends Level {
 
 	private static final Random random = new Random();
 	
-	public RandomLevel(int width, int height, WPEngine4 engine) {
-		super(width, height, engine, CollisionType.BASIC);
+	public RandomLevel(int width, int height, WPEngine4 engine, CollisionType colltype) {
+		super(width, height, engine, colltype);
 	}
 	
-	public RandomLevel(int width, int height, File workingDir, String LevelName, WPEngine4 engine) {
-		super(width, height, workingDir, LevelName, engine, CollisionType.BASIC);
+	public RandomLevel(int width, int height, File workingDir, String LevelName, WPEngine4 engine, CollisionType colltype) {
+		super(width, height, workingDir, LevelName, engine, colltype);
 	}
 	
 	protected void generateLevel() {
