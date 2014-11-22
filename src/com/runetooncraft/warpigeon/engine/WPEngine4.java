@@ -190,6 +190,9 @@ public class WPEngine4 extends WPEngine3 {
 			graphics.dispose();
 			bs.show();
 			break;
+		case SCREEN_RESETTING:
+			screen.ClearBuffer();
+			break;
 		}
 	}
 

@@ -2,6 +2,7 @@ package com.runetooncraft.warpigeon.engine.utils;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.io.File;
 
 import javax.swing.JFrame;
 

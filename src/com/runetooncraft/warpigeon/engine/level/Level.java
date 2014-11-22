@@ -588,4 +588,7 @@ public class Level {
 		}
 	}
 	
+	public File getWorkingDir() {
+		return workingDir;
+	}
 }

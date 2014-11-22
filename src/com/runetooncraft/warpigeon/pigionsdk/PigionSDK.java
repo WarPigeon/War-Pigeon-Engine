@@ -243,10 +243,19 @@ public class PigionSDK {
 				lastname = (String) t.getName();
 			}
 		}
-		
 		UpdateTileSelection();
+		UpdateComponenets();
 	}
 	
+	private void UpdateComponenets() {
+		if(engine.getLevel().colltype == CollisionType.ADVANCED_COLLBOX) {
+			engine.getSDKFrame().TopPanel.collisionsCheck.setEnabled(true);
+		} else {
+			engine.getSDKFrame().TopPanel.collisionsCheck.setEnabled(false);
+		}
+	}
+
+
 	private void OpenLevel() {
 		OpenLevel openlevel = engine.getSDKFrame().openlevel;
 		openlevel.SelectedLevel.removeAllItems();
@@ -258,6 +267,7 @@ public class PigionSDK {
 			}
 		}
 		openlevel.setVisible(true);
+		UpdateComponenets();
 	}
 	
 
@@ -362,6 +372,7 @@ public class PigionSDK {
 				}
 			});
 		}
+		UpdateComponenets();
 	}
 	
 	
