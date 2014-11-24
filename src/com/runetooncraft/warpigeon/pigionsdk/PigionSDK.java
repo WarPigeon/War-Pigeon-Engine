@@ -269,15 +269,7 @@ public class PigionSDK {
 			}
 		}
 		UpdateTileSelection();
-		UpdateComponenets();
-	}
-	
-	private void UpdateComponenets() {
-		if(engine.getLevel().colltype == CollisionType.ADVANCED_COLLBOX) {
-			engine.getSDKFrame().TopPanel.collisionsCheck.setEnabled(true);
-		} else {
-			engine.getSDKFrame().TopPanel.collisionsCheck.setEnabled(false);
-		}
+		updateCollcheckbox();
 	}
 
 
@@ -292,7 +284,7 @@ public class PigionSDK {
 			}
 		}
 		openlevel.setVisible(true);
-		UpdateComponenets();
+		updateCollcheckbox();
 	}
 	
 
@@ -359,8 +351,19 @@ public class PigionSDK {
 		for(int i = 2; i<= engine.getLevel().Layers; i++) {
 			selectedLayer.addItem("Layer" + i);
 		}
+		updateCollcheckbox();
 	}
 	
+
+	private void updateCollcheckbox() {
+		if(engine.getLevel().colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
+			collisionsCheck.setEnabled(true);
+		} else {
+			collisionsCheck.setSelected(false);
+			collisionsCheck.setEnabled(false);
+		}
+	}
+
 
 	private void CloseOpenLevel() {
 		engine.getSDKFrame().openlevel.setVisible(false);
@@ -397,7 +400,7 @@ public class PigionSDK {
 				}
 			});
 		}
-		UpdateComponenets();
+		updateCollcheckbox();
 	}
 	
 	
