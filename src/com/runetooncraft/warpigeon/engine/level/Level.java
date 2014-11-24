@@ -74,7 +74,7 @@ public class Level {
 			}
 			
 			for(TileCoordinate coords: TileMap.keySet()) {
-				setTile(coords, TileMap.get(coords), clayer);
+				setTile(coords, TileMap.get(coords), LayerList.get(clayer-2));
 			}
 		}
 		render = true;
@@ -229,22 +229,25 @@ public class Level {
 	}
 	
 	
-	public void setTile(TileCoordinate coords, Tile tile, int Layer) {
+	public void setTile(TileCoordinate coords, Tile tile, Layer Layer) {
 			int Tiley = coords.tileY() * (width);
 			int Tilex = coords.tileX();
 			if((Tiley + Tilex) <= (width * height)) {
 				int ChosenTile = Tiley + Tilex;
-				if(Layer == 1) {
+				if(Layer == mainLayer) {
 					if(mainLayer.tiles.length > 0) {
 						mainLayer.tiles[ChosenTile] = tile.getTileID();
 					}
 				} else {
 					int TileID = tile.getTileID();
 					if(TileID == VoidTile.getTileID()) TileID = -1;
-					Layer SelectedLayer = LayerList.get((Layer - 2));
-					SelectedLayer.tiles[ChosenTile] = TileID;
+					Layer.tiles[ChosenTile] = TileID;
 				}
 			}
+	}
+	
+	public Layer getmainLayer() {
+		return mainLayer;
 	}
 	
 	public Tile getTile(TileCoordinate coords) {
@@ -590,5 +593,22 @@ public class Level {
 	
 	public File getWorkingDir() {
 		return workingDir;
+	}
+	public int getLayerID(Layer selectedLayer) {
+		if(selectedLayer == mainLayer) {
+			return 1;
+		} else {
+			return LayerList.indexOf(selectedLayer) + 2;
+		}
+	}
+	public Layer getLayer(int layer) {
+		if(layer == 1) {
+			return mainLayer;
+		} else {
+			return LayerList.get(layer);
+		}
+	}
+	public Layer getCollisionLayer(int layer) {
+		return collisionLayers.get(layer-1);
 	}
 }

@@ -68,6 +68,7 @@ import com.runetooncraft.warpigeon.pigionsdk.tilesdk.NewTile;
 
 public class PigionSDK {
 	private JComboBox selectedtile,selectedtile2,selectedLayer;
+	private JCheckBox collisionsCheck;
 	private JMenuItem DeleteLayer;
 	private TileSelection TileSelection;
 	private TableRowSorter sorter;
@@ -83,6 +84,7 @@ public class PigionSDK {
 	public PigionSDK(WPEngine4 engine) {
 		engine.getSDKFrame().newtile.SDK = this;
 		this.engine = engine;
+		collisionsCheck = engine.getSDKFrame().TopPanel.collisionsCheck;
 		selectedtile = engine.getSDKFrame().BottomPanel.selectedtile;
 		selectedtile2 = engine.getSDKFrame().BottomPanel.selectedtile2;
 		selectedLayer = engine.getSDKFrame().BottomPanel.selectedLayer; //Stopped here
@@ -171,7 +173,13 @@ public class PigionSDK {
 			}
 			
 		});
-		
+
+		engine.getSDKFrame().TopPanel.collisionsCheck.addChangeListener(new ChangeListener() {
+
+			public void stateChanged(ChangeEvent e) {
+				editCollisions(collisionsCheck.isSelected());
+			}
+		});
 		
 		int itemNumber = 0;
 		for(final JCheckBoxMenuItem item : LayersEnabled) {
@@ -189,6 +197,23 @@ public class PigionSDK {
 	private void overlayCheck() {
 		JCheckBox check = engine.getSDKFrame().TopPanel.overlayCheck;
 			engine.getLevel().overlayEnabled = check.isSelected();
+	}
+	
+	private void editCollisions(boolean enabled) {
+		if(enabled) {
+			selectedLayer.removeAllItems();
+			selectedLayer.addItem("Layer1_Collisions");
+			for(int i = 2; i<= engine.getLevel().Layers; i++) {
+				selectedLayer.addItem("Layer" + i + "_Collisions");
+			}
+		} else {
+			selectedLayer.removeAllItems();
+			selectedLayer.addItem("Layer1");
+			for(int i = 2; i<= engine.getLevel().Layers; i++) {
+				selectedLayer.addItem("Layer" + i);
+			}
+		}
+		
 	}
 	
 	private void TryExpandGameFrame() {
@@ -302,12 +327,12 @@ public class PigionSDK {
 	
 
 	private void deleteLayer() {
-		if(getSelectedLayer() == 1) {
+		if(getSelectedLayer() == engine.getLevel().getmainLayer()) {
 			JOptionPane.showMessageDialog(null, "You can't delete the first Layer.", "Error",
                     JOptionPane.ERROR_MESSAGE);
 		} else {
 		engine.getLevel().render = false;
-		int Layerid = getSelectedLayer();
+		int Layerid = engine.getLevel().getLayerID(getSelectedLayer());
 		engine.getLevel().LayerList.remove(Layerid - 2);
 		engine.getLevel().Layers-=1;
 		selectedLayer.removeItem("Layer" + Layerid);
@@ -388,8 +413,13 @@ public class PigionSDK {
 		return TileSelectionList.get(selectedtile2.getSelectedIndex());
 	}
 	
-	public int getSelectedLayer() {
-		return selectedLayer.getSelectedIndex() + 1;
+	public Layer getSelectedLayer() {
+		if(collisionsCheck.isSelected()) {
+			return engine.getLevel().getCollisionLayer(selectedLayer.getSelectedIndex() + 1);
+		} else {
+			return engine.getLevel().getLayer(selectedLayer.getSelectedIndex() + 1);
+			
+		}
 	}
 	
 	
