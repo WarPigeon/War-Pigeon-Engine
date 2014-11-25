@@ -206,7 +206,9 @@ public class PigionSDK {
 			for(int i = 2; i<= engine.getLevel().Layers; i++) {
 				selectedLayer.addItem("Layer" + i + "_Collisions");
 			}
+			engine.getLevel().renderCollLayer(true, (selectedLayer.getSelectedIndex() + 1));
 		} else {
+			engine.getLevel().renderCollLayer(false, 0);
 			selectedLayer.removeAllItems();
 			selectedLayer.addItem("Layer1");
 			for(int i = 2; i<= engine.getLevel().Layers; i++) {
@@ -427,7 +429,6 @@ public class PigionSDK {
 	
 	
 	public void UpdateTileSelected() {
-		
 		selectedtile.setSelectedIndex(Mouse1TileID);
 		selectedtile2.setSelectedIndex(Mouse2TileID);
 	}

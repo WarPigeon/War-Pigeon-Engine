@@ -39,6 +39,8 @@ public class Level {
 	public WPEngine4 engine;
 	public HashMap<Integer,Boolean> RenderLayers = new HashMap<Integer,Boolean>(); //Only used if isSDK is true
 	private boolean isSDK;
+	public boolean renderColl;
+	public int collLayerselected;
 	public boolean overlayEnabled = false;
 	public CollisionType colltype = null; //Set this on level creation, set config values and create collision layers
 	
@@ -176,6 +178,11 @@ public class Level {
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		LoadLevelFile(Dir,LevelName);
 		setupOverlay();
+	}
+	
+	public void renderCollLayer(boolean render, int layer) {
+		renderColl = render;
+		collLayerselected = layer;
 	}
 	
 	public void NewLevel(int width, int height, File workingDir, String LevelName, CollisionType colltype) {
@@ -433,6 +440,10 @@ public class Level {
 					for (int x = x0; x < x1; x++) {
 						for(Layer layer: LayerList) {
 							getTileIntArray(layer.tiles,x,y).render(x, y, screen, 2);
+						}
+						if(renderColl) {
+							Layer coll = collisionLayers.get(collLayerselected - 1);
+							getTileIntArray(coll.tiles,x,y).render(x, y, screen, collLayerselected);
 						}
 					}
 				}
