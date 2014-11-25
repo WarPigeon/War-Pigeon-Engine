@@ -39,8 +39,11 @@ public class Level {
 	public WPEngine4 engine;
 	public HashMap<Integer,Boolean> RenderLayers = new HashMap<Integer,Boolean>(); //Only used if isSDK is true
 	private boolean isSDK;
+	public boolean renderColl;
+	public int collLayerselected;
 	public boolean overlayEnabled = false;
 	public CollisionType colltype = null; //Set this on level creation, set config values and create collision layers
+	public collisionTiles colltiles;
 	
 	public void ExpandLevel(int xExpand, int yExpand) {
 		render = false;
@@ -55,7 +58,7 @@ public class Level {
 					if(layer == 1) {
 						TileMap.put(Tc, getTile(xt,yt));
 					} else {
-						TileMap.put(Tc, getTileLayer(layer,xt,yt));
+						TileMap.put(Tc, getTileLayer(LayerList.get(layer-1),xt,yt));
 					}
 				}
 			}
@@ -94,22 +97,43 @@ public class Level {
 		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
-		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		if(isSDK) {
 			RenderLayers.put(1, true);
 			RenderLayers.put(2, true);
 		}	
 		generateLevel();
+		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		setupOverlay();
 	}
 	
 	private void advancedCollLayers() {
+		System.out.println("made it here");
 		Layer layer1_collision = new Layer(new int[width * height], LayerType.COLLISION_LAYER, "Layer1_Collision");
+		
+		colltiles = new collisionTiles(engine.getScreenEngine2D().PixelWidth,engine.getScreenEngine2D().PixelHeight);
+		
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				Tile gTile = getTile(x, y);
+				if(gTile.Collide) {
+					System.out.println("Collision found at " + x + "," + y);
+					layer1_collision.tiles[x+y*height] = -2;
+				}
+			}
+		}
 		collisionLayers.add(layer1_collision);
 		
 		for(int i = 2; i<=Layers; i++) {
 			Layer layeri_collision = new Layer(new int[width * height], LayerType.COLLISION_LAYER, "Layer" + i +"_Collision");
+			for (int y = 0; y < height; y++) {
+				for (int x = 0; x < width; x++) {
+					Tile gTile = getTileLayer(LayerList.get(i-2), x, y);
+					if(gTile.Collide) {
+						layeri_collision.tiles[x+y*height] = -2;
+					}
+				}
+			}
 			collisionLayers.add(layeri_collision);
 		}
 	}
@@ -156,13 +180,13 @@ public class Level {
 		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
-		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		if(isSDK) {
 			RenderLayers.put(1, true);
 			RenderLayers.put(2, true);
 		}
 		generateLevel();
+		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		setupOverlay();
 	}
 
@@ -176,6 +200,11 @@ public class Level {
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		LoadLevelFile(Dir,LevelName);
 		setupOverlay();
+	}
+	
+	public void renderCollLayer(boolean render, int layer) {
+		renderColl = render;
+		collLayerselected = layer;
 	}
 	
 	public void NewLevel(int width, int height, File workingDir, String LevelName, CollisionType colltype) {
@@ -193,12 +222,12 @@ public class Level {
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
-		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		if(isSDK) {
 			RenderLayers.put(1, true);
 			RenderLayers.put(2, true);
 		}
 		generateLevel();
+		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		setupOverlay();
 		render = true;
 		System.out.println( "\"" + LevelName + "\" generated \n"
@@ -456,6 +485,10 @@ public class Level {
 							if(overlayEnabled && !(x < 0 || y < 0 || x >= width || y >= height)) {
 								overlayTile.render(x,y, screen, 2);
 							}
+							if(renderColl) {
+								Layer coll = collisionLayers.get(collLayerselected - 1);
+								getTileIntArray(coll.tiles,x,y).render(x, y, screen, collLayerselected);
+							}
 						}
 					}
 				}
@@ -472,8 +505,8 @@ public class Level {
 		}
 	}
 	
-	public Tile getTileLayer(int Layer, int x, int y) {
-		int[] SelectedLayer = LayerList.get((Layer - 2)).tiles;
+	public Tile getTileLayer(Layer layer, int x, int y) {
+		int[] SelectedLayer = layer.tiles;
 		if(x < 0 || y < 0 || x >= width || y >= height) return VoidTile;
 		if(SelectedLayer[x + y * width] < TileIDS.size()) {
 			return TileIDS.get(SelectedLayer[x + y * width]);
@@ -611,4 +644,16 @@ public class Level {
 	public Layer getCollisionLayer(int layer) {
 		return collisionLayers.get(layer-1);
 	}
+	
+
+static class collisionTiles {
+	public Sprite default_collide_Sprite;
+	public Tile default_collide;
+	collisionTiles(int TileSizex, int TileSizey) {
+		default_collide_Sprite = new Sprite(TileSizex, TileSizey,0xFFFF0000);
+		default_collide = new Tile(default_collide_Sprite,-2,"Default_collide");
+		Level.TileIDS.put(-2, default_collide);
+	}
+}
+
 }
