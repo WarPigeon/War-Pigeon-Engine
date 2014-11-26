@@ -55,6 +55,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import com.runetooncraft.warpigeon.engine.WPEngine1;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.CollisionType;
@@ -207,6 +208,7 @@ public class PigionSDK {
 				selectedLayer.addItem("Layer" + i + "_Collisions");
 			}
 			engine.getLevel().renderCollLayer(true, (selectedLayer.getSelectedIndex() + 1));
+			forceTileSelectionHash(Level.CollTileIDS);
 		} else {
 			engine.getLevel().renderCollLayer(false, 0);
 			selectedLayer.removeAllItems();
@@ -214,6 +216,7 @@ public class PigionSDK {
 			for(int i = 2; i<= engine.getLevel().Layers; i++) {
 				selectedLayer.addItem("Layer" + i);
 			}
+			Update();
 		}
 		
 	}
@@ -255,6 +258,11 @@ public class PigionSDK {
 		Collection<Tile> set = engine.getLevel().TileIDS.values();
 		String lastname = "";
 		int SetNumber = 0;
+		selectedtile.removeAllItems();
+		selectedtile2.removeAllItems();
+		TileSelection.table.removeAll();
+		TileSelectionList.clear();
+		
 		for(Tile t: set) {
 			if(t.getTileID() >= 0) {
 				TileSelectionList.add(t);
@@ -429,8 +437,70 @@ public class PigionSDK {
 	
 	
 	public void UpdateTileSelected() {
-		selectedtile.setSelectedIndex(Mouse1TileID);
-		selectedtile2.setSelectedIndex(Mouse2TileID);
+		if(Mouse1TileID >= 0) {
+			selectedtile.setSelectedIndex(Mouse1TileID);
+		} else {
+			selectedtile.setSelectedIndex(Mouse1TileID+Level.CollTileIDS.size()+1);
+		}
+		
+		if(Mouse2TileID >= 0) {
+			selectedtile2.setSelectedIndex(Mouse2TileID);
+		} else {
+			selectedtile2.setSelectedIndex(Mouse2TileID+Level.CollTileIDS.size()+1);
+		}
+	}
+	
+	public void forceTileSelectionHash(HashMap<Integer, Tile> map) {
+		selectedtile.removeAllItems();
+		selectedtile2.removeAllItems();
+		TileSelection.table.removeAll();
+		TileSelectionList.clear();
+		Collection<Tile> set = map.values();
+		List<Tile> TileList = new ArrayList<Tile>();
+		for(Tile t: set) {
+			TileList.add(t);
+		}
+		model = new TileTableModel(TileList, 5);
+		sorter = new TableRowSorter<TileTableModel>(model);
+		TileSelection.table.setModel(model);
+		TileSelection.table.setRowSorter(sorter);
+		TileSelection.table.getColumnModel().getColumn(1).setPreferredWidth(64);
+		TileSelection.table.setRowHeight(64);
+		TileSelection.table.doLayout();
+		TileSelection.FilterText.getDocument().addDocumentListener(
+                new DocumentListener() {
+                    public void changedUpdate(DocumentEvent e) {
+                        FilterTextTable();
+                    }
+					public void insertUpdate(DocumentEvent e) {
+                        FilterTextTable();
+                    }
+                    public void removeUpdate(DocumentEvent e) {
+                    	FilterTextTable();
+                    }
+                });
+		final JCheckBox checkBox = new JCheckBox();
+		TileSelection.table.getColumnModel().getColumn(3).setCellEditor(new CheckBoxCellEditor(this));
+		TileSelection.table.getColumnModel().getColumn(3).setCellRenderer(new CWCheckBoxRenderer());
+		TileSelection.table.getColumnModel().getColumn(4).setCellEditor(new CheckBoxCellEditor(this));
+		TileSelection.table.getColumnModel().getColumn(4).setCellRenderer(new CWCheckBoxRenderer());
+		TileSelection.table.setRowSelectionAllowed(false);
+		String lastname = "";
+		int SetNumber = 0;
+		for(Tile t: set) {
+				TileSelectionList.add(t);
+				if(t.getName() == lastname) {
+					SetNumber++;
+					selectedtile.addItem(t.getName() + Integer.toString(SetNumber));
+					selectedtile2.addItem(t.getName() + Integer.toString(SetNumber));
+				} else {
+					selectedtile.addItem(t.getName());
+					selectedtile2.addItem(t.getName());
+				SetNumber = 0;
+				}
+				lastname = (String) t.getName();
+		}
+
 	}
 	
 	public void UpdateTileSelection() {
@@ -494,7 +564,7 @@ public class PigionSDK {
 					TileYML = new YamlConfig(TileYMLFile);
 					config = TileYML.getMap();
 					if(config == null) config = new HashMap();
-					config.put("WarPigionVersion", "v0.1.012");
+					config.put("WarPigionVersion", WPEngine1.Version);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -503,7 +573,7 @@ public class PigionSDK {
 				config = TileYML.getMap();
 				if(config == null) {
 					config = new HashMap();
-					config.put("WarPigionVersion", "v0.1.012");
+					config.put("WarPigionVersion", WPEngine1.Version);
 				}
 			}
 			

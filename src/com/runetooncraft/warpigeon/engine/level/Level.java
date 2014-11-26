@@ -12,6 +12,7 @@ import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.Layer.*;
+import com.runetooncraft.warpigeon.engine.level.specialtiles.removeCollisionTile;
 import com.runetooncraft.warpigeon.engine.utils.FileSystem;
 import com.runetooncraft.warpigeon.engine.utils.YamlConfig;
 
@@ -666,12 +667,17 @@ public class Level {
 
 static class collisionTiles {
 	public Sprite default_collide_Sprite;
+	public Sprite default_notcollide_Sprite;
 	public Tile default_collide;
+	public Tile default_notcollide;
 	collisionTiles(int TileSizex, int TileSizey) {
 		default_collide_Sprite = new Sprite(TileSizex, TileSizey,0xFFFF0000);
-		default_collide = new Tile(default_collide_Sprite,-2,"Default_collide");
+		default_notcollide_Sprite = new Sprite(TileSizex, TileSizey,0xFF4CFF00);
+		default_collide = new Tile(default_collide_Sprite,-2,"Collide");
+		default_notcollide = new removeCollisionTile(default_notcollide_Sprite,-3,"Remove Collide");
 		default_collide.isCollisionLayerTile = true;
 		Level.CollTileIDS.put(-2, default_collide);
+		Level.CollTileIDS.put(-3, default_notcollide);
 	}
 }
 
