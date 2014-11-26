@@ -468,6 +468,10 @@ public class Level {
 						for(Layer layer: LayerList) {
 							getTileIntArray(layer.tiles,x,y).render(x, y, screen, 2);
 						}
+						if(renderColl) {
+							Layer coll = collisionLayers.get(collLayerselected - 1);
+							getTileIntArray(coll.tiles,x,y).render(x, y, screen, collLayerselected);
+						}
 					}
 				}
 			} else {
