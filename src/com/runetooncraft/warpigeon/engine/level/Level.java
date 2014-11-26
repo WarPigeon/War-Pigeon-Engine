@@ -24,6 +24,7 @@ public class Level {
 	public static ArrayList<Layer> LayerList = new ArrayList<Layer>();
 	public static ArrayList<Layer> collisionLayers = new ArrayList<Layer>();
 	public static HashMap<Integer, Tile> TileIDS = new HashMap<Integer, Tile>();
+	public static HashMap<Integer, Tile> CollTileIDS = new HashMap<Integer, Tile>();
 	public static Tile VoidTile;
 	public static Tile LoadingTile = null;
 	public static Tile EmptyTile = new EmptyTile(null, -1);
@@ -117,7 +118,6 @@ public class Level {
 			for (int x = 0; x < width; x++) {
 				Tile gTile = getTile(x, y);
 				if(gTile.Collide) {
-					System.out.println("Collision found at " + x + "," + y);
 					layer1_collision.tiles[x+y*height] = -2;
 				}
 			}
@@ -263,7 +263,7 @@ public class Level {
 			int Tilex = coords.tileX();
 			if((Tiley + Tilex) <= (width * height)) {
 				int ChosenTile = Tiley + Tilex;
-				if(Layer == mainLayer) {
+				if(Layer.equals(mainLayer)) {
 					if(mainLayer.tiles.length > 0) {
 						mainLayer.tiles[ChosenTile] = tile.getTileID();
 					}
@@ -271,6 +271,11 @@ public class Level {
 					int TileID = tile.getTileID();
 					if(TileID == VoidTile.getTileID()) TileID = -1;
 					Layer.tiles[ChosenTile] = TileID;
+				}
+				if(colltype == CollisionType.ADVANCED_COLLBOX && tile.Collide) {
+					if(Layer.equals(mainLayer)) {
+						collisionLayers.get(0).tiles[ChosenTile] = -2; //change later when collision layers is worked on thoroughly
+					}
 				}
 			}
 	}
@@ -485,9 +490,9 @@ public class Level {
 							if(overlayEnabled && !(x < 0 || y < 0 || x >= width || y >= height)) {
 								overlayTile.render(x,y, screen, 2);
 							}
-							if(renderColl) {
+							if(renderColl && collLayerselected != 0) {
 								Layer coll = collisionLayers.get(collLayerselected - 1);
-								getTileIntArray(coll.tiles,x,y).render(x, y, screen, collLayerselected);
+								getTileLayerCollision(coll, x,y).render(x, y, screen, collLayerselected);
 							}
 						}
 					}
@@ -510,6 +515,15 @@ public class Level {
 		if(x < 0 || y < 0 || x >= width || y >= height) return VoidTile;
 		if(SelectedLayer[x + y * width] < TileIDS.size()) {
 			return TileIDS.get(SelectedLayer[x + y * width]);
+		} else {
+			return EmptyTile;
+		}
+	}
+	
+	private Tile getTileLayerCollision(Layer layer, int x, int y) {
+		if(x < 0 || y < 0 || x >= width || y >= height) return VoidTile;
+		if (CollTileIDS.get(layer.tiles[x + y * width]) != null) {
+			return CollTileIDS.get(layer.tiles[x + y * width]);
 		} else {
 			return EmptyTile;
 		}
@@ -652,7 +666,8 @@ static class collisionTiles {
 	collisionTiles(int TileSizex, int TileSizey) {
 		default_collide_Sprite = new Sprite(TileSizex, TileSizey,0xFFFF0000);
 		default_collide = new Tile(default_collide_Sprite,-2,"Default_collide");
-		Level.TileIDS.put(-2, default_collide);
+		default_collide.isCollisionLayerTile = true;
+		Level.CollTileIDS.put(-2, default_collide);
 	}
 }
 

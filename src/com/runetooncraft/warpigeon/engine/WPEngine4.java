@@ -1,8 +1,12 @@
 package com.runetooncraft.warpigeon.engine;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -29,6 +33,9 @@ public class WPEngine4 extends WPEngine3 {
 	private boolean firsttime = true;
 	public ArrayList<MediaFile> MediaList = new ArrayList<MediaFile>();
 	public int SDKx,SDKy;
+	public BufferedImage alphaOverlay = new BufferedImage(getUnscaledWidth(), getUnscaledHeight(), BufferedImage.TYPE_INT_ARGB);
+	AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f);
+	protected int[] alphaPixels = ((DataBufferInt)alphaOverlay.getRaster().getDataBuffer()).getData();
 
 	/**
 	 * WPEngine4 introduces an enum to control game states. States like MAIN_MENU, EDIT, PLAY, etc. Also the PigionSDK for 2D
@@ -139,11 +146,14 @@ public class WPEngine4 extends WPEngine3 {
 			RenderLevelStateUpperLayers();
 			privateRenderAfterUpperLayers();
 			for (int i = 0; i < pixels.length; i++) {
+				alphaPixels[i] = screen.alphaOverlay[i];
 				pixels[i] = screen.pixels[i];
 			}
-			
 			graphics = bs.getDrawGraphics();
-			graphics.drawImage(view, 0, 0, getWidth(), getHeight(), null);
+			Graphics2D g2 = (Graphics2D)graphics.create();
+			g2.drawImage(view, 0, 0, getWidth(), getHeight(), null);
+			g2.setComposite(ac);
+			g2.drawImage(alphaOverlay, 0, 0, getWidth(), getHeight(), null);
 			DrawOtherImages(graphics);
 			graphics.dispose();
 			bs.show();
@@ -196,14 +206,12 @@ public class WPEngine4 extends WPEngine3 {
 		}
 	}
 
-	
 	public void privateRenderAfterUpperLayers() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void DrawOtherImages(Graphics graphics) {
-		
+
 	}
 
 	public void DefineScreen(int PixelWidth, int PixelHeight, int ImageToPixelRatio, int scale) {
