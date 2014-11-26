@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.AbstractCellEditor;
@@ -23,7 +24,7 @@ import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 public class TileTableModel extends AbstractTableModel {
 
 	private List<Tile> tiles;
-	private List<ImageIcon> TileIcons = new ArrayList<ImageIcon>();
+	private HashMap<Integer, ImageIcon> TileIcons = new HashMap<Integer, ImageIcon>();
 	private int Columns;
 	
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -41,7 +42,7 @@ public class TileTableModel extends AbstractTableModel {
 			try{
 				BufferedImage image = t.getSprite().toBufferedImage();
 				ImageIcon imageIcon = new ImageIcon(image);
-				TileIcons.add(imageIcon);
+				TileIcons.put(t.getTileID(), imageIcon);
 			} catch (NullPointerException e) {
 				
 			}
@@ -85,7 +86,7 @@ public class TileTableModel extends AbstractTableModel {
 		Tile tile = tiles.get(rowIndex);
 		ImageIcon tileIcon;
 		try{
-			tileIcon = TileIcons.get(rowIndex);
+			tileIcon = TileIcons.get(tile.getTileID());
 		} catch(Exception e) {
 			BufferedImage img = new BufferedImage(16, 16, BufferedImage.TYPE_INT_RGB);
 			Graphics2D g2d = img.createGraphics();

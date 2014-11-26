@@ -14,7 +14,7 @@ public class Sprite {
 	private int x, y;
 	public int[] pixels;
 	private SpriteSheet sheet;
-	private boolean ContainsPixels = false;
+	private boolean ContainsPixels = true;
 	
 	/**
 	 * Finds the pixels from a spritesheet created with the SpriteSheet class in a cetain position.
