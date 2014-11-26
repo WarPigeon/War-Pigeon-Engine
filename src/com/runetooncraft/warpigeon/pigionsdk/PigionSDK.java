@@ -429,7 +429,6 @@ public class PigionSDK {
 	
 	
 	public void UpdateTileSelected() {
-		
 		selectedtile.setSelectedIndex(Mouse1TileID);
 		selectedtile2.setSelectedIndex(Mouse2TileID);
 	}
