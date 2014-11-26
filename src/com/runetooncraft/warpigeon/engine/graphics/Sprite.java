@@ -105,6 +105,14 @@ public class Sprite {
 		setColour(colour);
 	}
 	
+	public Sprite(int sizex, int sizey, int colour) {
+		this.SIZE = sizex;
+		this.SIZEX = sizex;
+		this.SIZEY = sizey;
+		pixels = new int[SIZE*SIZE];
+		setColour(colour);
+	}
+	
 	private void setColour(int colour) {
 		for (int i = 0; i < SIZE*SIZE; i++) {
 			pixels[i] = colour;

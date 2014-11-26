@@ -24,6 +24,7 @@ public class Level {
 	public static ArrayList<Layer> LayerList = new ArrayList<Layer>();
 	public static ArrayList<Layer> collisionLayers = new ArrayList<Layer>();
 	public static HashMap<Integer, Tile> TileIDS = new HashMap<Integer, Tile>();
+	public static HashMap<Integer, Tile> CollTileIDS = new HashMap<Integer, Tile>();
 	public static Tile VoidTile;
 	public static Tile LoadingTile = null;
 	public static Tile EmptyTile = new EmptyTile(null, -1);
@@ -43,6 +44,7 @@ public class Level {
 	public int collLayerselected;
 	public boolean overlayEnabled = false;
 	public CollisionType colltype = null; //Set this on level creation, set config values and create collision layers
+	public collisionTiles colltiles;
 	
 	public void ExpandLevel(int xExpand, int yExpand) {
 		render = false;
@@ -57,7 +59,7 @@ public class Level {
 					if(layer == 1) {
 						TileMap.put(Tc, getTile(xt,yt));
 					} else {
-						TileMap.put(Tc, getTileLayer(layer,xt,yt));
+						TileMap.put(Tc, getTileLayer(LayerList.get(layer-1),xt,yt));
 					}
 				}
 			}
@@ -96,22 +98,42 @@ public class Level {
 		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
-		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		if(isSDK) {
 			RenderLayers.put(1, true);
 			RenderLayers.put(2, true);
 		}	
 		generateLevel();
+		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		setupOverlay();
 	}
 	
 	private void advancedCollLayers() {
+		System.out.println("made it here");
 		Layer layer1_collision = new Layer(new int[width * height], LayerType.COLLISION_LAYER, "Layer1_Collision");
+		
+		colltiles = new collisionTiles(engine.getScreenEngine2D().PixelWidth,engine.getScreenEngine2D().PixelHeight);
+		
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				Tile gTile = getTile(x, y);
+				if(gTile.Collide) {
+					layer1_collision.tiles[x+y*height] = -2;
+				}
+			}
+		}
 		collisionLayers.add(layer1_collision);
 		
 		for(int i = 2; i<=Layers; i++) {
 			Layer layeri_collision = new Layer(new int[width * height], LayerType.COLLISION_LAYER, "Layer" + i +"_Collision");
+			for (int y = 0; y < height; y++) {
+				for (int x = 0; x < width; x++) {
+					Tile gTile = getTileLayer(LayerList.get(i-2), x, y);
+					if(gTile.Collide) {
+						layeri_collision.tiles[x+y*height] = -2;
+					}
+				}
+			}
 			collisionLayers.add(layeri_collision);
 		}
 	}
@@ -158,13 +180,13 @@ public class Level {
 		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
-		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		if(isSDK) {
 			RenderLayers.put(1, true);
 			RenderLayers.put(2, true);
 		}
 		generateLevel();
+		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		setupOverlay();
 	}
 
@@ -200,12 +222,12 @@ public class Level {
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
-		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		if(isSDK) {
 			RenderLayers.put(1, true);
 			RenderLayers.put(2, true);
 		}
 		generateLevel();
+		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		setupOverlay();
 		render = true;
 		System.out.println( "\"" + LevelName + "\" generated \n"
@@ -241,7 +263,7 @@ public class Level {
 			int Tilex = coords.tileX();
 			if((Tiley + Tilex) <= (width * height)) {
 				int ChosenTile = Tiley + Tilex;
-				if(Layer == mainLayer) {
+				if(Layer.equals(mainLayer)) {
 					if(mainLayer.tiles.length > 0) {
 						mainLayer.tiles[ChosenTile] = tile.getTileID();
 					}
@@ -249,6 +271,11 @@ public class Level {
 					int TileID = tile.getTileID();
 					if(TileID == VoidTile.getTileID()) TileID = -1;
 					Layer.tiles[ChosenTile] = TileID;
+				}
+				if(colltype == CollisionType.ADVANCED_COLLBOX && tile.Collide) {
+					if(Layer.equals(mainLayer)) {
+						collisionLayers.get(0).tiles[ChosenTile] = -2; //change later when collision layers is worked on thoroughly
+					}
 				}
 			}
 	}
@@ -467,6 +494,10 @@ public class Level {
 							if(overlayEnabled && !(x < 0 || y < 0 || x >= width || y >= height)) {
 								overlayTile.render(x,y, screen, 2);
 							}
+							if(renderColl && collLayerselected != 0) {
+								Layer coll = collisionLayers.get(collLayerselected - 1);
+								getTileLayerCollision(coll, x,y).render(x, y, screen, collLayerselected);
+							}
 						}
 					}
 				}
@@ -483,11 +514,20 @@ public class Level {
 		}
 	}
 	
-	public Tile getTileLayer(int Layer, int x, int y) {
-		int[] SelectedLayer = LayerList.get((Layer - 2)).tiles;
+	public Tile getTileLayer(Layer layer, int x, int y) {
+		int[] SelectedLayer = layer.tiles;
 		if(x < 0 || y < 0 || x >= width || y >= height) return VoidTile;
 		if(SelectedLayer[x + y * width] < TileIDS.size()) {
 			return TileIDS.get(SelectedLayer[x + y * width]);
+		} else {
+			return EmptyTile;
+		}
+	}
+	
+	private Tile getTileLayerCollision(Layer layer, int x, int y) {
+		if(x < 0 || y < 0 || x >= width || y >= height) return VoidTile;
+		if (CollTileIDS.get(layer.tiles[x + y * width]) != null) {
+			return CollTileIDS.get(layer.tiles[x + y * width]);
 		} else {
 			return EmptyTile;
 		}
@@ -622,4 +662,17 @@ public class Level {
 	public Layer getCollisionLayer(int layer) {
 		return collisionLayers.get(layer-1);
 	}
+	
+
+static class collisionTiles {
+	public Sprite default_collide_Sprite;
+	public Tile default_collide;
+	collisionTiles(int TileSizex, int TileSizey) {
+		default_collide_Sprite = new Sprite(TileSizex, TileSizey,0xFFFF0000);
+		default_collide = new Tile(default_collide_Sprite,-2,"Default_collide");
+		default_collide.isCollisionLayerTile = true;
+		Level.CollTileIDS.put(-2, default_collide);
+	}
+}
+
 }

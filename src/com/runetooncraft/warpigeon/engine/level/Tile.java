@@ -7,6 +7,7 @@ public class Tile {
 
 	public int x,y;
 	public TileCollide collideMap = new TileCollide();
+	boolean isCollisionLayerTile = false;
 	protected Sprite sprite;
 	private int TileID;
 	private String name;
@@ -19,6 +20,13 @@ public class Tile {
 	}
 	
 	public void render(int x, int y, ScreenEngine2D screen, int Layer) {
+		if(sprite != null) {
+			if(isCollisionLayerTile) {
+				screen.renderCollisionLayerTile(x << Level.PDR, y << Level.PDR, this);
+			} else {
+				screen.renderTile(x << Level.PDR, y << Level.PDR, this);
+			}
+		}
 	}
 	
 	public boolean collide(int side) {
@@ -43,4 +51,6 @@ public class Tile {
 	public Sprite getSprite() {
 		return sprite;
 	}
+	
+	
 }

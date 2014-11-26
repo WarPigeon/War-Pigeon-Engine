@@ -10,6 +10,7 @@ public class ScreenEngine2D {
 
 	public int width, height, PixelWidth, PixelHeight, scale;
 	public int[] pixels;
+	public int[] alphaOverlay;
 	public int[] tiles;
 	public static int ImageToPixelRatio;
 	private Random random = new Random();
@@ -28,6 +29,7 @@ public class ScreenEngine2D {
 		this.PixelWidth = PixelWidth;
 		this.PixelHeight = PixelHeight;
 		this.pixels = new int[ width * height ];
+		this.alphaOverlay = new int[ width * height];
 		this.tiles = new int[PixelWidth * PixelHeight];
 		this.ImageToPixelRatio = ImageToPixelRatio;
 		Level.PDR = (ImageToPixelRatio / 16) + 3;
@@ -108,6 +110,22 @@ public class ScreenEngine2D {
 		}
 	}
 	
+	public void renderCollisionLayerTile(int xp, int yp, Tile tile) {
+		xp -= xOffset;
+		yp -= yOffset;
+		Sprite sprite = tile.getSprite();
+		for (int y = 0; y < sprite.SIZE; y++) {
+			int ya = y + yp;
+			for (int x = 0; x < sprite.SIZE; x++) {
+				int xa = x + xp;
+				if (xa < -sprite.SIZE || xa >= width || ya < 0 || ya >= height) break;
+				if (xa < 0) xa = 0;
+				int col = sprite.pixels[x+y*sprite.SIZE];
+				if (col != 0xFFFF00D0) alphaOverlay[xa + ya * width] = col;
+			}
+		}
+	}
+	
 	public void renderPlayer(int xp, int yp, Sprite sprite) {
 		xp -= xOffset;
 		yp -= yOffset;
@@ -172,6 +190,7 @@ public class ScreenEngine2D {
 	public void ClearBuffer() {
 		for(int i = 0; i < pixels.length; i++) {
 			pixels[i] = 0;
+			alphaOverlay[i] = 0;
 		}
 	}
 }
