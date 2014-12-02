@@ -345,20 +345,14 @@ public class Level {
 						if(colltype == CollisionType.ADVANCED_COLLBOX) {
 							File Layer1_collision_file = new File(workingDir, "Layer1_Collision.dat");
 							int[] Layer1_collision_file_load = FileSystem.LoadDatFile(Layer1_collision_file);
-							Layer Layer1_collision = new Layer(new int[width * height],LayerType.COLLISION_LAYER);
-							for(int tilenumber = 0; tilenumber < (width * height); tilenumber++) {
-								Layer1_collision.tiles[tilenumber] = Layer1_collision_file_load[tilenumber];
-							}
+							Layer Layer1_collision = new Layer(Layer1_collision_file_load,LayerType.COLLISION_LAYER);
 							collisionLayers.add(Layer1_collision);
 							
 							for(int i = 2; i<=Layers; i++) {
 								File Layeri_collision_file = new File(workingDir, "Layer" + i + "_Collision.dat");
 								int[] Layeri_collision_file_load = FileSystem.LoadDatFile(Layeri_collision_file);
-								Layer Layeri_collision = new Layer(new int[width * height],LayerType.COLLISION_LAYER);
-								for(int tilenumber = 0; tilenumber < (width * height); tilenumber++) {
-									Layeri_collision.tiles[tilenumber] = Layeri_collision_file_load[tilenumber];
-								}
-								collisionLayers.add(Layer1_collision);
+								Layer Layeri_collision = new Layer(Layeri_collision_file_load,LayerType.COLLISION_LAYER);
+								collisionLayers.add(Layeri_collision);
 							}
 						}
 						

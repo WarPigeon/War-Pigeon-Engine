@@ -36,8 +36,8 @@ public class PigionSDK extends WPEngine4 {
 		SetWindowTitle("War-Pigion Engine4");
 		KL = new KeyListener();
 		SetClassInstance(this,true);
-		level = new RandomLevel(64,64, DataFolder, "UnNamedasdf", this, CollisionType.ADVANCED_COLLBOX);
-//		level = new Level(DataFolder, "cheesecake", this);
+//		level = new RandomLevel(64,64, DataFolder, "UnNamedasdf", this, CollisionType.ADVANCED_COLLBOX);
+		level = new Level(DataFolder, "UnNamedasdf", this);
 //		level = new NullLevel(this);
 		setEngineKeyListener(KL);
 		Sprite[] ForwardAnims = new Sprite[2];

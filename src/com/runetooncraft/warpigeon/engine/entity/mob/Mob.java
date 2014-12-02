@@ -2,6 +2,7 @@ package com.runetooncraft.warpigeon.engine.entity.mob;
 
 import com.runetooncraft.warpigeon.engine.entity.Entity;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
+import com.runetooncraft.warpigeon.engine.level.CollisionType;
 import com.runetooncraft.warpigeon.engine.level.TileCoordinate;
 
 public abstract class Mob extends Entity {
@@ -19,6 +20,7 @@ public abstract class Mob extends Entity {
 	private int AnimationCooldownToggle = 0;
 	public int xas,yas;
 	protected boolean Sideways = false;
+	public int layerPresent = 1;
 	
 	//Don't worry about this unless the game is a sidescroller
 	public int weight = 0;
@@ -151,7 +153,11 @@ public abstract class Mob extends Entity {
 		for(int i = 0; i < 4; i++) {
 				int xp = ((x + xa) + i % 2 * 12 - 7) / engine.getScreenEngine2D().PixelWidth;
 				int yp = ((y + ya) + i / 2 * 12 + 7) / engine.getScreenEngine2D().PixelHeight;
-				if (level.getTile(xp, yp).collide(i)) solid = true;
+				if (level.colltype.equals(CollisionType.BASIC)) {
+					if (level.getTileLayer(level.getLayer(layerPresent), xp, yp).collide(i)) solid = true;
+				} else if(level.colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
+					if (level.getTileLayer(level.getCollisionLayer(layerPresent), xp, yp).collide(i)) solid = true;
+				}
 			}
 		
 		return solid;
