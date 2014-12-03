@@ -109,11 +109,15 @@ public class Level {
 		setupOverlay();
 	}
 	
+	private void collTiles() {
+		colltiles = new collisionTiles(engine.getScreenEngine2D().PixelWidth,engine.getScreenEngine2D().PixelHeight);
+
+	}
+	
 	private void advancedCollLayers() {
-		System.out.println("made it here");
 		Layer layer1_collision = new Layer(new int[width * height], LayerType.COLLISION_LAYER, "Layer1_Collision");
 		
-		colltiles = new collisionTiles(engine.getScreenEngine2D().PixelWidth,engine.getScreenEngine2D().PixelHeight);
+		collTiles();
 		
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
@@ -342,7 +346,7 @@ public class Level {
 							LayerList.add(layer);
 						}
 						
-						if(colltype == CollisionType.ADVANCED_COLLBOX) {
+						if(colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
 							File Layer1_collision_file = new File(workingDir, "Layer1_Collision.dat");
 							int[] Layer1_collision_file_load = FileSystem.LoadDatFile(Layer1_collision_file);
 							Layer Layer1_collision = new Layer(Layer1_collision_file_load,LayerType.COLLISION_LAYER);
@@ -354,6 +358,7 @@ public class Level {
 								Layer Layeri_collision = new Layer(Layeri_collision_file_load,LayerType.COLLISION_LAYER);
 								collisionLayers.add(Layeri_collision);
 							}
+							collTiles();
 						}
 						
 					} catch(Exception e) {
@@ -545,11 +550,12 @@ public class Level {
 				File Layer1 = new File(workingDir, "Layer1.dat");
 				FileSystem.SaveDatFile(mainLayer.tiles, Layer1);
 				for(int i = 2; i<=Layers; i++) {
-					File layer = new File(workingDir, ("Layer" + i + ".dat"));
-					FileSystem.SaveDatFile(LayerList.get((i - 2)).tiles, layer);
+					File layer_file = new File(workingDir, ("Layer" + i + ".dat"));
+					FileSystem.SaveDatFile(LayerList.get((i - 2)).tiles, layer_file);
 				}
-				if(colltype == CollisionType.ADVANCED_COLLBOX) {
+				if(colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
 					for(Layer layer: collisionLayers) {
+						System.out.println(layer.tiles[4]); //Debug
 						File layer_file = new File(workingDir, (layer.name + ".dat"));
 						FileSystem.SaveDatFile(layer.tiles, layer_file);
 					}
