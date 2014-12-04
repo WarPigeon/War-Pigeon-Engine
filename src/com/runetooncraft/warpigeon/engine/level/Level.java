@@ -554,9 +554,10 @@ public class Level {
 					FileSystem.SaveDatFile(LayerList.get((i - 2)).tiles, layer_file);
 				}
 				if(colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
+					int layerid = 0;
 					for(Layer layer: collisionLayers) {
-						System.out.println(layer.tiles[4]); //Debug
-						File layer_file = new File(workingDir, (layer.name + ".dat"));
+						layerid++;
+						File layer_file = new File(workingDir, ("Layer" + layerid + "_Collision.dat"));
 						FileSystem.SaveDatFile(layer.tiles, layer_file);
 					}
 				}
