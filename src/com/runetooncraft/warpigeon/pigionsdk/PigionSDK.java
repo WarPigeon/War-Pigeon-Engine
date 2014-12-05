@@ -431,7 +431,6 @@ public class PigionSDK {
 			return engine.getLevel().getCollisionLayer(selectedLayer.getSelectedIndex() + 1);
 		} else {
 			return engine.getLevel().getLayer(selectedLayer.getSelectedIndex() + 1);
-			
 		}
 	}
 	

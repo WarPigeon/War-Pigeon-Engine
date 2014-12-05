@@ -37,8 +37,8 @@ public class FreeRoam extends WPEngine4 {
 		SetWindowTitle("War-Pigion Engine4 - FreeRoam demo");
 		KL = new KeyListener();
 		SetClassInstance(this,false);
-		level = new RandomLevel(64,64, DataFolder, "Testy2", this, CollisionType.BASIC);
-//		level = new Level(DataFolder, "cheesecake", this);
+		level = new RandomLevel(64,64, DataFolder, "Testy2", this, CollisionType.ADVANCED_COLLBOX);
+//		level = new Level(DataFolder, "UnNamedasdf", this);
 		
 		setEngineKeyListener(KL);
 		Sprite[] ForwardAnims = new Sprite[2];
@@ -47,7 +47,7 @@ public class FreeRoam extends WPEngine4 {
 		ForwardAnims[1] = Sprites.CRIPSY_FORWARD_ANIM2;
 		BackwardAnims[0] = Sprites.CRIPSY_BACKWARD_ANIM1;
 		BackwardAnims[1] = Sprites.CRIPSY_BACKWARD_ANIM2;
-		player = new PlayerMain(KL, 128, 128, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims);
+		player = new PlayerMain(KL, 0, 0, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims);
 		player.init(level,this);
 		PackFrame();
 		start();
