@@ -156,11 +156,10 @@ public abstract class Mob extends Entity {
 				if (level.colltype.equals(CollisionType.BASIC)) {
 					if (level.getTileLayer(level.getLayer(layerPresent), xp, yp).collide(i)) solid = true;
 				} else if(level.colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
-					if (level.getTileLayer(level.getCollisionLayer(layerPresent), xp, yp) != null) {
-						if (level.getTileLayer(level.getCollisionLayer(layerPresent), xp, yp).collide(i)) solid = true;
+					if (level.getTileLayerCollision(level.getCollisionLayer(layerPresent), xp, yp) != null) {
+						if (level.getTileLayerCollision(level.getCollisionLayer(layerPresent), xp, yp).collide(i)) solid = true;
 					} else {
 						System.out.println("Nulled tile in Collision" + layerPresent + " at " + xp + "," + yp);
-						System.out.println(level.getTileLayer(level.getLayer(layerPresent), xp, yp).getTileID());
 					}
 				}
 			}

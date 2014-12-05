@@ -524,7 +524,7 @@ public class Level {
 		}
 	}
 	
-	private Tile getTileLayerCollision(Layer layer, int x, int y) {
+	public Tile getTileLayerCollision(Layer layer, int x, int y) {
 		if(x < 0 || y < 0 || x >= width || y >= height) return VoidTile;
 		if (CollTileIDS.get(layer.tiles[x + y * width]) != null) {
 			return CollTileIDS.get(layer.tiles[x + y * width]);
@@ -675,6 +675,7 @@ static class collisionTiles {
 		default_collide_Sprite = new Sprite(TileSizex, TileSizey,0xFFFF0000);
 		default_notcollide_Sprite = new Sprite(TileSizex, TileSizey,0xFF4CFF00);
 		default_collide = new Tile(default_collide_Sprite,-2,"Collide");
+		default_collide.Collide = true;
 		default_notcollide = new removeCollisionTile(default_notcollide_Sprite,-3,"Remove Collide");
 		default_collide.isCollisionLayerTile = true;
 		Level.CollTileIDS.put(-2, default_collide);
