@@ -440,13 +440,21 @@ public class PigionSDK {
 		if(Mouse1TileID >= 0) {
 			selectedtile.setSelectedIndex(Mouse1TileID);
 		} else {
-			selectedtile.setSelectedIndex(Mouse1TileID+Level.CollTileIDS.size()+1);
+			ArrayList<Integer> list = new ArrayList<Integer>();
+			for(int i: Level.CollTileIDS.keySet()) {
+				list.add(i);
+			}
+			selectedtile.setSelectedIndex(list.indexOf(Mouse1TileID));
 		}
 		
 		if(Mouse2TileID >= 0) {
 			selectedtile2.setSelectedIndex(Mouse2TileID);
 		} else {
-			selectedtile2.setSelectedIndex(Mouse2TileID+Level.CollTileIDS.size()+1);
+			ArrayList<Integer> list = new ArrayList<Integer>();
+			for(int i: Level.CollTileIDS.keySet()) {
+				list.add(i);
+			}
+			selectedtile2.setSelectedIndex(list.indexOf(Mouse2TileID));
 		}
 	}
 	
