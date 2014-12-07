@@ -22,7 +22,6 @@ public abstract class Mob extends Entity {
 	public int xas,yas;
 	protected boolean Sideways = false;
 	public int layerPresent = 1;
-	private int lastsideofTile = 0;
 	
 	//Don't worry about this unless the game is a sidescroller
 	public int weight = 0;
@@ -59,14 +58,11 @@ public abstract class Mob extends Entity {
 		if (xa > 0) dir = 3;
 		if (ya < 0) dir = 2;
 		if (ya > 0) dir = 0;
-		int sideofTile = collision(xa,ya);
-		if (sideofTile == -1) {
-			x += xa;
+		if(!collision(0,ya)) {
 			y += ya;
-		} else if (sideofTile == 0 || sideofTile == 2)  {
+		}
+		if(!collision(xa,0)) {
 			x += xa;
-		} else if (sideofTile == 1 || sideofTile == 3) {
-			y += ya;
 		}
 	}
 	
@@ -95,18 +91,19 @@ public abstract class Mob extends Entity {
 		if (ya < 0 && xa < 0) dir = 7;
 //		System.out.println("Dir: " + dir);
 		
-			int sideofTile = collision(xa,ya);
-			if (sideofTile == -1) {
-				x += xa;
-				y += ya;
-				Collide = false;
-			} else if (sideofTile == 0 || sideofTile == 2)  {
-				x += xa;
-				Collide = false;
-			} else if (sideofTile == 1 || sideofTile == 3) {
-				y += ya;
-				Collide = false;
-			}
+		if(!collision(0,ya)) {
+			y += ya;
+			Collide = false;
+		}
+		if(!collision(xa,0)) {
+			x += xa;
+			Collide = false;
+		}
+//		if(!collision(xa,ya)) {
+//			Collide = false;
+//			x += xa;
+//			y += ya;
+//		}
 		
 		if(Collide == false) {
 			if(dir != LastDir) {
@@ -183,12 +180,8 @@ public abstract class Mob extends Entity {
 		return solid;
 	}
 	
-	public int collision(int xa, int ya) {
+	public boolean collision(int xa, int ya) {
 		boolean solid = false;
-		boolean sendforceColl = false;
-		int sideofTile = -1;
-		double xposTile = 0.0;
-		double yposTile = 0.0;
 		
 		for(int i = 0; i < 4; i++) {
 				int xp = ((x + xa) + i % 2 * 12 - 7) / engine.getScreenEngine2D().PixelWidth;
@@ -198,70 +191,15 @@ public abstract class Mob extends Entity {
 				} else if(level.colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
 					
 					if (level.getTileLayerCollision(level.getCollisionLayer(layerPresent), xp, yp) != null) {
-						Tile t = level.getTileLayerCollision(level.getCollisionLayer(layerPresent), xp, yp);
-						if (t.collide(i)) {
-							xposTile = (((double)x)/engine.getScreenEngine2D().PixelWidth);
-							yposTile = (((double)y)/engine.getScreenEngine2D().PixelHeight);
-							// 0 - north| 1- east | 2 - south | 3 - west |
-							
-							if(xa == 0) {
-								sendforceColl = true;
-								if(yposTile < yp) {
-									sideofTile = 0;
-								} else {
-									sideofTile = 2;
-								}
-							} else if (ya == 0) {
-								sendforceColl = true;
-								if(xposTile < xp) {
-									sideofTile = 1;
-								} else {
-									sideofTile = 3;
-								}
-								
-							} else {
-								if(xposTile < xp) {
-									if(yposTile < yp) {
-										sideofTile = lastsideofTile;
-									} else {
-										sideofTile = 3;
-									}
-								} else if(xposTile > xp) {
-									if(yposTile > yp) {
-										sideofTile = lastsideofTile;
-									} else {
-										sideofTile = 1;
-									}
-								} else if (yposTile < yp) {
-									if(xposTile < xp) {
-										sideofTile = lastsideofTile;
-									} else {
-										sideofTile = 0;
-									}
-								} else if (yposTile > yp) {
-									if(xposTile > xp) {
-										sideofTile = lastsideofTile;
-									} else {
-										sideofTile = 2;
-									}
-								}
-							}
-							
-							solid = true;
-						}
+						if (level.getTileLayerCollision(level.getCollisionLayer(layerPresent), xp, yp).collide(i)) solid = true;
 						
 					} else {
 						System.out.println("Nulled tile in Collision" + layerPresent + " at " + xp + "," + yp);
 					}
 				}
 			}
-		lastsideofTile = sideofTile;
-		System.out.println("xa: " + xa + " ya: " + ya + " side: " + sideofTile);
-		if(sendforceColl) {
-			return -2;
-		} else {
-			return sideofTile;
-		}
+		return solid;
+		
 	}
 	
 	public boolean checkCollideBelow() {
