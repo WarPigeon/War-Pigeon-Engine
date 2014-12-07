@@ -22,11 +22,15 @@ public class KeyBoardEvents implements KeyListener, FocusListener {
 	
 	public void keyPressed(KeyEvent event) {
 			KeyPressed = true;
-			Keys[event.getKeyCode()] = true;
+			if(Keys.length >= event.getKeyCode()) {
+				Keys[event.getKeyCode()] = true;
+			}
 	}
 
 	public void keyReleased(KeyEvent event) {
+		if(Keys.length >= event.getKeyCode()) {
 			Keys[event.getKeyCode()] = false;
+		}
 		if(!stallListen) {
 			if(event.getKeyCode() == KeyEvent.VK_UP || event.getKeyCode() == KeyEvent.VK_W) {
 				ReleasedUP = true;
