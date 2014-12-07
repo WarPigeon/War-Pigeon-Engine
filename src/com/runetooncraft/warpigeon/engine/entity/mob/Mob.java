@@ -1,6 +1,7 @@
 package com.runetooncraft.warpigeon.engine.entity.mob;
 
 import com.runetooncraft.warpigeon.engine.entity.Entity;
+import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.CollisionType;
 import com.runetooncraft.warpigeon.engine.level.Tile;
@@ -22,26 +23,42 @@ public abstract class Mob extends Entity {
 	public int xas,yas;
 	protected boolean Sideways = false;
 	public int layerPresent = 1;
+	public int collisionWidth = 12;
+	public int collisionHeight = 12;
 	
 	//Don't worry about this unless the game is a sidescroller
 	public int weight = 0;
 	
-	public Mob(Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims) {
+	public Mob(int x, int y, Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims) {
+		this.x = x << 4;
+		this.y = y << 4;
 		this.ForwardAnims = ForwardAnims;
 		this.BackwardAnims = BackwardAnims;
 		this.LeftAnims = LeftAnims;
 		this.RightAnims = RightAnims;
+		sprite = ForwardAnims[0];
 		animate = true;
 	}
 	
-	public Mob() {
+	public Mob(int x, int y) {
+		this.x = x << 4;
+		this.y = y << 4;
 		animate = false;
 	}
 	
-	public void update() {
+	public abstract void update();
+	
+	public void render(ScreenEngine2D screen) {
+		screen.renderMob(x - screen.XMid, y - screen.YMid, sprite);
 	}
 	
-	public void render() {
+	public void render(int x, int y, ScreenEngine2D screen) {
+		screen.renderMob(x - screen.XMid, y - screen.YMid, sprite);
+	}
+	
+	public void setCollisionBox(int x, int y) {
+		collisionWidth = x;
+		collisionHeight = y;
 	}
 	
 	public void moveNoAnimate(int xa, int ya) {
@@ -180,26 +197,8 @@ public abstract class Mob extends Entity {
 		return solid;
 	}
 	
-	public boolean collision(int xa, int ya) {
-		boolean solid = false;
-		
-		for(int i = 0; i < 4; i++) {
-				int xp = ((x + xa) + i % 2 * 12 - 7) / engine.getScreenEngine2D().PixelWidth;
-				int yp = ((y + ya) + i / 2 * 12 + 7) / engine.getScreenEngine2D().PixelHeight;
-				if (level.colltype.equals(CollisionType.BASIC)) {
-					if (level.getTileLayer(level.getLayer(layerPresent), xp, yp).collide(i)) solid = true;
-				} else if(level.colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
-					
-					if (level.getTileLayerCollision(level.getCollisionLayer(layerPresent), xp, yp) != null) {
-						if (level.getTileLayerCollision(level.getCollisionLayer(layerPresent), xp, yp).collide(i)) solid = true;
-						
-					} else {
-						System.out.println("Nulled tile in Collision" + layerPresent + " at " + xp + "," + yp);
-					}
-				}
-			}
-		return solid;
-		
+	public boolean collision(int xa, int ya) {		
+		return level.tileCollision(x+xa, y+ya, collisionWidth, collisionHeight,layerPresent,0,0);
 	}
 	
 	public boolean checkCollideBelow() {

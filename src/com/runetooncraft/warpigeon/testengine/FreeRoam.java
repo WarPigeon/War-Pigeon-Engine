@@ -9,13 +9,11 @@ import javax.imageio.ImageIO;
 
 import com.runetooncraft.warpigeon.engine.GameType;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
+import com.runetooncraft.warpigeon.engine.entity.mob.*;
+import com.runetooncraft.warpigeon.engine.entity.mob.npc.*;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
-import com.runetooncraft.warpigeon.engine.level.CollisionType;
 import com.runetooncraft.warpigeon.engine.level.CoordinateHandler;
 import com.runetooncraft.warpigeon.engine.level.Level;
-import com.runetooncraft.warpigeon.engine.level.RandomLevel;
-import com.runetooncraft.warpigeon.engine.level.SideScrollingLevel;
-import com.runetooncraft.warpigeon.engine.level.TileCoordinate;
 import com.runetooncraft.warpigeon.engine.utils.MediaFile;
 import com.runetooncraft.warpigeon.engine.utils.MediaType;
 import com.runetooncraft.warpigeon.engine.utils3d.KeyListener;
@@ -38,17 +36,29 @@ public class FreeRoam extends WPEngine4 {
 		KL = new KeyListener();
 		SetClassInstance(this,false);
 //		level = new RandomLevel(64,64, DataFolder, "Testy2", this, CollisionType.ADVANCED_COLLBOX);
-		level = new Level(DataFolder, "UnNamedasdf", this);
-		
+		level = new Level(DataFolder, "Arena", this);
 		setEngineKeyListener(KL);
+		
+		
+		//Player Setup
 		Sprite[] ForwardAnims = new Sprite[2];
 		Sprite[] BackwardAnims = new Sprite[2];
 		ForwardAnims[0] = Sprites.CRIPSY_FORWARD_ANIM1;
 		ForwardAnims[1] = Sprites.CRIPSY_FORWARD_ANIM2;
 		BackwardAnims[0] = Sprites.CRIPSY_BACKWARD_ANIM1;
 		BackwardAnims[1] = Sprites.CRIPSY_BACKWARD_ANIM2;
-		player = new PlayerMain(KL, 0, 0, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims);
+		player = new PlayerMain(KL, 10, 10, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims);
 		player.init(level,this);
+		//NPC1 Setup
+		Sprite[] ForwardAnimsnpc = new Sprite[1];
+		ForwardAnimsnpc[0] = Sprites.StoneTopLeftSlant;
+		for(int i = 0; i <=10; i++) {
+			Dummy npc = new Dummy(ForwardAnimsnpc,ForwardAnimsnpc,ForwardAnimsnpc,ForwardAnimsnpc,10,11,32);
+			npc.init(level, this);
+			level.add(npc);
+		}
+		
+		//Start
 		PackFrame();
 		start();
 //		getScreenEngine2D().SetSpriteWall(Sprites.Grass);

@@ -7,11 +7,9 @@ public class Npc extends Mob {
 	public boolean up,down,left,right = false;
 	int TileSize;
 	public Npc(Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims,int XPosition, int YPosition, int TileSize) {
-		super(ForwardAnims, BackwardAnims, LeftAnims, RightAnims);
+		super(XPosition, YPosition, ForwardAnims, BackwardAnims, LeftAnims, RightAnims);
 		this.TileSize = TileSize;
 		sprite = ForwardAnims[0];
-		this.x = XPosition * TileSize;
-		this.y = YPosition * TileSize;
 	}
 	
 	public void update() {
@@ -25,11 +23,11 @@ public class Npc extends Mob {
 	}
 	
 	public void render(ScreenEngine2D screen) {
-		screen.renderPlayer(x, y, sprite);
+		screen.renderMob(x, y, sprite);
 	}
 	
 	public void render(int x, int y, ScreenEngine2D screen) {
-		screen.renderPlayer(x, y, sprite);
+		screen.renderMob(x, y, sprite);
 	}
 
 }

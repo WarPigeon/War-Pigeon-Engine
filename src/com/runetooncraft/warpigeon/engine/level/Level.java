@@ -9,6 +9,7 @@ import java.util.Map;
 import com.runetooncraft.warpigeon.engine.GameType;
 import com.runetooncraft.warpigeon.engine.WPEngine1;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
+import com.runetooncraft.warpigeon.engine.entity.Entity;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.Layer.*;
@@ -46,6 +47,7 @@ public class Level {
 	public boolean overlayEnabled = false;
 	public CollisionType colltype = null; //Set this on level creation, set config values and create collision layers
 	public collisionTiles colltiles;
+	public ArrayList<Entity> Que = new ArrayList<Entity>();
 	
 	public void ExpandLevel(int xExpand, int yExpand) {
 		render = false;
@@ -115,6 +117,7 @@ public class Level {
 	}
 	
 	private void advancedCollLayers() {
+		collisionLayers.clear();
 		Layer layer1_collision = new Layer(new int[width * height], LayerType.COLLISION_LAYER, "Layer1_Collision");
 		
 		collTiles();
@@ -379,12 +382,18 @@ public class Level {
 	}
 
 	protected void generateLevel() {
+		for(int t = 0; t < LayerList.get(0).tiles.length; t++) {
+			LayerList.get(0).tiles[t] = EmptyTile.getTileID();
+		}
 	}
 	
 	/**
 	 * Updates Level enemies, etc.
 	 */
 	public void update() {
+		for(Entity entity: Que) {
+			entity.update();
+		}
 	}
 	
 	/**
@@ -448,6 +457,9 @@ public class Level {
 						}
 					}	
 				}
+			}
+			for(Entity entity: Que) {
+				entity.render(screen);
 			}
 	}
 	
@@ -658,7 +670,7 @@ public class Level {
 		if(layer == 1) {
 			return mainLayer;
 		} else {
-			return LayerList.get(layer);
+			return LayerList.get(layer-2);
 		}
 	}
 	public Layer getCollisionLayer(int layer) {
@@ -681,6 +693,31 @@ static class collisionTiles {
 		Level.CollTileIDS.put(-2, default_collide);
 		Level.CollTileIDS.put(-3, default_notcollide);
 	}
+}
+
+
+public boolean tileCollision(int x, int y, int sizex, int sizey, int layerPresent, int xOffset, int yOffset) {
+	boolean solid = false;
+	for(int i = 0; i < 4; i++) {
+//		int xp = (x + i % 2 * sizex - 7) / engine.getScreenEngine2D().PixelWidth;
+//		int yp = (y + i / 2 * sizey + 7) / engine.getScreenEngine2D().PixelHeight;
+		int xp = (x + i % 2 * sizex + xOffset) >> PDR;
+		int yp = (y + i / 2 * sizey + yOffset) >> PDR;
+		if (colltype.equals(CollisionType.BASIC)) {
+			if (getTileLayer(getLayer(layerPresent), xp, yp).collide(i)) solid = true;
+		} else if(colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
+			if (getTileLayerCollision(getCollisionLayer(layerPresent), xp, yp).collide(i)) solid = true;
+		}
+	}
+	return solid;
+}
+
+/**
+ * Adds entity to update and render que. (Make sure entity is properly initialized beforehand)
+ * @param entity
+ */
+public void add(Entity entity) {
+	Que.add(entity);
 }
 
 }

@@ -32,7 +32,7 @@ public class ScreenEngine2D {
 		this.alphaOverlay = new int[ width * height];
 		this.tiles = new int[PixelWidth * PixelHeight];
 		this.ImageToPixelRatio = ImageToPixelRatio;
-		Level.PDR = (ImageToPixelRatio / 16) + 3;
+		Level.PDR = (int) (Math.log(ImageToPixelRatio)/Math.log(2));
 		this.scale = scale;
 		XMid = width / 2;
 		YMid = height / 2;
@@ -126,7 +126,7 @@ public class ScreenEngine2D {
 		}
 	}
 	
-	public void renderPlayer(int xp, int yp, Sprite sprite) {
+	public void renderMob(int xp, int yp, Sprite sprite) {
 		xp -= xOffset;
 		yp -= yOffset;
 		for (int y = 0; y < sprite.SIZEY; y++) {

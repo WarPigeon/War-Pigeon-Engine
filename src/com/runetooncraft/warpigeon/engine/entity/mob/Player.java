@@ -14,19 +14,14 @@ public class Player extends Mob {
 //	protected int lastXa, lastYa = 0;
 	protected int xa,ya;
 	public Player(int x, int y, Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims, KeyBoardEvents input) {
-		super(ForwardAnims, BackwardAnims, LeftAnims, RightAnims);
+		super(x, y, ForwardAnims, BackwardAnims, LeftAnims, RightAnims);
 		this.input = input;
-		sprite = ForwardAnims[0];
-		this.x = x;
-		this.y = y;
 	}
 	
 	public Player(int x, int y, KeyBoardEvents input, int playerSize) {
-		super();
+		super(x,y);
 		this.input = input;
 		sprite = new Sprite(playerSize,new Random().nextInt(0xffffff));
-		this.x = x;
-		this.y = y;
 	}
 
 	public void update() {
@@ -76,14 +71,6 @@ public class Player extends Mob {
 	
 	public int getYTilePos() {
 		return y / 16;
-	}
-	
-	public void render(ScreenEngine2D screen) {
-		screen.renderPlayer(x - screen.XMid, y - screen.YMid, sprite);
-	}
-	
-	public void render(int x, int y, ScreenEngine2D screen) {
-		screen.renderPlayer(x - screen.XMid, y - screen.YMid, sprite);
 	}
 	
 	

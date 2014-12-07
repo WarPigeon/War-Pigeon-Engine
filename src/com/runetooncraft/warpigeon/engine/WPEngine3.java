@@ -87,7 +87,7 @@ public class WPEngine3 extends WPEngine2 {
 	}
 	
 	public void EngineUpdate() {
-		
+		level.update();
 	}
 	
 	@SuppressWarnings("static-access")
