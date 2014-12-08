@@ -10,7 +10,7 @@ import com.runetooncraft.warpigeon.engine.level.TileCoordinate;
 public abstract class Mob extends Entity {
 
 	protected Sprite sprite;
-	protected int dir = 0;
+	protected int dir,LastDir = 0;
 	protected int AnimationLocation = 0;
 	protected boolean moving = false;
 	protected boolean animate = false;
@@ -26,6 +26,8 @@ public abstract class Mob extends Entity {
 	public int collisionOffsetX = -15;
 	public int collisionOffsetY = -5;
 	public int xSize,ySize;
+	public boolean forcedir = true;
+	private boolean Collide = true;
 	
 	//Don't worry about this unless the game is a sidescroller
 	public int weight = 0;
@@ -73,7 +75,7 @@ public abstract class Mob extends Entity {
 		xas = xa;
 		yas = ya;
 		
-		int LastDir = dir;
+		LastDir = dir;
 		if (xa < 0) dir = 1;   // 0 - north| 1- east | 2 - south | 3 - west |
 		if (xa > 0) dir = 3;
 		if (ya < 0) dir = 2;
@@ -93,27 +95,40 @@ public abstract class Mob extends Entity {
 	
 	public void move(int xa, int ya) {
 		if(!animate) {
+			if(xa != 0 && ya != 0) {
+				moveNoAnimate(xa,0);
+				moveNoAnimate(0,ya);
+				return;
+			}
 			moveNoAnimate(xa,ya);
-			return;
 		}
 		
-		boolean Collide = true;
-//		if(xa != 0 && ya == 0 || xa == 0 && ya != 0) {
-//			move(xa,0);
-//			move(0,ya);
-//			return;
-//		}
+		Collide = true;
+		if(xa != 0 && ya != 0) {
+			if (ya > 0 && xa < 0) dir = 4;
+			if (ya > 0 && xa > 0) dir = 5;
+			if (ya < 0 && xa > 0) dir = 6;
+			if (ya < 0 && xa < 0) dir = 7;
+			forcedir = true;
+			move(xa,0);
+			move(0,ya);
+			animate();
+			forcedir = false;
+			return;
+		}
 		xas = xa;
 		yas = ya;
-		int LastDir = dir;
-		if (xa < 0) dir = 1;   // 0 - north| 1- east | 2 - south | 3 - west |
-		if (xa > 0) dir = 3;
-		if (ya < 0) dir = 2;
-		if (ya > 0) dir = 0;
-		if (ya > 0 && xa < 0) dir = 4;
-		if (ya > 0 && xa > 0) dir = 5;
-		if (ya < 0 && xa > 0) dir = 6;
-		if (ya < 0 && xa < 0) dir = 7;
+		LastDir = dir;
+		if(!forcedir) {
+			if (xa < 0) dir = 1;   // 0 - north| 1- east | 2 - south | 3 - west |
+			if (xa > 0) dir = 3;
+			if (ya < 0) dir = 2;
+			if (ya > 0) dir = 0;
+			if (ya > 0 && xa < 0) dir = 4;
+			if (ya > 0 && xa > 0) dir = 5;
+			if (ya < 0 && xa > 0) dir = 6;
+			if (ya < 0 && xa < 0) dir = 7;
+		}
 //		System.out.println("Dir: " + dir);
 		for(int x = 0; x < Math.abs(xa); x++) {
 			if (!collision(absInt(xa), ya)) {
@@ -127,22 +142,12 @@ public abstract class Mob extends Entity {
 				this.y += absInt(ya);
 			}
 		}
-		
-//		if(!collision(0,ya)) {
-//			y += ya;
-//			Collide = false;
-//		}
-//		if(!collision(xa,0)) {
-//			x += xa;
-//			Collide = false;
-//		}
-//		if(!collision(xa,ya)) {
-//			Collide = false;
-//			x += xa;
-//			y += ya;
-//		}
-		
-		
+		if(!forcedir) {
+			animate();
+		}
+	}
+	
+	private void animate() {
 		if(Collide == false) {
 			if(dir != LastDir) {
 				DirDoesNotEqualLastDir(LastDir);
@@ -181,7 +186,7 @@ public abstract class Mob extends Entity {
 			}
 		}
 	}
-	
+
 	public void DirDoesNotEqualLastDir(int LastDir) {
 		AnimationLocation = 0;
 		if(dir == 0) {
