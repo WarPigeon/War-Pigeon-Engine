@@ -731,17 +731,21 @@ static class collisionTiles {
 }
 
 
-public boolean tileCollision(int x, int y, int sizex, int sizey, int layerPresent, int xOffset, int yOffset) {
+public boolean tileCollision(double x, double y, int sizex, int sizey, int layerPresent, int xOffset, int yOffset) {
 	boolean solid = false;
 	for(int i = 0; i < 4; i++) {
 //		int xp = (x + i % 2 * sizex - 7) / engine.getScreenEngine2D().PixelWidth;
 //		int yp = (y + i / 2 * sizey + 7) / engine.getScreenEngine2D().PixelHeight;
-		int xp = (x + i % 2 * sizex + xOffset) >> PDR;
-		int yp = (y + i / 2 * sizey + yOffset) >> PDR;
+		double xp = (x + i % 2 * sizex + xOffset) / engine.getScreenEngine2D().PixelWidth;
+		double yp = (y + i / 2 * sizey + yOffset) / engine.getScreenEngine2D().PixelHeight;
+		int ix = (int) Math.ceil(xp);
+		int iy = (int) Math.ceil(yp);
+		if (i % 2 == 0) ix = (int) Math.floor(xp);
+		if (i / 2 == 0) iy = (int) Math.floor(yp);
 		if (colltype.equals(CollisionType.BASIC)) {
-			if (getTileLayer(getLayer(layerPresent), xp, yp).collide(i)) solid = true;
+			if (getTileLayer(getLayer(layerPresent), ix, iy).collide(i)) solid = true;
 		} else if(colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
-			if (getTileLayerCollision(getCollisionLayer(layerPresent), xp, yp).collide(i)) solid = true;
+			if (getTileLayerCollision(getCollisionLayer(layerPresent), ix, iy).collide(i)) solid = true;
 		}
 	}
 	return solid;

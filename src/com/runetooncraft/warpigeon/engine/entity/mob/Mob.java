@@ -23,8 +23,8 @@ public abstract class Mob extends Entity {
 	public int xas,yas;
 	protected boolean Sideways = false;
 	public int layerPresent = 1;
-	public int collisionWidth = 12;
-	public int collisionHeight = 12;
+	public int collisionOffsetX = -15;
+	public int collisionOffsetY = -5;
 	public int xSize,ySize;
 	
 	//Don't worry about this unless the game is a sidescroller
@@ -59,9 +59,9 @@ public abstract class Mob extends Entity {
 		screen.renderMob(x - screen.XMid, y - screen.YMid, sprite);
 	}
 	
-	public void setCollisionBox(int x, int y) {
-		collisionWidth = x;
-		collisionHeight = y;
+	public void setCollisionOffset(int x, int y) {
+		collisionOffsetX = x;
+		collisionOffsetY = y;
 	}
 	
 	public void moveNoAnimate(int xa, int ya) {
@@ -84,6 +84,11 @@ public abstract class Mob extends Entity {
 		if(!collision(xa,0)) {
 			x += xa;
 		}
+	}
+	
+	public int absInt(int value) {
+		if (value < 0) return -1;
+		return 1;
 	}
 	
 	public void move(int xa, int ya) {
@@ -110,20 +115,33 @@ public abstract class Mob extends Entity {
 		if (ya < 0 && xa > 0) dir = 6;
 		if (ya < 0 && xa < 0) dir = 7;
 //		System.out.println("Dir: " + dir);
+		for(int x = 0; x < Math.abs(xa); x++) {
+			if (!collision(absInt(xa), ya)) {
+				Collide = false;
+				this.x += absInt(xa);
+			}
+		}
+		for(int y = 0; y < Math.abs(ya); y++) {
+			if (!collision(xa, absInt(ya))) {
+				Collide = false;
+				this.y += absInt(ya);
+			}
+		}
 		
-		if(!collision(0,ya)) {
-			y += ya;
-			Collide = false;
-		}
-		if(!collision(xa,0)) {
-			x += xa;
-			Collide = false;
-		}
+//		if(!collision(0,ya)) {
+//			y += ya;
+//			Collide = false;
+//		}
+//		if(!collision(xa,0)) {
+//			x += xa;
+//			Collide = false;
+//		}
 //		if(!collision(xa,ya)) {
 //			Collide = false;
 //			x += xa;
 //			y += ya;
 //		}
+		
 		
 		if(Collide == false) {
 			if(dir != LastDir) {
@@ -200,8 +218,8 @@ public abstract class Mob extends Entity {
 		return solid;
 	}
 	
-	public boolean collision(int xa, int ya) {		
-		return level.tileCollision(x+xa, y+ya, collisionWidth, collisionHeight,layerPresent,0,0);
+	public boolean collision(double xa, double ya) {	
+		return level.tileCollision(xa+x, ya+y, 0, 0,layerPresent,collisionOffsetX,collisionOffsetY);
 	}
 	
 	public boolean checkCollideBelow() {

@@ -27,10 +27,10 @@ public class Player extends Mob {
 	public void update() {
 //		lastXa = xa; lastYa = ya;
 		xa = 0; ya = 0;
-		if (input.up) ya--;
-		if (input.down) ya++;
-		if (input.left) xa--;
-		if (input.right) xa++;
+		if (input.up) ya-=2;
+		if (input.down) ya+=2;
+		if (input.left) xa-=2;
+		if (input.right) xa+=2;
 		
 		if(input.ReleasedUP) {
 			if(animate) sprite = BackwardAnims[0];
