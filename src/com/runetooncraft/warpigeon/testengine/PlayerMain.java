@@ -9,8 +9,8 @@ public class PlayerMain extends Player {
 
 	
 
-	public PlayerMain(KeyListener input, int x, int y, Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims) {
-		super(x, y, ForwardAnims, BackwardAnims, LeftAnims, RightAnims, input);
+	public PlayerMain(KeyListener input, int x, int y, Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims, int xSize, int ySize) {
+		super(x, y, ForwardAnims, BackwardAnims, LeftAnims, RightAnims, input, xSize, ySize);
 		sprite = ForwardAnims[0];
 	}
 	

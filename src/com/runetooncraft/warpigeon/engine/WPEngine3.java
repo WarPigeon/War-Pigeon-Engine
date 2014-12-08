@@ -122,7 +122,7 @@ public class WPEngine3 extends WPEngine2 {
 	}
 
 	/**
-	 * called when mouse is left clicked
+	 * Called when mouse is left clicked.
 	 * @param mouse
 	 */
 	public void MouseLeftClicked() {
@@ -137,9 +137,17 @@ public class WPEngine3 extends WPEngine2 {
 	}
 	
 	/**
-	 * Returns the data storage directory for the engine
+	 * Returns the data storage directory for the engine.
 	 */
 	public File getWorkingDir() {
 		return DataFolder;
+	}
+	
+	/**
+	 * Returns the current player variable.
+	 * @return Player
+	 */
+	public Player getPlayer() {
+		return player;
 	}
 }

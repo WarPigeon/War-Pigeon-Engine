@@ -2,6 +2,7 @@ package com.runetooncraft.warpigeon.engine.graphics;
 
 import java.util.Random;
 
+import com.runetooncraft.warpigeon.engine.entity.mob.Mob;
 import com.runetooncraft.warpigeon.engine.entity.mob.Player;
 import com.runetooncraft.warpigeon.engine.level.Level;
 import com.runetooncraft.warpigeon.engine.level.Tile;
@@ -145,7 +146,53 @@ public class ScreenEngine2D {
 			}
 		}
 	}
-	
+	public void renderMob(int xp, int yp, Mob mob) {
+		xp -= xOffset;
+		yp -= yOffset;
+		Sprite sprite = mob.getSprite();
+		for (int y = 0; y < sprite.SIZEY; y++) {
+			int ya = y + yp;
+			for (int x = 0; x < sprite.SIZEX; x++) {
+				int xa = x + xp;
+				if (xa < - sprite.SIZEX || xa >= width || ya < 0 || ya >= height) break;
+				if (xa < 0) xa = 0;
+//				pixels[xa+ya*width] = sprite.pixels[x+y*sprite.SIZE];
+				try {
+					int col = sprite.pixels[x+y*sprite.SIZE];
+					if (col != 0xFFFF00D0) pixels[xa + ya * width] = col;
+				} catch(Exception e) {
+					
+				}
+			}
+		}
+	}
+	public void renderMob(int xp, int yp, Mob mob,int colorReplace, int colorReplacewith) {
+		xp -= xOffset;
+		yp -= yOffset;
+		Sprite sprite = mob.getSprite();
+		for (int y = 0; y < sprite.SIZEY; y++) {
+			int ya = y + yp;
+			for (int x = 0; x < sprite.SIZEX; x++) {
+				int xa = x + xp;
+				if (xa < - sprite.SIZEX || xa >= width || ya < 0 || ya >= height) break;
+				if (xa < 0) xa = 0;
+//				pixels[xa+ya*width] = sprite.pixels[x+y*sprite.SIZE];
+				try {
+					int col = sprite.pixels[x+y*sprite.SIZE];
+						if (col != 0xFFFF00D0) {
+							if(col != colorReplace) {
+								pixels[xa + ya * width] = col;
+							} else {
+								pixels[xa + ya * width] = colorReplacewith;
+							}
+						}
+				} catch(Exception e) {
+					
+				}
+				
+			}
+		}
+	}
 	public void renderSprite(int xp, int yp, Sprite sprite, boolean fixed) {
 		if (fixed) {
 			xp -= xOffset;

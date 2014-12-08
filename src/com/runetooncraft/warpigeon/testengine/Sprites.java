@@ -8,6 +8,7 @@ public class Sprites{
 	
 	public static SpriteSheet Sheet1 = new SpriteSheet("/textures/Walls.png", 264);
 	public static SpriteSheet Cripsy = new SpriteSheet("/textures/CripsySheet.png", 390);
+	public static SpriteSheet po = new SpriteSheet("/textures/poSheet.png",520);
 	public static Sprite Grass = new Sprite(32, 0, 0, Sheet1);
 	public static Sprite Grass2 = new Sprite(32, 1, 0, Sheet1);
 	public static Sprite Grass3 = new Sprite(32, 2, 0, Sheet1);
@@ -30,4 +31,5 @@ public class Sprites{
 	public static Sprite CRIPSY_FORWARD_ANIM2 = new Sprite(64, 0, 1, Cripsy);
 	public static Sprite CRIPSY_BACKWARD_ANIM1 = new Sprite(64, 1, 1, Cripsy);
 	public static Sprite CRIPSY_BACKWARD_ANIM2 = new Sprite(64, 1, 0, Cripsy);
+	public static Sprite PO_FORWARD = new Sprite(64,0,0,po);
 }

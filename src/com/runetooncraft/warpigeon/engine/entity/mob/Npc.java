@@ -5,10 +5,8 @@ import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 
 public class Npc extends Mob {
 	public boolean up,down,left,right = false;
-	int TileSize;
-	public Npc(Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims,int XPosition, int YPosition, int TileSize) {
-		super(XPosition, YPosition, ForwardAnims, BackwardAnims, LeftAnims, RightAnims);
-		this.TileSize = TileSize;
+	public Npc(Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims,int XPosition, int YPosition, int xSize, int ySize) {
+		super(XPosition, YPosition, ForwardAnims, BackwardAnims, LeftAnims, RightAnims, xSize, ySize);
 		sprite = ForwardAnims[0];
 	}
 	

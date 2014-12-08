@@ -13,8 +13,8 @@ public class Player extends Mob {
 	protected KeyBoardEvents input;
 //	protected int lastXa, lastYa = 0;
 	protected int xa,ya;
-	public Player(int x, int y, Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims, KeyBoardEvents input) {
-		super(x, y, ForwardAnims, BackwardAnims, LeftAnims, RightAnims);
+	public Player(int x, int y, Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims, KeyBoardEvents input, int xSize, int ySize) {
+		super(x, y, ForwardAnims, BackwardAnims, LeftAnims, RightAnims, xSize, ySize);
 		this.input = input;
 	}
 	

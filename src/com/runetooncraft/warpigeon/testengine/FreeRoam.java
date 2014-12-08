@@ -47,13 +47,13 @@ public class FreeRoam extends WPEngine4 {
 		ForwardAnims[1] = Sprites.CRIPSY_FORWARD_ANIM2;
 		BackwardAnims[0] = Sprites.CRIPSY_BACKWARD_ANIM1;
 		BackwardAnims[1] = Sprites.CRIPSY_BACKWARD_ANIM2;
-		player = new PlayerMain(KL, 10, 10, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims);
+		player = new PlayerMain(KL, 10, 10, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims,64,64);
 		player.init(level,this);
 		//NPC1 Setup
 		Sprite[] ForwardAnimsnpc = new Sprite[1];
-		ForwardAnimsnpc[0] = Sprites.StoneTopLeftSlant;
+		ForwardAnimsnpc[0] = Sprites.PO_FORWARD;
 		for(int i = 0; i <=10; i++) {
-			Dummy npc = new Dummy(ForwardAnimsnpc,ForwardAnimsnpc,ForwardAnimsnpc,ForwardAnimsnpc,10,11,32);
+			FollowNPC npc = new FollowNPC(ForwardAnimsnpc,ForwardAnimsnpc,ForwardAnimsnpc,ForwardAnimsnpc,10,21,64,64);
 			npc.init(level, this);
 			level.add(npc);
 		}

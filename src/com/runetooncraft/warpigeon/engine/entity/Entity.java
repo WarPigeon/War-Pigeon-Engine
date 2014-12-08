@@ -33,4 +33,12 @@ public abstract class Entity {
 		this.level = level;
 		this.engine = engine;
 	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
 }

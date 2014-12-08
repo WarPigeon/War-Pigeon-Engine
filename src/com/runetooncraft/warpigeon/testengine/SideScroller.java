@@ -45,7 +45,7 @@ public class SideScroller extends WPEngine4 {
 		ForwardAnims[1] = Sprites.CRIPSY_FORWARD_ANIM2;
 		BackwardAnims[0] = Sprites.CRIPSY_BACKWARD_ANIM1;
 		BackwardAnims[1] = Sprites.CRIPSY_BACKWARD_ANIM2;
-		player = new PlayerMain(KL, 0, 0, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims);
+		player = new PlayerMain(KL, 0, 0, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims, 32, 32);
 		int[] GroundIDS = new int[1];
 		GroundIDS[0] = 4;
 		level = new SideScrollingLevel(64,20, DataFolder, "Testy", 5, 2, GroundIDS, player, this, CollisionType.BASIC);

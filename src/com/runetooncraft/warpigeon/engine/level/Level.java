@@ -4,12 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.runetooncraft.warpigeon.engine.GameType;
 import com.runetooncraft.warpigeon.engine.WPEngine1;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.entity.Entity;
+import com.runetooncraft.warpigeon.engine.entity.mob.Player;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.Layer.*;
@@ -47,7 +49,7 @@ public class Level {
 	public boolean overlayEnabled = false;
 	public CollisionType colltype = null; //Set this on level creation, set config values and create collision layers
 	public collisionTiles colltiles;
-	public ArrayList<Entity> Que = new ArrayList<Entity>();
+	private ArrayList<Entity> Que = new ArrayList<Entity>();
 	
 	public void ExpandLevel(int xExpand, int yExpand) {
 		render = false;
@@ -85,6 +87,39 @@ public class Level {
 			}
 		}
 		render = true;
+	}
+	
+	public List<Entity> getEntityQue() {
+		return Que;
+	}
+	
+	/**
+	 * @param entity
+	 * @param radius in pixels
+	 * @return a list of entities within the radius around the selected entity.
+	 */
+	public List<Entity> getEntityRadius(Entity entity, int radius) {
+		List<Entity> result = new ArrayList<Entity>();
+		for(int i = 0; i < Que.size(); i++) {
+			Entity e = Que.get(i);
+			int dx = Math.abs(e.getX() - entity.getX());
+			int dy = Math.abs(e.getY() - entity.getY());
+			double Distance = Math.sqrt((dx*dx)+(dy*dy));
+			if(Distance <= radius) result.add(e);
+		}
+		return result;
+	}
+	
+	public Player getPlayerRadius(Entity entity, int radius) {
+		Player player = engine.getPlayer();
+			int dx = Math.abs(player.getX() - entity.getX());
+			int dy = Math.abs(player.getY() - entity.getY());
+			double Distance = Math.sqrt((dx*dx)+(dy*dy));
+			if(Distance <= radius) {
+				return player;
+			} else {
+				return null;
+			}
 	}
 	/**
 	 * Level constructor.

@@ -25,17 +25,20 @@ public abstract class Mob extends Entity {
 	public int layerPresent = 1;
 	public int collisionWidth = 12;
 	public int collisionHeight = 12;
+	public int xSize,ySize;
 	
 	//Don't worry about this unless the game is a sidescroller
 	public int weight = 0;
 	
-	public Mob(int x, int y, Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims) {
+	public Mob(int x, int y, Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims, int xSize, int ySize) {
 		this.x = x << 4;
 		this.y = y << 4;
 		this.ForwardAnims = ForwardAnims;
 		this.BackwardAnims = BackwardAnims;
 		this.LeftAnims = LeftAnims;
 		this.RightAnims = RightAnims;
+		this.xSize = xSize;
+		this.ySize = ySize;
 		sprite = ForwardAnims[0];
 		animate = true;
 	}
