@@ -1,6 +1,8 @@
 package com.runetooncraft.warpigeon.engine.level;
 
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
+import com.runetooncraft.warpigeon.engine.utils.Vector2Type;
+import com.runetooncraft.warpigeon.engine.utils.Vector2i;
 import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 
 public class CoordinateHandler {
@@ -73,7 +75,7 @@ public class CoordinateHandler {
 		}
 	}
 	
-	public TileCoordinate getTileCoordinateAtMouse(int x, int y, ScreenEngine2D screen, Level level) {
+	public Vector2i getTileCoordinateAtMouse(int x, int y, ScreenEngine2D screen, Level level) {
 		int Scale = screen.scale / 1000;
 		int LeftBoundXScrollTile = level.getLeftBoundXScroll();
 		int TopBoundsYScrollTile = level.getTopBoundYScroll();
@@ -94,6 +96,6 @@ public class CoordinateHandler {
 //		x0 = x0 / screen.PixelWidth;
 //		y0 = y0 / screen.PixelHeight;
 //		System.out.println(x0 + "," + y0);
-		return new TileCoordinate(x0,y0);
+		return new Vector2i(x0,y0,Vector2Type.BY_TILE);
 	}
 }

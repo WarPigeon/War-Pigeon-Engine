@@ -7,6 +7,8 @@ import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.entity.mob.Mob;
 import com.runetooncraft.warpigeon.engine.entity.mob.Player;
 import com.runetooncraft.warpigeon.engine.level.Layer.Layer;
+import com.runetooncraft.warpigeon.engine.utils.Vector2Type;
+import com.runetooncraft.warpigeon.engine.utils.Vector2i;
 
 public class SideScrollingLevel extends Level {
 	
@@ -54,7 +56,7 @@ public class SideScrollingLevel extends Level {
 			for(int m = 0; m <= (GroundSize - 1); m++) {
 				int SetLevel = GroundLevel + m;
 				for(int i = 0; i < width; i++) {
-					TileCoordinate tc = new TileCoordinate(i,SetLevel);
+					Vector2i tc = new Vector2i(i,SetLevel,Vector2Type.BY_TILE);
 					Layer returnlayer;
 					this.setTile(tc, RandomFloorTile(), engine.getLevel().getLayer(layer));
 				}

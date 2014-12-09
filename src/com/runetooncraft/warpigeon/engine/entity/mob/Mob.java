@@ -5,7 +5,7 @@ import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.CollisionType;
 import com.runetooncraft.warpigeon.engine.level.Tile;
-import com.runetooncraft.warpigeon.engine.level.TileCoordinate;
+import com.runetooncraft.warpigeon.engine.utils.Vector2i;
 
 public abstract class Mob extends Entity {
 

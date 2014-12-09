@@ -9,7 +9,8 @@ import com.runetooncraft.warpigeon.engine.level.Tile;
 
 public class ScreenEngine2D {
 
-	public int width, height, PixelWidth, PixelHeight, scale;
+	public int width, height, scale;
+	public static int PixelWidth, PixelHeight;
 	public int[] pixels;
 	public int[] alphaOverlay;
 	public int[] tiles;

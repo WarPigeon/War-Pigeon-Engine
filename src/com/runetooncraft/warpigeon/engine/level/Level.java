@@ -17,6 +17,8 @@ import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.Layer.*;
 import com.runetooncraft.warpigeon.engine.level.specialtiles.removeCollisionTile;
 import com.runetooncraft.warpigeon.engine.utils.FileSystem;
+import com.runetooncraft.warpigeon.engine.utils.Vector2Type;
+import com.runetooncraft.warpigeon.engine.utils.Vector2i;
 import com.runetooncraft.warpigeon.engine.utils.YamlConfig;
 
 public class Level {
@@ -53,14 +55,14 @@ public class Level {
 	
 	public void ExpandLevel(int xExpand, int yExpand) {
 		render = false;
-		HashMap<Integer,HashMap<TileCoordinate,Tile>> LayerMap = new HashMap<Integer,HashMap<TileCoordinate,Tile>>();
-		HashMap<TileCoordinate,Tile> TileMap = new HashMap<TileCoordinate,Tile>();
-		TileCoordinate Tc;
+		HashMap<Integer,HashMap<Vector2i,Tile>> LayerMap = new HashMap<Integer,HashMap<Vector2i,Tile>>();
+		HashMap<Vector2i,Tile> TileMap = new HashMap<Vector2i,Tile>();
+		Vector2i Tc;
 		
 		for(int layer = 1; layer <= Layers; layer++) {
 			for(int yt = 0; yt < height; yt++) {
 				for(int xt = 0; xt < width; xt++) {
-					Tc = new TileCoordinate(xt,yt);
+					Tc = new Vector2i(xt,yt, Vector2Type.BY_TILE);
 					if(layer == 1) {
 						TileMap.put(Tc, getTile(xt,yt));
 					} else {
@@ -69,7 +71,7 @@ public class Level {
 				}
 			}
 			LayerMap.put(layer, TileMap);
-			TileMap = new HashMap<TileCoordinate,Tile>();
+			TileMap = new HashMap<Vector2i,Tile>();
 		}
 		
 		NewLevel(width + xExpand, height + yExpand, workingDir, name, colltype);
@@ -82,7 +84,7 @@ public class Level {
 				LayerList.add(new Layer(new int[width * height],LayerType.DEFAULT_LAYER));
 			}
 			
-			for(TileCoordinate coords: TileMap.keySet()) {
+			for(Vector2i coords: TileMap.keySet()) {
 				setTile(coords, TileMap.get(coords), LayerList.get(clayer-2));
 			}
 		}
@@ -301,7 +303,7 @@ public class Level {
 	}
 	
 	
-	public void setTile(TileCoordinate coords, Tile tile, Layer Layer) {
+	public void setTile(Vector2i coords, Tile tile, Layer Layer) {
 			int Tiley = coords.tileY() * (width);
 			int Tilex = coords.tileX();
 			if((Tiley + Tilex) <= (width * height)) {
@@ -327,8 +329,8 @@ public class Level {
 		return mainLayer;
 	}
 	
-	public Tile getTile(TileCoordinate coords) {
-		return TileIDS.get(mainLayer.tiles[coords.x() * (coords.y() * height)]);
+	public Tile getTile(Vector2i coords) {
+		return TileIDS.get(mainLayer.tiles[coords.getX() * (coords.getY() * height)]);
 	}
 	
 	private void CorruptLevel() {

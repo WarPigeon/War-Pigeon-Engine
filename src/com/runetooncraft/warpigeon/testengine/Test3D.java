@@ -13,7 +13,7 @@ import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.CoordinateHandler;
 import com.runetooncraft.warpigeon.engine.level.Level;
 import com.runetooncraft.warpigeon.engine.level.RandomLevel;
-import com.runetooncraft.warpigeon.engine.level.TileCoordinate;
+import com.runetooncraft.warpigeon.engine.utils.Vector2i;
 import com.runetooncraft.warpigeon.engine.utils3d.KeyListener;
 import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 
