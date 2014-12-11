@@ -1,6 +1,7 @@
 package com.runetooncraft.warpigeon.engine.entity.mob;
 
 import com.runetooncraft.warpigeon.engine.entity.Entity;
+import com.runetooncraft.warpigeon.engine.graphics.AnimatedSprite;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.CollisionType;
@@ -11,28 +12,64 @@ public abstract class Mob extends Entity {
 
 	protected Sprite sprite;
 	protected int dir,LastDir = 0;
-	protected int AnimationLocation = 0;
 	protected boolean moving = false;
 	protected boolean animate = false;
-	protected Sprite[] ForwardAnims;
-	protected Sprite[] BackwardAnims;
-	protected Sprite[] LeftAnims;
-	protected Sprite[] RightAnims;
+	protected AnimatedSprite ForwardAnims;
+	protected AnimatedSprite BackwardAnims;
+	protected AnimatedSprite LeftAnims;
+	protected AnimatedSprite RightAnims;
 	protected int AnimationCooldown = 10;
 	private int AnimationCooldownToggle = 0;
 	public int xas,yas;
 	protected boolean Sideways = false;
 	public int layerPresent = 1;
-	public int collisionOffsetX = -15;
-	public int collisionOffsetY = -5;
+	public int collisionOffsetX = 0;
+	public int collisionOffsetY = 0;
 	public int xSize,ySize;
-	public boolean forcedir = true;
+	public boolean forcedir = false;
 	private boolean Collide = true;
 	
 	//Don't worry about this unless the game is a sidescroller
 	public int weight = 0;
 	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @param ForwardAnims ForwardAnims[0] Used as Forward Idle Sprite
+	 * @param BackwardAnims BackwardAnims[0] used as Backward Idle Sprite
+	 * @param LeftAnims LeftAnims[0] used as Left Idle Sprite
+	 * @param RightAnims RightAnims[0] used as Right Idle Sprite
+	 * @param xSize
+	 * @param ySize
+	 */
 	public Mob(int x, int y, Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims, int xSize, int ySize) {
+		this.x = x << 4;
+		this.y = y << 4;
+		this.ForwardAnims = new AnimatedSprite(ForwardAnims, ForwardAnims[0]);
+		this.BackwardAnims = new AnimatedSprite(BackwardAnims, BackwardAnims[0]);
+		this.LeftAnims = new AnimatedSprite(LeftAnims, LeftAnims[0]);
+		this.RightAnims = new AnimatedSprite(RightAnims, RightAnims[0]);
+		this.xSize = xSize;
+		this.ySize = ySize;
+		sprite = this.ForwardAnims.idleNoCounter();
+		animate = true;
+	}
+	
+	public Mob(int x, int y, Sprite[] ForwardAnims, Sprite IdleForward, Sprite[] BackwardAnims, Sprite IdleBackward, Sprite[] LeftAnims, Sprite IdleLeft, Sprite[] RightAnims, Sprite IdleRight, int xSize, int ySize) {
+		this.x = x << 4;
+		this.y = y << 4;
+		this.ForwardAnims = new AnimatedSprite(ForwardAnims, IdleForward);
+		this.BackwardAnims = new AnimatedSprite(BackwardAnims,IdleBackward);
+		this.LeftAnims = new AnimatedSprite(LeftAnims, IdleLeft);
+		this.RightAnims = new AnimatedSprite(RightAnims,IdleRight);
+		this.xSize = xSize;
+		this.ySize = ySize;
+		sprite = this.ForwardAnims.idleNoCounter();
+		animate = true;
+	}
+	
+	public Mob(int x, int y, AnimatedSprite ForwardAnims, AnimatedSprite BackwardAnims, AnimatedSprite LeftAnims, AnimatedSprite RightAnims, int xSize, int ySize) {
 		this.x = x << 4;
 		this.y = y << 4;
 		this.ForwardAnims = ForwardAnims;
@@ -41,7 +78,7 @@ public abstract class Mob extends Entity {
 		this.RightAnims = RightAnims;
 		this.xSize = xSize;
 		this.ySize = ySize;
-		sprite = ForwardAnims[0];
+		sprite = ForwardAnims.idleNoCounter();
 		animate = true;
 	}
 	
@@ -102,20 +139,26 @@ public abstract class Mob extends Entity {
 			}
 			moveNoAnimate(xa,ya);
 		}
-		
-		Collide = true;
 		if(xa != 0 && ya != 0) {
+			Collide = true;
 			if (ya > 0 && xa < 0) dir = 4;
 			if (ya > 0 && xa > 0) dir = 5;
 			if (ya < 0 && xa > 0) dir = 6;
 			if (ya < 0 && xa < 0) dir = 7;
+			for(int x = 0; x < Math.abs(xa); x++) {
+				if (!collision(absInt(xa), ya)) {
+					Collide = false;
+				}
+			}
+			for(int y = 0; y < Math.abs(ya); y++) {
+				if (!collision(xa, absInt(ya))) {
+					Collide = false;
+				}
+			}
+			
 			forcedir = true;
-			boolean actualCollide = true;
 			move(xa,0);
-			if(!Collide) actualCollide = false;
 			move(0,ya);
-			if(!Collide) actualCollide = false;
-			Collide = actualCollide;
 			animate();
 			forcedir = false;
 			return;
@@ -124,6 +167,7 @@ public abstract class Mob extends Entity {
 		yas = ya;
 		LastDir = dir;
 		if(!forcedir) {
+			Collide = true;
 			if (xa < 0) dir = 1;   // 0 - north| 1- east | 2 - south | 3 - west |
 			if (xa > 0) dir = 3;
 			if (ya < 0) dir = 2;
@@ -133,19 +177,19 @@ public abstract class Mob extends Entity {
 			if (ya < 0 && xa > 0) dir = 6;
 			if (ya < 0 && xa < 0) dir = 7;
 		}
+			for(int x = 0; x < Math.abs(xa); x++) {
+				if (!collision(absInt(xa), ya)) {
+					Collide = false;
+					this.x += absInt(xa);
+				}
+			}
+			for(int y = 0; y < Math.abs(ya); y++) {
+				if (!collision(xa, absInt(ya))) {
+					Collide = false;
+					this.y += absInt(ya);
+				}
+			}
 //		System.out.println("Dir: " + dir);
-		for(int x = 0; x < Math.abs(xa); x++) {
-			if (!collision(absInt(xa), ya)) {
-				Collide = false;
-				this.x += absInt(xa);
-			}
-		}
-		for(int y = 0; y < Math.abs(ya); y++) {
-			if (!collision(xa, absInt(ya))) {
-				Collide = false;
-				this.y += absInt(ya);
-			}
-		}
 		if(!forcedir) {
 			animate();
 		}
@@ -155,36 +199,26 @@ public abstract class Mob extends Entity {
 		if(Collide == false) {
 			if(dir != LastDir) {
 				DirDoesNotEqualLastDir(LastDir);
+				AnimationCooldownToggle = AnimationCooldown;
 			} else {
-				if(dir == 0 && (AnimationLocation + 1) < ForwardAnims.length || 
-						dir == 1 && (AnimationLocation + 1) < LeftAnims.length || 
-							dir == 2 && (AnimationLocation + 1) < BackwardAnims.length || 
-								dir == 3 && (AnimationLocation + 1) < RightAnims.length ||
-									dir == 4 && (AnimationLocation + 1) < ForwardAnims.length ||
-										dir == 5 && (AnimationLocation + 1) < ForwardAnims.length ||
-											dir == 6 && (AnimationLocation + 1) < ForwardAnims.length ||
-												dir == 7 && (AnimationLocation + 1) < ForwardAnims.length) {
-					AnimationLocation++;
-				} else {
-					AnimationLocation = 0;
-				}
+				
 			}
 			
 			if(AnimationCooldownToggle == AnimationCooldown) {
 				AnimationCooldownToggle = 0;
 				if(dir == 0 || dir == 4 || dir == 5) {
-					sprite = ForwardAnims[AnimationLocation];
+					sprite = ForwardAnims.next();
 				} else if(dir == 1) {
-					sprite = LeftAnims[AnimationLocation];
+					sprite = LeftAnims.next();
 				} else if(dir == 2 || dir == 6 || dir == 7) {
-					sprite = BackwardAnims[AnimationLocation];
+					sprite = BackwardAnims.next();
 				} else if(dir == 3) {
-					sprite = RightAnims[AnimationLocation];
+					sprite = RightAnims.next();
 				}
 			}else{
 				if(AnimationCooldownToggle < AnimationCooldown) {
 					AnimationCooldownToggle++;
-				}else{
+				} else {
 					AnimationCooldownToggle = 0;
 				}
 			}
@@ -192,15 +226,14 @@ public abstract class Mob extends Entity {
 	}
 
 	public void DirDoesNotEqualLastDir(int LastDir) {
-		AnimationLocation = 0;
 		if(dir == 0) {
-			sprite = ForwardAnims[0];
+			sprite = ForwardAnims.idle();
 		}else if(dir == 1) {
-			sprite = LeftAnims[0];
+			sprite = LeftAnims.idle();
 		}else if(dir == 2) {
-			sprite = BackwardAnims[0];
+			sprite = BackwardAnims.idle();
 		}else if(dir == 3) {
-			sprite = RightAnims[0];
+			sprite = RightAnims.idle();
 		}
 	}
 	public boolean checksolidBelow(int xa, int ya) {
@@ -228,7 +261,7 @@ public abstract class Mob extends Entity {
 	}
 	
 	public boolean collision(double xa, double ya) {	
-		return level.tileCollision(xa+x, ya+y, 0, 0,layerPresent,collisionOffsetX,collisionOffsetY);
+		return level.tileCollision(xa+x, ya+y, 0, 0, layerPresent,collisionOffsetX - xSize,collisionOffsetY - ySize);
 	}
 	
 	public boolean checkCollideBelow() {

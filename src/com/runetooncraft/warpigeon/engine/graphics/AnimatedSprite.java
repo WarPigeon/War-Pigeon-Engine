@@ -13,18 +13,28 @@ public class AnimatedSprite {
 	}
 	
 	public Sprite next() {
-		Sprite returnSprite = null;
-		if(current < max) {
-			returnSprite = sprites[current];
-			current++;
-		} else {
+		if(current >= max) {
 			current = 0;
-			returnSprite = sprites[current];
 		}
-		return returnSprite;
+		Sprite returnsprite = sprites[current];
+		current++;
+		return returnsprite;
 	}
 	
+	/**
+	 * Calling the Idle sprite also resets the sprite counter. Call idleNoCounter(); to get the sprite without resetting.
+	 * @return
+	 */
 	public Sprite idle() {
+		current = 0;
+		return idleSprite;
+	}
+	
+	/**
+	 * Calling idleNoCounter returns the sprite without resetting the sprite counter. Call idle() to get the sprite and to reset the counter.
+	 * @return
+	 */
+	public Sprite idleNoCounter() {
 		return idleSprite;
 	}
 

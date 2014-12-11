@@ -2,8 +2,10 @@ package com.runetooncraft.warpigeon.engine.entity.mob;
 
 import java.util.Random;
 
+import com.runetooncraft.warpigeon.engine.graphics.AnimatedSprite;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
+import com.runetooncraft.warpigeon.engine.level.Level;
 import com.runetooncraft.warpigeon.engine.utils.KeyBoardEvents;
 import com.runetooncraft.warpigeon.engine.utils.Vector2i;
 import com.runetooncraft.warpigeon.testengine.Sprites;
@@ -14,6 +16,11 @@ public class Player extends Mob {
 //	protected int lastXa, lastYa = 0;
 	protected int xa,ya;
 	public Player(int x, int y, Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims, KeyBoardEvents input, int xSize, int ySize) {
+		super(x, y, ForwardAnims, BackwardAnims, LeftAnims, RightAnims, xSize, ySize);
+		this.input = input;
+	}
+	
+	public Player(int x, int y, AnimatedSprite ForwardAnims, AnimatedSprite BackwardAnims, AnimatedSprite LeftAnims, AnimatedSprite RightAnims, KeyBoardEvents input, int xSize, int ySize) {
 		super(x, y, ForwardAnims, BackwardAnims, LeftAnims, RightAnims, xSize, ySize);
 		this.input = input;
 	}
@@ -33,26 +40,22 @@ public class Player extends Mob {
 		if (input.right) xa+=2;
 		
 		if(input.ReleasedUP) {
-			if(animate) sprite = BackwardAnims[0];
-			AnimationLocation = 0;
+			if(animate) sprite = BackwardAnims.idle();
 			input.ReleasedUP = false;
 		}
 		
 		if(input.ReleasedDown) {
-			if(animate) sprite = ForwardAnims[0];
-			AnimationLocation = 0;
+			if(animate) sprite = ForwardAnims.idle();
 			input.ReleasedDown = false;
 		}
 		
 		if(input.ReleasedLeft) {
-			if(animate) sprite = LeftAnims[0];
-			AnimationLocation = 0;
+			if(animate) sprite = LeftAnims.idle();
 			input.ReleasedLeft= false;
 		}
 		
 		if(input.ReleasedRight) {
-			if(animate) sprite = RightAnims[0];
-			AnimationLocation = 0;
+			if(animate) sprite = RightAnims.idle();
 			input.ReleasedRight = false;
 		}
 		
@@ -66,11 +69,11 @@ public class Player extends Mob {
 	}
 	
 	public int getXTilePos() {
-		return x / 16;
+		return x >> Level.PDR;
 	}
 	
 	public int getYTilePos() {
-		return y / 16;
+		return y >> Level.PDR;
 	}
 	
 	

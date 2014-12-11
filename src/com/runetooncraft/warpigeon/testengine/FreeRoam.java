@@ -11,6 +11,7 @@ import com.runetooncraft.warpigeon.engine.GameType;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.entity.mob.*;
 import com.runetooncraft.warpigeon.engine.entity.mob.npc.*;
+import com.runetooncraft.warpigeon.engine.graphics.AnimatedSprite;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.CoordinateHandler;
 import com.runetooncraft.warpigeon.engine.level.Level;
@@ -43,11 +44,13 @@ public class FreeRoam extends WPEngine4 {
 		//Player Setup
 		Sprite[] ForwardAnims = new Sprite[2];
 		Sprite[] BackwardAnims = new Sprite[2];
-		ForwardAnims[0] = Sprites.CRIPSY_FORWARD_ANIM1;
-		ForwardAnims[1] = Sprites.CRIPSY_FORWARD_ANIM2;
-		BackwardAnims[0] = Sprites.CRIPSY_BACKWARD_ANIM1;
-		BackwardAnims[1] = Sprites.CRIPSY_BACKWARD_ANIM2;
-		player = new PlayerMain(KL, 10, 10, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims,64,64);
+		ForwardAnims[0] = Sprites.KNIGHT_FORWARDANIM1;
+		ForwardAnims[1] = Sprites.KNIGHT_FORWARDANIM2;
+		BackwardAnims[0] = Sprites.KNIGHT_BACKWARDANIM1;
+		BackwardAnims[1] = Sprites.KNIGHT_BACKWARDANIM2;
+		AnimatedSprite FA = new AnimatedSprite(ForwardAnims, Sprites.KNIGHT_FORWARDIDLE);
+		AnimatedSprite BA = new AnimatedSprite(BackwardAnims, Sprites.KNIGHT_BACKWARDIDLE);
+		player = new PlayerMain(KL, 10, 10, FA, BA, FA, FA, 32, 32);
 		player.init(level,this);
 		//NPC1 Setup
 		Sprite[] ForwardAnimsnpc = new Sprite[1];
