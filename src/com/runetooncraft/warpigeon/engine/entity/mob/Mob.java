@@ -110,8 +110,12 @@ public abstract class Mob extends Entity {
 			if (ya < 0 && xa > 0) dir = 6;
 			if (ya < 0 && xa < 0) dir = 7;
 			forcedir = true;
+			boolean actualCollide = true;
 			move(xa,0);
+			if(!Collide) actualCollide = false;
 			move(0,ya);
+			if(!Collide) actualCollide = false;
+			Collide = actualCollide;
 			animate();
 			forcedir = false;
 			return;
