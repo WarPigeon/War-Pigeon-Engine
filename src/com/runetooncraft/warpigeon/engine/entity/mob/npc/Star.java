@@ -45,29 +45,25 @@ public class Star extends Npc {
 		}
 	}
 	
+	public boolean collision(double xa, double ya) { //temporary fix to problems
+		return false;
+	}
+	
 	private void updatemove() {
 		xa = 0;
 		ya = 0;
-		int px = engine.getPlayer().getX() - 16;
-		int py = engine.getPlayer().getY() - 16;
+		int px = engine.getPlayer().getX() - (engine.getPlayer().xSize >> 1);
+		int py = engine.getPlayer().getY() - (engine.getPlayer().ySize >> 1);
 		Vector2i start = new Vector2i(Vector2Type.BY_TILE).setPixelToTile(getX(), getY());
 		Vector2i destination = new Vector2i(Vector2Type.BY_TILE).setPixelToTile(px, py);
 		if(time % 3 == 0) path = level.findPath(start, destination);
 		if (path != null) {
-			for(int i = 0; i< level.getLayer(2).tiles.length; i++) {
-				
-				level.getLayer(2).tiles[i] = level.EmptyTile.getTileID();
-			}
-			for(Node node: path) {
-				level.setTile(node.tile, Tiles.StoneTopRightSlant, level.getLayer(2));
-			}
 			if (path.size() > 0) {
 				Vector2i vec = path.get(path.size() - 1).tile;
-				System.out.println(x + "/" + engine.getPlayer().getX());
-				if(x < vec.getPixelX()) xa++;
-				if(x > vec.getPixelX()) xa--;
-				if(y < vec.getPixelY()) ya++;
-				if(y > vec.getPixelY()) ya--;
+				if(x < vec.getPixelX()) xa+=2;
+				if(x > vec.getPixelX()) xa-=2;
+				if(y < vec.getPixelY()) ya+=2;
+				if(y > vec.getPixelY()) ya-=2;
 				
 			}
 		}
