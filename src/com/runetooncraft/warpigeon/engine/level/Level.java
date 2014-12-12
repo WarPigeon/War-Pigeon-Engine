@@ -3,6 +3,7 @@ package com.runetooncraft.warpigeon.engine.level;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,8 @@ import com.runetooncraft.warpigeon.engine.utils.Vector2Type;
 import com.runetooncraft.warpigeon.engine.utils.Vector2i;
 import com.runetooncraft.warpigeon.engine.utils.YamlConfig;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 public class Level {
 	
 	protected int width, height;
@@ -35,6 +38,8 @@ public class Level {
 	public static Tile LoadingTile = null;
 	public static Tile EmptyTile = new EmptyTile(null, -1);
 	public static int PDR = 5;
+	public static int PDRX = 5;
+	public static int PDRY = 5;
 	public static String name = "UnNamed";
 	private File workingDir;
 	private int x0,x1,y0,y1;
@@ -51,6 +56,16 @@ public class Level {
 	public boolean overlayEnabled = false;
 	public CollisionType colltype = null; //Set this on level creation, set config values and create collision layers
 	public collisionTiles colltiles;
+	
+	private Comparator<Node> nodeSorter = new Comparator<Node>() {
+		public int compare(Node n0, Node n1) {
+			if(n1.fCost < n0.fCost) return 1;
+			if(n1.fCost > n0.fCost) return -1;
+			return 0;
+		}
+		
+	};
+	
 	private ArrayList<Entity> Que = new ArrayList<Entity>();
 	
 	public void ExpandLevel(int xExpand, int yExpand) {
@@ -89,6 +104,59 @@ public class Level {
 			}
 		}
 		render = true;
+	}
+	
+	/**
+	 * A* Search YEAH! Pathfinding :D
+	 */
+	public List<Node> findPath(Vector2i start, Vector2i goal) {
+		//System.out.println(goal.getX() + "," + goal.getY());
+		List<Node> openList = new ArrayList<Node>();
+		List<Node> closedList = new ArrayList<Node>();
+		Node current = new Node(start, null, 0, Vector2i.getDistance(start, goal));
+		openList.add(current);
+		while(openList.size() > 0) {
+			Collections.sort(openList, nodeSorter);
+			current = openList.get(0);
+			if(current.tile.equals(goal)) {
+				List<Node> path = new ArrayList<Node>();
+				while (current.parent != null) {
+					path.add(current);
+					current = current.parent;
+				}
+				openList.clear();
+				closedList.clear();
+				return path;
+			}
+			openList.remove(current);
+			closedList.add(current);
+			for (int i = 0; i < 9; i++) {
+				if(i == 4) continue;
+				int x = current.tile.getX();
+				int y = current.tile.getY();
+				int xi = (i % 3) - 1;
+				int yi = (i / 3) - 1;
+				Tile at = getTile(x + xi, y + yi);
+				if(at == null) continue;
+				if (at.solid()) continue;
+				Vector2i a = new Vector2i(x + xi, y + yi, Vector2Type.BY_TILE);
+				double gCost = current.gCost + Vector2i.getDistance(current.tile, a) == 1 ? 1 : 0.95;
+				double hCost = Vector2i.getDistance(a, goal);
+				Node node = new Node(a, current, gCost, hCost);
+				if (VecInList(closedList, a) && gCost >= node.gCost) continue;
+				if (!VecInList(openList, a) || gCost < node.gCost) openList.add(node);
+			}
+		}
+		closedList.clear();
+		return null;
+		
+	}
+	
+	private boolean VecInList(List<Node> list, Vector2i vector) {
+		for (Node n : list) {
+			if(n.tile.equals(vector)) return true;
+		}
+		return false;
 	}
 	
 	public List<Entity> getEntityQue() {

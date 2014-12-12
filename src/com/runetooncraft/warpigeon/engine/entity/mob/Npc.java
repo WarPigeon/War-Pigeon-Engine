@@ -10,6 +10,11 @@ public class Npc extends Mob {
 		sprite = ForwardAnims[0];
 	}
 	
+	public Npc(int xPosition, int yPosition, Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims, int xSize, int ySize) {
+		super(xPosition, yPosition, ForwardAnims, BackwardAnims, LeftAnims, RightAnims, xSize, ySize);
+		sprite = ForwardAnims[0];
+	}
+
 	public void update() {
 		int xa = 0, ya = 0;
 		if (up) ya--;

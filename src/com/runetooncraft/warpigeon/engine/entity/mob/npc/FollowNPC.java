@@ -1,11 +1,12 @@
 package com.runetooncraft.warpigeon.engine.entity.mob.npc;
 
 import com.runetooncraft.warpigeon.engine.entity.mob.Mob;
+import com.runetooncraft.warpigeon.engine.entity.mob.Npc;
 import com.runetooncraft.warpigeon.engine.entity.mob.Player;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 
-public class FollowNPC extends Mob {
+public class FollowNPC extends Npc {
 	int colorReplace = 0xFFFFA301;
 	int colorReplacewith;
 	int xa,ya = 0;
@@ -50,7 +51,7 @@ public class FollowNPC extends Mob {
 	}
 
 	public void render(ScreenEngine2D screen) {
-		screen.renderMob(x - (xSize >> 1), y - (ySize >> 1), this, colorReplace, colorReplacewith);
+		screen.renderMob(x - (xSize), y - (ySize), this, colorReplace, colorReplacewith);
 	}
 	
 

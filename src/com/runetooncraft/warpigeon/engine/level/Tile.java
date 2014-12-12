@@ -29,6 +29,11 @@ public class Tile {
 		}
 	}
 	
+	public boolean solid() {
+		//System.out.println(name);
+		return Collide;
+	}
+	
 	public boolean collide(int side) {
 		if(Collide) {
 			return collideMap.GetCollideSide(side);

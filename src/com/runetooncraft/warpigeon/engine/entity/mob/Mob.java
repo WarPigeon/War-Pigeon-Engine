@@ -138,6 +138,7 @@ public abstract class Mob extends Entity {
 				return;
 			}
 			moveNoAnimate(xa,ya);
+			return;
 		}
 		if(xa != 0 && ya != 0) {
 			Collide = true;

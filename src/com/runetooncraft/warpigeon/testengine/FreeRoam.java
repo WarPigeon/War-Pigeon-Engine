@@ -50,13 +50,11 @@ public class FreeRoam extends WPEngine4 {
 		BackwardAnims[1] = Sprites.KNIGHT_BACKWARDANIM2;
 		AnimatedSprite FA = new AnimatedSprite(ForwardAnims, Sprites.KNIGHT_FORWARDIDLE);
 		AnimatedSprite BA = new AnimatedSprite(BackwardAnims, Sprites.KNIGHT_BACKWARDIDLE);
-		player = new PlayerMain(KL, 10, 10, FA, BA, FA, FA, 32, 32);
+		player = new PlayerMain(KL, 29, 13, FA, BA, FA, FA, 32, 32);
 		player.init(level,this);
 		//NPC1 Setup
-		Sprite[] ForwardAnimsnpc = new Sprite[1];
-		ForwardAnimsnpc[0] = Sprites.PO_FORWARD;
-		for(int i = 0; i <=10; i++) {
-			FollowNPC npc = new FollowNPC(ForwardAnimsnpc,ForwardAnimsnpc,ForwardAnimsnpc,ForwardAnimsnpc,10,21,64,64);
+		for(int i = 0; i <=0; i++) {
+			Star npc = new Star(ForwardAnims,BackwardAnims,ForwardAnims,ForwardAnims,16,13,32,32);
 			npc.init(level, this);
 			level.add(npc);
 		}

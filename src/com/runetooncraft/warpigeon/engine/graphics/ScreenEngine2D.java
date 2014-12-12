@@ -35,6 +35,8 @@ public class ScreenEngine2D {
 		this.tiles = new int[PixelWidth * PixelHeight];
 		this.ImageToPixelRatio = ImageToPixelRatio;
 		Level.PDR = (int) (Math.log(ImageToPixelRatio)/Math.log(2));
+		Level.PDRX = (int) (Math.log(PixelWidth)/Math.log(2));
+		Level.PDRY = (int) (Math.log(PixelHeight)/Math.log(2));
 		this.scale = scale;
 		XMid = width / 2;
 		YMid = height / 2;

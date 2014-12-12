@@ -8,7 +8,7 @@ import com.runetooncraft.warpigeon.engine.level.Level;
 
 public abstract class Entity {
 
-	public int x, y, xTile, yTile;
+	public int x, y;
 	private boolean removed = false;
 	protected Level level;
 	protected WPEngine4 engine;
