@@ -608,12 +608,12 @@ public class Level {
 							if(RenderLayers.get(Layer + 1)) {
 								getTileIntArray(layer,x,y).render(x, y, screen, 2);
 							}
-							if(overlayEnabled && !(x < 0 || y < 0 || x >= width || y >= height)) {
-								overlayTile.render(x,y, screen, 2);
-							}
 							if(renderColl && collLayerselected != 0) {
 								Layer coll = collisionLayers.get(collLayerselected - 1);
 								getTileLayerCollision(coll, x,y).render(x, y, screen, collLayerselected);
+							}
+							if(overlayEnabled && !(x < 0 || y < 0 || x >= width || y >= height)) {
+								overlayTile.render(x,y, screen, 2);
 							}
 						}
 					}
@@ -801,22 +801,33 @@ static class collisionTiles {
 }
 
 
+//public boolean tileCollision(double x, double y, int sizex, int sizey, int layerPresent, int xOffset, int yOffset) {
+//	boolean solid = false;
+//	int width = ScreenEngine2D.PixelWidth;
+//	int height = ScreenEngine2D.PixelHeight;
+//		int Left = (int)(x - 1)  >> PDRX;
+//		int Right = (int)(x + 1) >> PDRX;
+//		int Top = (int)(y - 1) >> PDRY;
+//		int Bottom = (int)(y + 1) >> PDRY;
+////		if (colltype.equals(CollisionType.BASIC)) {
+////			if (getTileLayer(getLayer(layerPresent), xp, yp).collide(i)) solid = true;
+////		} else if(colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
+////			if (getTileLayerCollision(getCollisionLayer(layerPresent), xp, yp).collide(i)) solid = true;
+////		}
+//	return solid;
+//}
+
 public boolean tileCollision(double x, double y, int sizex, int sizey, int layerPresent, int xOffset, int yOffset) {
 	boolean solid = false;
 	for(int i = 0; i < 4; i++) {
-//		int xp = (x + i % 2 * sizex - 7) / engine.getScreenEngine2D().PixelWidth;
-//		int yp = (y + i / 2 * sizey + 7) / engine.getScreenEngine2D().PixelHeight;
-		double xp = (x + i % 2 * sizex + xOffset) / engine.getScreenEngine2D().PixelWidth;
-		double yp = (y + i / 2 * sizey + yOffset) / engine.getScreenEngine2D().PixelHeight;
-		int ix = (int) Math.ceil(xp);
-		int iy = (int) Math.ceil(yp);
-		if (i % 2 == 0) ix = (int) Math.floor(xp);
-		if (i / 2 == 0) iy = (int) Math.floor(yp);
-		if (colltype.equals(CollisionType.BASIC)) {
-			if (getTileLayer(getLayer(layerPresent), ix, iy).collide(i)) solid = true;
-		} else if(colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
-			if (getTileLayerCollision(getCollisionLayer(layerPresent), ix, iy).collide(i)) solid = true;
-		}
+		int xp = (int)(x - i % 2 * 32) / engine.getScreenEngine2D().PixelWidth;
+		int yp = (int)(y - i / 2 * 32) / engine.getScreenEngine2D().PixelHeight;
+		System.out.println(xp +"," + yp);
+		//if (colltype.equals(CollisionType.BASIC)) {
+			if (getTileLayer(getLayer(layerPresent), xp, yp).collide(i)) solid = true;
+		//} else if(colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
+		//	if (getTileLayerCollision(getCollisionLayer(layerPresent), xp, yp).collide(i)) solid = true;
+		//}
 	}
 	return solid;
 }

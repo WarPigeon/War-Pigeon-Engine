@@ -262,9 +262,9 @@ public abstract class Mob extends Entity {
 	}
 	
 	public boolean collision(double xa, double ya) {	
-		boolean coll = level.tileCollision(xa+x, ya+y, 0, 0, layerPresent,collisionOffsetX - xSize,collisionOffsetY - ySize);
+		boolean coll = level.tileCollision((int)(xa+x), (int)(ya+y), xSize, ySize, layerPresent,collisionOffsetX,collisionOffsetY);
 		if(coll) {
-			System.out.println(this + "is colliding at " + (xa+x) + "," + (ya+y));
+			//System.out.println(this + "is colliding at " + (xa+x) + "," + (ya+y));
 		}
 		return coll;
 	}
