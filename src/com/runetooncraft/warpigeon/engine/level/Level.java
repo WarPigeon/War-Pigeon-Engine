@@ -756,7 +756,7 @@ public class Level {
 			for(int i = (selectedLayer + 1); i <= (Layers + 1); i++) {
 				File Old = new File(workingDir, "Layer" + i + ".dat");
 				File New = new File(workingDir, "Layer" + (i - 1) + ".dat");
-				Old.renameTo(New);
+				Old.renameTo(New); 
 			}
 		}
 	}
