@@ -30,8 +30,8 @@ public class Level {
 	protected Layer mainLayer;
 	protected BasicTile overlayTile;
 	protected int PSpawnX, PSpawnY;
-	public static ArrayList<Layer> LayerList = new ArrayList<Layer>();
-	public static ArrayList<Layer> collisionLayers = new ArrayList<Layer>();
+	public ArrayList<Layer> LayerList = new ArrayList<Layer>();
+	public ArrayList<Layer> collisionLayers = new ArrayList<Layer>();
 	public static HashMap<Integer, Tile> TileIDS = new HashMap<Integer, Tile>();
 	public static HashMap<Integer, Tile> CollTileIDS = new HashMap<Integer, Tile>();
 	public static Tile VoidTile;
@@ -406,6 +406,7 @@ public class Level {
 		GenLevelDefault();
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void LoadLevelFile(File Dir, String LevelName) {
 		render = false;
 		name = LevelName;
@@ -504,6 +505,7 @@ public class Level {
 	/**
 	 * Time basically will handle events that happen at specific times in the level.
 	 */
+	@SuppressWarnings("unused")
 	private void time() {
 	}
 	
@@ -740,6 +742,7 @@ public class Level {
 		return y1;
 	}
 	
+	@SuppressWarnings("unused")
 	private ArrayList<Integer> toarray(int[] tiles) {
 		ArrayList<Integer> ReturnList = new ArrayList<Integer>();
 		for(int i : tiles) {

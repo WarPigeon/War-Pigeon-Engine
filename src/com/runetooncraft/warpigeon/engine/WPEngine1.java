@@ -4,10 +4,10 @@ import com.runetooncraft.warpigeon.engine.utils.BasicGameWindow;
 
 public class WPEngine1 extends BasicGameWindow implements Runnable {
 
+	private static final long serialVersionUID = 1L;
 	private Thread thread;
 	private double FPSLimit = 60.0;
 	protected boolean running = false;
-	private boolean ShowFPSLimit = false;
 	private String WindowTitle = "";
 	public static String Version = "v0.1.44";
 	/**
@@ -45,7 +45,6 @@ public class WPEngine1 extends BasicGameWindow implements Runnable {
 	 */
 	public WPEngine1(int Height, int Width, int Scale, boolean ShowFPSLimit, GameType gametype) {
 		super(Height, Width, Scale, gametype);
-		this.ShowFPSLimit = ShowFPSLimit;
 	}
 	
 	/**
@@ -59,7 +58,6 @@ public class WPEngine1 extends BasicGameWindow implements Runnable {
 	public WPEngine1(int Height, int Width, int Scale, double FPSLimit, boolean ShowFPSLimit, GameType gametype) {
 		super(Height, Width, Scale, gametype);
 		this.FPSLimit = FPSLimit;
-		this.ShowFPSLimit = ShowFPSLimit;
 	}
 	
 	

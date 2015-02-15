@@ -10,17 +10,16 @@ import javax.imageio.ImageIO;
 import com.runetooncraft.warpigeon.engine.GameType;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
-import com.runetooncraft.warpigeon.engine.level.CollisionType;
 import com.runetooncraft.warpigeon.engine.level.CoordinateHandler;
 import com.runetooncraft.warpigeon.engine.level.Level;
-import com.runetooncraft.warpigeon.engine.level.NullLevel;
-import com.runetooncraft.warpigeon.engine.level.RandomLevel;
 import com.runetooncraft.warpigeon.engine.level.Layer.Layer;
+import com.runetooncraft.warpigeon.engine.utils.MouseEvents;
 import com.runetooncraft.warpigeon.engine.utils.Vector2i;
 import com.runetooncraft.warpigeon.engine.utils3d.KeyListener;
 import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 
 public class PigionSDK extends WPEngine4 {
+	private static final long serialVersionUID = 1L;
 	KeyListener KL;
 	Sprites sprites = new Sprites();
 	Tiles tiles = new Tiles();
@@ -147,16 +146,16 @@ public class PigionSDK extends WPEngine4 {
 	}
 	
 	public void MouseLeftClicked() {
-		int Mousex = mouse.getX();
-		int Mousey = mouse.getY();
+		int Mousex = MouseEvents.getX();
+		int Mousey = MouseEvents.getY();
 		Vector2i tc = CH.getTileCoordinateAtMouse(Mousex, Mousey, screen, level);
 		Layer Layer = GetSDK().getSelectedLayer();
 		level.setTile(tc, GetSDK().GetMouse1SelectedTile(), Layer);
 	}
 
 	public void MouseRightClicked() {
-		int Mousex = mouse.getX();
-		int Mousey = mouse.getY();
+		int Mousex = MouseEvents.getX();
+		int Mousey = MouseEvents.getY();
 		Vector2i tc = CH.getTileCoordinateAtMouse(Mousex, Mousey, screen, level);
 		Layer Layer = GetSDK().getSelectedLayer();
 		level.setTile(tc, GetSDK().GetMouse2SelectedTile(), Layer);

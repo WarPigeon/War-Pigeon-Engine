@@ -12,16 +12,14 @@ import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.CollisionType;
 import com.runetooncraft.warpigeon.engine.level.CoordinateHandler;
-import com.runetooncraft.warpigeon.engine.level.Level;
-import com.runetooncraft.warpigeon.engine.level.RandomLevel;
 import com.runetooncraft.warpigeon.engine.level.SideScrollingLevel;
 import com.runetooncraft.warpigeon.engine.utils.MediaFile;
 import com.runetooncraft.warpigeon.engine.utils.MediaType;
-import com.runetooncraft.warpigeon.engine.utils.Vector2i;
 import com.runetooncraft.warpigeon.engine.utils3d.KeyListener;
 import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 
 public class SideScroller extends WPEngine4 {
+	private static final long serialVersionUID = 1L;
 	KeyListener KL;;
 	Sprites sprites = new Sprites();
 	Tiles tiles = new Tiles();

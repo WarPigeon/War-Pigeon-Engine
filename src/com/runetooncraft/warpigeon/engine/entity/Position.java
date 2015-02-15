@@ -9,12 +9,10 @@ import com.runetooncraft.warpigeon.engine.WPEngine5;
 import com.runetooncraft.warpigeon.engine.utils3d.KeyListener;
 import com.runetooncraft.warpigeon.engine.utils3d.MouseListener;
 
-
 public class Position {
 	
 	private KeyListener KL;
 	private MouseListener mouse;
-	private WPEngine5 engine;
 	private BufferedImage cursor = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 	Cursor blank = Toolkit.getDefaultToolkit().createCustomCursor(cursor, new Point(0,0), "blank");
 	
@@ -22,13 +20,14 @@ public class Position {
 		this.KL = engine.getKeyListener();
 		this.mouse = engine.getMouseListener();
 		engine.GetFrame().getContentPane().setCursor(blank);
-		this.engine = engine;
 	}
 	
 	public double x, z, y, rotation, xa, za, rotationa;	
+	@SuppressWarnings("unused")
 	private int newMouseX = 0, newMouseY = 0, oldMouseX = 0, oldMouseY = 0;
 	private boolean turnLeft, turnRight;
 	
+	@SuppressWarnings("static-access")
 	public void Update() {
 		newMouseX = mouse.mouseX;
 		newMouseY = mouse.mouseY;

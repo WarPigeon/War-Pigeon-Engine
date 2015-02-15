@@ -29,7 +29,7 @@ public class TileCollide {
 		this.BottomLeft = BottomLeft;
 	}
 
-	public void setCollideBottomRight(boolean BottomLeft) {
+	public void setCollideBottomRight(boolean BottomRight) {
 		this.BottomRight = BottomRight;
 	}
 	

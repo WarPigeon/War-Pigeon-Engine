@@ -69,8 +69,7 @@ public class StoneSpecialTile extends Tile {
 		} else {
 			sprite = cleanSprite;
 		}
-		int PDR = screen.ImageToPixelRatio;
-		screen.renderTile(x * PDR, y * PDR, this);
+		screen.renderTile(x * screen.ImageToPixelRatio, y * screen.ImageToPixelRatio, this);
 	}
 
 }

@@ -1,9 +1,7 @@
 package com.runetooncraft.warpigeon.engine.graphics;
 
-import java.util.Random;
 
 import com.runetooncraft.warpigeon.engine.WPEngine5;
-import com.runetooncraft.warpigeon.engine.utils3d.MouseListener;
 
 public class ScreenEngine3D extends ScreenEngine2D {
 
@@ -39,7 +37,6 @@ public class ScreenEngine3D extends ScreenEngine2D {
 	}
 
 	private void floor() {
-		Random random = new Random();
 		double rotation = engine.getPosition().rotation;
 		double floorPosition = 6;
 		double ceilingPosition = 20;

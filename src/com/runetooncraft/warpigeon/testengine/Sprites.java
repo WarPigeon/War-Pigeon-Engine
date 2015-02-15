@@ -2,7 +2,6 @@ package com.runetooncraft.warpigeon.testengine;
 
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.graphics.SpriteSheet;
-import com.runetooncraft.warpigeon.engine.level.Tile;
 
 public class Sprites{
 	

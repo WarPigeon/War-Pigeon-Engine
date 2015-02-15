@@ -2,7 +2,6 @@ package com.runetooncraft.warpigeon.engine.level;
 
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
-import com.runetooncraft.warpigeon.engine.level.Level;
 import com.runetooncraft.warpigeon.engine.level.Tile;
 
 public class EmptyTile extends Tile {

@@ -2,12 +2,10 @@ package com.runetooncraft.warpigeon.engine.utils;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import javax.swing.JComboBox;
 import java.awt.Insets;
 
 import com.runetooncraft.warpigeon.pigionsdk.*;
@@ -21,10 +19,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-import javax.swing.JLabel;
 
 public class BasicFrame extends JFrame implements ComponentListener {
 
+	private static final long serialVersionUID = 1L;
 	public SDKBotPanel sdkpanel;
 	public JPanel GamePanel;
 	public ExpandLevel expandLevel;
@@ -123,8 +121,6 @@ public class BasicFrame extends JFrame implements ComponentListener {
 		
 		mntmExpand = new JMenuItem("Expand");
 		mnLevel.add(mntmExpand);
-		
-		JSplitPane splitPane = new JSplitPane();
 		
 	}
 	@Override

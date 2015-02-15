@@ -1,13 +1,12 @@
 package com.runetooncraft.warpigeon.engine.level;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.runetooncraft.warpigeon.engine.entity.mob.Mob;
-import com.runetooncraft.warpigeon.engine.entity.mob.Player;
 
 public class Gravity {
 
+	@SuppressWarnings("unused")
 	private Mob[] GravityBoard;
 	private int Multiplier = 0;
 	ArrayList<Mob> UpdateList = new ArrayList<Mob>();

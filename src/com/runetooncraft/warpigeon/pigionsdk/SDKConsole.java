@@ -1,10 +1,7 @@
 package com.runetooncraft.warpigeon.pigionsdk;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 
 import java.awt.Font;
 import java.awt.GridBagLayout;
@@ -16,6 +13,7 @@ import javax.swing.JScrollPane;
 import java.awt.Insets;
 
 public class SDKConsole extends JPanel {
+	private static final long serialVersionUID = 1L;
 	public JTextArea Console;
 	public JScrollPane scrollPane;
 	

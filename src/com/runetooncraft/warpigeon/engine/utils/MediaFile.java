@@ -1,6 +1,5 @@
 package com.runetooncraft.warpigeon.engine.utils;
 
-import java.awt.Canvas;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -9,18 +8,15 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
-import net.sourceforge.filebot.mediainfo.MediaInfo;
-
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
-import com.runetooncraft.warpigeon.engine.graphics.SpriteSheet;
 
 public class MediaFile extends File {
 
+	private static final long serialVersionUID = 1L;
 	public boolean VideoPlaying = false;
 	private byte[] MediaBytes = null;
 	private int width, height;
-	private int FPS;
 //	MediaInfo info = new MediaInfo();
 	private MediaType type;
 	private Sprite sprite = null;
@@ -52,6 +48,7 @@ public class MediaFile extends File {
 //			
 	}
 	
+	@SuppressWarnings("unused")
 	private boolean isInteger(String widthString) {
 		try {
 			Integer.parseInt(widthString);

@@ -1,26 +1,28 @@
 package com.runetooncraft.warpigeon.pigionsdk;
 
 import javax.swing.JPanel;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import javax.swing.JComboBox;
+
 import javax.swing.JPopupMenu;
+
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
 
 import javax.swing.JButton;
-import javax.swing.JTextPane;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
 
 public class SDKTopRightPanel extends JPanel {
 	
+	private static final long serialVersionUID = 1L;
 	public JFormattedTextField HeightPane,WidthPane,ScalePane;
 	public JButton SetDimension;
 	
@@ -106,6 +108,7 @@ public class SDKTopRightPanel extends JPanel {
 		ScalePane.setFocusLostBehavior(JFormattedTextField.PERSIST);
 	}
 	
+	@SuppressWarnings("unused")
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {

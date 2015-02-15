@@ -1,13 +1,8 @@
 package com.runetooncraft.warpigeon.pigionsdk;
 
-import java.awt.BorderLayout;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -27,21 +22,12 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractCellEditor;
-import javax.swing.DefaultCellEditor;
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -50,14 +36,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import com.runetooncraft.warpigeon.engine.WPEngine1;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
-import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.CollisionType;
 import com.runetooncraft.warpigeon.engine.level.Level;
 import com.runetooncraft.warpigeon.engine.level.Tile;
@@ -67,11 +51,13 @@ import com.runetooncraft.warpigeon.engine.utils.ExpandLevel;
 import com.runetooncraft.warpigeon.engine.utils.YamlConfig;
 import com.runetooncraft.warpigeon.pigionsdk.tilesdk.NewTile;
 
+@SuppressWarnings("unchecked")
 public class PigionSDK {
+	@SuppressWarnings("rawtypes")
 	private JComboBox selectedtile,selectedtile2,selectedLayer;
 	private JCheckBox collisionsCheck;
-	private JMenuItem DeleteLayer;
 	private TileSelection TileSelection;
+	@SuppressWarnings("rawtypes")
 	private TableRowSorter sorter;
 	private TileTableModel model;
 	private JMenu mnRenderLayers;
@@ -89,7 +75,6 @@ public class PigionSDK {
 		selectedtile = engine.getSDKFrame().BottomPanel.selectedtile;
 		selectedtile2 = engine.getSDKFrame().BottomPanel.selectedtile2;
 		selectedLayer = engine.getSDKFrame().BottomPanel.selectedLayer; //Stopped here
-		DeleteLayer = engine.getSDKFrame().DeleteLayer;
 		TileSelection = (com.runetooncraft.warpigeon.pigionsdk.TileSelection) engine.getSDKFrame().TileSelection;
 		mnRenderLayers = engine.getSDKFrame().mnRenderLayers;
 		selectedLayer.addItem("Layer1");
@@ -199,7 +184,7 @@ public class PigionSDK {
 		JCheckBox check = engine.getSDKFrame().TopPanel.overlayCheck;
 			engine.getLevel().overlayEnabled = check.isSelected();
 	}
-	
+
 	private void editCollisions(boolean enabled) {
 		if(enabled) {
 			selectedLayer.removeAllItems();
@@ -255,7 +240,7 @@ public class PigionSDK {
 	}
 	
 	public void Update() {
-		Collection<Tile> set = engine.getLevel().TileIDS.values();
+		Collection<Tile> set = Level.TileIDS.values();
 		String lastname = "";
 		int SetNumber = 0;
 		selectedtile.removeAllItems();
@@ -319,7 +304,7 @@ public class PigionSDK {
 		Layer Layer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-					Layer.tiles[x+y*width] = engine.getLevel().EmptyTile.getTileID();
+					Layer.tiles[x+y*width] = Level.EmptyTile.getTileID();
 			}
 		}
 		engine.getLevel().LayerList.add(Layer);
@@ -486,7 +471,6 @@ public class PigionSDK {
                     	FilterTextTable();
                     }
                 });
-		final JCheckBox checkBox = new JCheckBox();
 		TileSelection.table.getColumnModel().getColumn(3).setCellEditor(new CheckBoxCellEditor(this));
 		TileSelection.table.getColumnModel().getColumn(3).setCellRenderer(new CWCheckBoxRenderer());
 		TileSelection.table.getColumnModel().getColumn(4).setCellEditor(new CheckBoxCellEditor(this));
@@ -511,7 +495,7 @@ public class PigionSDK {
 	}
 	
 	public void UpdateTileSelection() {
-		Collection<Tile> set = engine.getLevel().TileIDS.values();
+		Collection<Tile> set = Level.TileIDS.values();
 		List<Tile> TileList = new ArrayList<Tile>();
 		for(Tile t: set) {
 			if(t.getTileID() >= 0) {
@@ -537,7 +521,6 @@ public class PigionSDK {
                     	FilterTextTable();
                     }
                 });
-		final JCheckBox checkBox = new JCheckBox();
 		TileSelection.table.getColumnModel().getColumn(3).setCellEditor(new CheckBoxCellEditor(this));
 		TileSelection.table.getColumnModel().getColumn(3).setCellRenderer(new CWCheckBoxRenderer());
 		TileSelection.table.getColumnModel().getColumn(4).setCellEditor(new CheckBoxCellEditor(this));
@@ -556,7 +539,7 @@ public class PigionSDK {
 		sorter.setRowFilter(rf);
 	}
 
-
+	@SuppressWarnings("rawtypes")
 	public void AddTile(NewTile newTile) {
 		if(newTile.comboBox.getSelectedItem().equals("This Game")) {
 			File dir = new File(engine.getWorkingDir() + "\\Tiles");
@@ -684,7 +667,8 @@ public class PigionSDK {
 
 
 class CheckBoxCellEditor extends AbstractCellEditor implements TableCellEditor {  
-    protected JCheckBox checkBox;  
+	private static final long serialVersionUID = 1L;
+	protected JCheckBox checkBox;  
     private PigionSDK pigion;
     public CheckBoxCellEditor(PigionSDK pigion) {
     	this.pigion = pigion;
@@ -710,6 +694,7 @@ class CheckBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 }
 
 class CWCheckBoxRenderer extends JCheckBox implements TableCellRenderer {  
+	private static final long serialVersionUID = 1L;
 	Border border = new EmptyBorder(1,2,1,2);  
   
 	public CWCheckBoxRenderer() {  

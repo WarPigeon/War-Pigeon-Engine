@@ -11,6 +11,7 @@ import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
 import com.esotericsoftware.yamlbeans.YamlWriter;
 
+@SuppressWarnings("rawtypes")
 public class YamlConfig {
 	public File file = null;
 	public Map config = null;

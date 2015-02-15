@@ -3,18 +3,18 @@ package com.runetooncraft.warpigeon.engine.graphics;
 import java.util.Random;
 
 import com.runetooncraft.warpigeon.engine.entity.mob.Mob;
-import com.runetooncraft.warpigeon.engine.entity.mob.Player;
 import com.runetooncraft.warpigeon.engine.level.Level;
 import com.runetooncraft.warpigeon.engine.level.Tile;
+import com.runetooncraft.warpigeon.engine.utils.Vector2i;
 
 public class ScreenEngine2D {
 
 	public int width, height, scale;
-	public static int PixelWidth, PixelHeight;
+	public int PixelWidth, PixelHeight;
 	public int[] pixels;
 	public int[] alphaOverlay;
 	public int[] tiles;
-	public static int ImageToPixelRatio;
+	public int ImageToPixelRatio;
 	private Random random = new Random();
 	private boolean RenderWallSprite = false;
 	private Sprite wall;
@@ -30,6 +30,8 @@ public class ScreenEngine2D {
 		this.height = height;
 		this.PixelWidth = PixelWidth;
 		this.PixelHeight = PixelHeight;
+		Vector2i.TILE_SIZEX = PixelWidth;
+		Vector2i.TILE_SIZEY = PixelHeight;
 		this.pixels = new int[ width * height ];
 		this.alphaOverlay = new int[ width * height];
 		this.tiles = new int[PixelWidth * PixelHeight];

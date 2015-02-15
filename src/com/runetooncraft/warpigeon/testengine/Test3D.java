@@ -9,15 +9,11 @@ import javax.imageio.ImageIO;
 
 import com.runetooncraft.warpigeon.engine.GameType;
 import com.runetooncraft.warpigeon.engine.WPEngine5;
-import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.CoordinateHandler;
-import com.runetooncraft.warpigeon.engine.level.Level;
-import com.runetooncraft.warpigeon.engine.level.RandomLevel;
-import com.runetooncraft.warpigeon.engine.utils.Vector2i;
-import com.runetooncraft.warpigeon.engine.utils3d.KeyListener;
 import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 
 public class Test3D extends WPEngine5 {
+	private static final long serialVersionUID = 1L;
 	Sprites sprites = new Sprites();
 	Tiles tiles = new Tiles();
 	CoordinateHandler CH = new CoordinateHandler();

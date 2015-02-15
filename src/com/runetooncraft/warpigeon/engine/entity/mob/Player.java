@@ -3,12 +3,9 @@ package com.runetooncraft.warpigeon.engine.entity.mob;
 import java.util.Random;
 
 import com.runetooncraft.warpigeon.engine.graphics.AnimatedSprite;
-import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.Level;
 import com.runetooncraft.warpigeon.engine.utils.KeyBoardEvents;
-import com.runetooncraft.warpigeon.engine.utils.Vector2i;
-import com.runetooncraft.warpigeon.testengine.Sprites;
 
 public class Player extends Mob {
 

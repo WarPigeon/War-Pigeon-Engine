@@ -46,6 +46,7 @@ public class FileSystem {
 				Tiles[i] = a;
 				i++;
 			}
+			input.close();
 			return Tiles;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -71,9 +72,9 @@ public class FileSystem {
 			long length = file.length();
 			if (length > Integer.MAX_VALUE) {
 				System.out.println("File " + file.getName() + " was too big to attain file bytes.");
+				is.close();
 				return null;
 			}
-			
 			byte[] bytes = new byte[(int)length];
 			for(int i = 0; i < length; i++) {
 				bytes[i] = 0x0;
@@ -86,6 +87,7 @@ public class FileSystem {
 			}
 			
 			if (offset < bytes.length) {
+				is.close();
 				throw new IOException("Could not completely read file "+file.getName());
 			}
 			

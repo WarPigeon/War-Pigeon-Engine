@@ -1,18 +1,20 @@
 package com.runetooncraft.warpigeon.pigionsdk;
 
 import javax.swing.JPanel;
+
 import java.awt.GridBagLayout;
+
 import javax.swing.JComboBox;
 
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import java.awt.Canvas;
 
+import javax.swing.JLabel;
+
+@SuppressWarnings("rawtypes")
 public class SDKBotPanel extends JPanel {
 
+	private static final long serialVersionUID = 1L;
 		public JComboBox selectedtile;
 		public JComboBox selectedtile2;
 		public JComboBox selectedLayer;

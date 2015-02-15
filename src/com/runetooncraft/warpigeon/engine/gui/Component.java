@@ -1,6 +1,5 @@
 package com.runetooncraft.warpigeon.engine.gui;
 
-import java.util.List;
 
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 

@@ -1,6 +1,6 @@
 package com.runetooncraft.warpigeon.engine.entity.mob.npc;
 
-import com.runetooncraft.warpigeon.engine.entity.mob.Mob;
+
 import com.runetooncraft.warpigeon.engine.entity.mob.Npc;
 import com.runetooncraft.warpigeon.engine.entity.mob.Player;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;

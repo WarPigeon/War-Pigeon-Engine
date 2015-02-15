@@ -29,13 +29,16 @@ import com.runetooncraft.warpigeon.engine.level.CollisionType;
 
 public class Newlevel extends JDialog {
 
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	public JFormattedTextField Name;
 	public JFormattedTextField height;
 	public JFormattedTextField width;
 	public JButton okButton;
+	@SuppressWarnings("rawtypes")
 	JComboBox collTypebox;
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Newlevel() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

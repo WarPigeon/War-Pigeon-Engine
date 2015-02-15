@@ -1,17 +1,11 @@
 package com.runetooncraft.warpigeon.pigionsdk;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 
 import java.awt.GridBagLayout;
-import javax.swing.JComboBox;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.net.URL;
 
-import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JLabel;
@@ -19,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 public class TileSelection extends JPanel {
+	private static final long serialVersionUID = 1L;
 	public JTable table;
 	public JScrollPane pane;
 	private JLabel lblFilterText;
@@ -28,8 +23,6 @@ public class TileSelection extends JPanel {
 	 * Create the application.
 	 */
 	public TileSelection() {
-		URL iconURL = getClass().getResource("/warpigeon.png");
-		ImageIcon icon = new ImageIcon(iconURL);
 		initialize();
 	}
 

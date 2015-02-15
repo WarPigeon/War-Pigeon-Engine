@@ -3,7 +3,6 @@ package com.runetooncraft.warpigeon.engine;
 import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -11,7 +10,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
-import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine3D;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngineLoading;
 import com.runetooncraft.warpigeon.engine.utils.MediaFile;
 import com.runetooncraft.warpigeon.engine.utils.MouseEvents;
@@ -157,10 +155,10 @@ public class WPEngine4 extends WPEngine3 {
 			DrawOtherImages(graphics);
 			graphics.dispose();
 			bs.show();
-			if(mouse.getButton() == 1) {
+			if(MouseEvents.getButton() == 1) {
 				MouseLeftClicked();
 			}
-			if(mouse.getButton() == 3) {
+			if(MouseEvents.getButton() == 3) {
 				MouseRightClicked();
 			}
 			break;
@@ -203,6 +201,8 @@ public class WPEngine4 extends WPEngine3 {
 		case SCREEN_RESETTING:
 			screen.ClearBuffer();
 			break;
+		default:
+			break;
 		}
 	}
 
@@ -234,6 +234,8 @@ public class WPEngine4 extends WPEngine3 {
 		case PIGION_SDK:
 			level.render(SDKx, SDKy, screen);
 		break;
+		default:
+			break;
 		}
 	}
 	
@@ -248,6 +250,8 @@ public class WPEngine4 extends WPEngine3 {
 		case PIGION_SDK:
 			level.renderUpperLayers(SDKx, SDKy, screen);
 		break;
+		default:
+			break;
 		}
 	}
 	

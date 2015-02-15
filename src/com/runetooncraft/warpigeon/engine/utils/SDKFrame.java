@@ -15,9 +15,6 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JSeparator;
-import javax.swing.JSplitPane;
 
 public class SDKFrame extends JFrame {
 	private static final long serialVersionUID = 1L;

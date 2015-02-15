@@ -3,7 +3,6 @@ package com.runetooncraft.warpigeon.testengine;
 import com.runetooncraft.warpigeon.engine.entity.mob.Player;
 import com.runetooncraft.warpigeon.engine.graphics.AnimatedSprite;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
-import com.runetooncraft.warpigeon.engine.utils.KeyBoardEvents;
 import com.runetooncraft.warpigeon.engine.utils3d.KeyListener;
 
 public class PlayerMain extends Player {

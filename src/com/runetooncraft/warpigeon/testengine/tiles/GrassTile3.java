@@ -12,7 +12,6 @@ public class GrassTile3 extends Tile {
 	}
 
 	public void render(int x, int y, ScreenEngine2D screen, int Layer) {
-		int PDR = screen.ImageToPixelRatio;
 		screen.renderTile(x << Level.PDR, y << Level.PDR, this);
 	}
 }

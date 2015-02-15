@@ -1,13 +1,12 @@
 package com.runetooncraft.warpigeon.engine.utils;
 
-import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 
 public class Vector2i {
 
 	private int x, y;
 	private int TileX, TileY;
-	private final int TILE_SIZEX = ScreenEngine2D.PixelWidth;
-	private final int TILE_SIZEY = ScreenEngine2D.PixelHeight;
+	public static int TILE_SIZEX;
+	public static int TILE_SIZEY;
 	private Vector2Type type = null;
 
 	public Vector2i(Vector2Type type) {

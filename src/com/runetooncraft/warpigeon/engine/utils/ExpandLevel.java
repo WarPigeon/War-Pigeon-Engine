@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class ExpandLevel extends JFrame {
+	private static final long serialVersionUID = 1L;
 	public JTextField widthField;
 	public JTextField heightField;
 	public JButton btnOk;

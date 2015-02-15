@@ -57,7 +57,6 @@ public class SideScrollingLevel extends Level {
 				int SetLevel = GroundLevel + m;
 				for(int i = 0; i < width; i++) {
 					Vector2i tc = new Vector2i(i,SetLevel,Vector2Type.BY_TILE);
-					Layer returnlayer;
 					this.setTile(tc, RandomFloorTile(), engine.getLevel().getLayer(layer));
 				}
 			}

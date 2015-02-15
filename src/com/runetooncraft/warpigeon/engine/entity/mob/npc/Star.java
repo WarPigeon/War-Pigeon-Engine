@@ -9,7 +9,6 @@ import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.Node;
 import com.runetooncraft.warpigeon.engine.utils.Vector2Type;
 import com.runetooncraft.warpigeon.engine.utils.Vector2i;
-import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 
 public class Star extends Npc {
 	int colorReplace = 0xFF008D96;

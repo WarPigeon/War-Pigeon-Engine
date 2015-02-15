@@ -1,8 +1,6 @@
 package com.runetooncraft.warpigeon.pigionsdk.tilesdk;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -17,26 +15,31 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.GridBagLayout;
+
 import javax.swing.JLabel;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+
 import javax.swing.JButton;
 import javax.swing.JTextField;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
+
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
 import com.runetooncraft.warpigeon.pigionsdk.PigionSDK;
 import com.runetooncraft.warpigeon.pigionsdk.windowadapters.EventHandlerSimpleDispose;
 
+@SuppressWarnings("rawtypes")
 public class NewTile extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textField;
 	private JFileChooser filechooser;
@@ -61,6 +64,7 @@ public class NewTile extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings("unchecked")
 	public NewTile() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -264,6 +268,7 @@ public class NewTile extends JFrame {
 
 class PreviewPanel extends JPanel {
 	
+	private static final long serialVersionUID = 1L;
 	BufferedImage PreviewImage;
 	
 	public void Initialize(BufferedImage PreviewImage) {

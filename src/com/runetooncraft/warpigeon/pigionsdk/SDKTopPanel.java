@@ -12,6 +12,7 @@ import javax.swing.JTabbedPane;
 
 public class SDKTopPanel extends JPanel {
 	
+	private static final long serialVersionUID = 1L;
 	public JCheckBox collisionsCheck;
 	public JCheckBox overlayCheck;
 	public JTabbedPane tabbedPane;

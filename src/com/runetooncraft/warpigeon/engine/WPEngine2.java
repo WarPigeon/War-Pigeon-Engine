@@ -1,6 +1,5 @@
 package com.runetooncraft.warpigeon.engine;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -12,6 +11,7 @@ import com.runetooncraft.warpigeon.engine.utils.KeyBoardEvents;
 public class WPEngine2 extends WPEngine1 {
 
 
+	private static final long serialVersionUID = 1L;
 	public Graphics graphics = null;
 	public BufferedImage view = new BufferedImage(getUnscaledWidth(), getUnscaledHeight(), BufferedImage.TYPE_INT_RGB);
 	protected int[] pixels = ((DataBufferInt)view.getRaster().getDataBuffer()).getData();

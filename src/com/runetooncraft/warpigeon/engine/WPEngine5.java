@@ -9,6 +9,7 @@ import com.runetooncraft.warpigeon.engine.utils3d.MouseListener;
 
 public class WPEngine5 extends WPEngine4 {
 
+	private static final long serialVersionUID = 1L;
 	protected ScreenEngine3D screen3D;
 	protected double Time = 0.0;
 	protected Position position;
@@ -77,6 +78,10 @@ public class WPEngine5 extends WPEngine4 {
 	public void DefineScreen(int PixelWidth, int PixelHeight, int ImageToPixelRatio, int scale) {
 		screen3D = new ScreenEngine3D(getUnscaledWidth(),getUnscaledHeight(), PixelWidth, PixelHeight, ImageToPixelRatio, scale, this);
 		screen = screen3D;
+	}
+	
+	public void EngineUpdate() {
+		
 	}
 	
 	/**

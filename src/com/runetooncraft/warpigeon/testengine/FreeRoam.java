@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 
 import com.runetooncraft.warpigeon.engine.GameType;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
-import com.runetooncraft.warpigeon.engine.entity.mob.*;
 import com.runetooncraft.warpigeon.engine.entity.mob.npc.*;
 import com.runetooncraft.warpigeon.engine.graphics.AnimatedSprite;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
@@ -21,6 +20,7 @@ import com.runetooncraft.warpigeon.engine.utils3d.KeyListener;
 import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 
 public class FreeRoam extends WPEngine4 {
+	private static final long serialVersionUID = 1L;
 	KeyListener KL;
 	Sprites sprites = new Sprites();
 	Tiles tiles = new Tiles();
