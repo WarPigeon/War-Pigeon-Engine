@@ -60,7 +60,6 @@ public class FreeRoam extends WPEngine4 {
 		}
 		
 		//Start
-		PackFrame();
 		start();
 //		getScreenEngine2D().SetSpriteWall(Sprites.Grass);
 //		getScreenEngine2D().RandomAllPixelColors();

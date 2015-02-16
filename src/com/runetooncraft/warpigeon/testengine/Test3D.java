@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import com.runetooncraft.warpigeon.engine.GameType;
 import com.runetooncraft.warpigeon.engine.WPEngine5;
+import com.runetooncraft.warpigeon.engine.gimmicks3d.Stars3D;
 import com.runetooncraft.warpigeon.engine.level.CoordinateHandler;
 import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 
@@ -17,25 +18,16 @@ public class Test3D extends WPEngine5 {
 	Sprites sprites = new Sprites();
 	Tiles tiles = new Tiles();
 	CoordinateHandler CH = new CoordinateHandler();
+	Stars3D stars;
 	
-	public Test3D(int Height, int Width, int Scale, int PixelWidth, int PixelHeight, int ImageToPixelRatio, File DataFolder) {
-		super(Height, Width, Scale, PixelWidth, PixelHeight, ImageToPixelRatio, DataFolder,GameType.FREE_ROAM_TILE_BASED);
+	public Test3D(int Height, int Width, int Scale, File DataFolder) {
+		super(Height, Width, Scale, DataFolder, GameType.THREE_DIMENSIONAL_GAME);
 		DataFolder.mkdirs();
 		setIconImage();
 		SetWindowResizable(false);
 		SetWindowTitle("War-Pigion Engine5");
-		SetClassInstance(this,false);
 		System.out.println("Running 3D");
-//		level = new RandomLevel(5000,30, DataFolder, "TestLevel");
-//		level = new Level(DataFolder, "TestLevel")s;
-//		Sprite[] ForwardAnims = new Sprite[2];
-//		Sprite[] BackwardAnims = new Sprite[2];
-//		ForwardAnims[0] = Sprites.CRIPSY_FORWARD_ANIM1;
-//		ForwardAnims[1] = Sprites.CRIPSY_FORWARD_ANIM2;
-//		BackwardAnims[0] = Sprites.CRIPSY_BACKWARD_ANIM1;
-//		BackwardAnims[1] = Sprites.CRIPSY_BACKWARD_ANIM2;
-//		player = new PlayerMain(KL, 0, 0, ForwardAnims, BackwardAnims, ForwardAnims, ForwardAnims);
-		PackFrame();
+		stars = new Stars3D(4096, 64.0f, 20.0f);
 		start();
 	}
 	
@@ -47,6 +39,11 @@ public class Test3D extends WPEngine5 {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void privateRender() {
+		stars.UpdateAndRender(screen3D.getFrameBuffer(), delta);
 	}
 
 	public static void main(String[] args) {
@@ -61,17 +58,11 @@ public class Test3D extends WPEngine5 {
 		workingDirectory = workingDirectory + "/WarPigeon/TestGame1";
 		File DataFolder = new File(workingDirectory);
 		
-		new Test3D(1280, 720, 1000, 32, 32, 32, DataFolder);
+		new Test3D(800, 800, 1000, DataFolder);
 	}
 	
 	public void update() {
 		
-	}
-	
-	public void privateRender() {
-//		int xScroll = player.x + screen.width /2 - 32;
-//		int yScroll = player.y + screen.height /2 - 32;
-//		player.render(xScroll, yScroll, screen);
 	}
 	
 	public void MouseLeftclicked() {

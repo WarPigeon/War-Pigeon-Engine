@@ -49,7 +49,6 @@ public class SideScroller extends WPEngine4 {
 		level = new SideScrollingLevel(64,20, DataFolder, "Testy", 5, 2, GroundIDS, player, this, CollisionType.BASIC);
 		player.init(level,this);
 		player.weight = 2;
-		PackFrame();
 		start();
 //		getScreenEngine2D().SetSpriteWall(Sprites.Grass);
 //		getScreenEngine2D().RandomAllPixelColors();

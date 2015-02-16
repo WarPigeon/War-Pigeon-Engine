@@ -1,93 +1,36 @@
 package com.runetooncraft.warpigeon.engine.graphics;
 
 
-import com.runetooncraft.warpigeon.engine.WPEngine5;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
 
-public class ScreenEngine3D extends ScreenEngine2D {
+import com.runetooncraft.warpigeon.engine.WPEngine5;
+import com.runetooncraft.warpigeon.engine.utils3d.*;
+
+public class ScreenEngine3D {
 
 	private WPEngine5 engine;
-	private double renderDistance = 7000;
-	private double[] zBuffer;
+	private final Bitmap frameBuffer;
+	private final BufferStrategy bufferStrategy;
+	private final Graphics graphics;
+//	private double renderDistance = 7000;
 
-	public ScreenEngine3D(int width, int height, int PixelWidth, int PixelHeight, int ImageToPixelRatio, int scale, WPEngine5 engine) {
-		super(width, height, PixelWidth, PixelHeight, ImageToPixelRatio, scale);
+	public ScreenEngine3D(int width, int height, WPEngine5 engine) {
 		this.engine = engine;
-		zBuffer = new double[width * height];
-	}
-
-	public void draw3D() {
-		floor();
-		renderDistanceLimiter();
-	}
-
-	/**
-	 * Sets the distance that the level will stop generating.
-	 * 
-	 * @param renderDistance
-	 */
-	public void setRenderDistance(double renderDistance) {
-		this.renderDistance = renderDistance;
-	}
-
-	/**
-	 * @return current distance that the level will stop generating.
-	 */
-	public double getRenderDistance() {
-		return renderDistance;
-	}
-
-	private void floor() {
-		double rotation = engine.getPosition().rotation;
-		double floorPosition = 6;
-		double ceilingPosition = 20;
-		double cosine = Math.cos(rotation);
-		double sine = Math.sin(rotation);
-
-		double zCoord = engine.getPosition().z;
-		double xCoord = engine.getPosition().x;
-		// System.out.println("Z: " + zCoord + ", x: " + xCoord);
-		for (int y = 0; y < height; y++) {
-			double ceiling = (y - height / 2.0) / height;
-			double z = floorPosition / ceiling;
-
-			if (ceiling < 0) {
-				z = ceilingPosition / -ceiling;
-			}
-
-			for (int x = 0; x < width; x++) {
-				double depth = (x - width / 2.0) / height;
-				depth *= z;
-				double xx = depth * cosine + z * sine;
-				double yy = z * cosine - depth * sine;
-				int xPix = (int) (xx + xCoord);
-				int yPix = (int) (yy + zCoord);
-				zBuffer[x + y * width] = z;
-				pixels[x + y * width] = ((xPix & 15) * 16) | ((yPix & 15) * 16) << 8;
-//				pixels[x + y * width] = rb | g;
-//				if (z > renderDistance) {
-//					pixels[x + y * width] = 0;
-//				}
-			}
-		}
+		frameBuffer = new Bitmap(width, height);
+		frameBuffer.clear((byte)0x60);
+		engine.createBufferStrategy(1);
+		bufferStrategy = engine.getBufferStrategy();
+		graphics = bufferStrategy.getDrawGraphics();
 	}
 	
-	public void renderDistanceLimiter() {
-		for (int i = 0; i < width * height; i++) {
-			int col = pixels[i];
-			double brightness = (renderDistance / (zBuffer[i])) / 255;
-//			System.out.println(brightness);
-			if (brightness < 0) {
-				brightness = 0;
-			}
-			
-			if (brightness > 1) {
-				brightness = 1;
-			}
-			
-			int rb = (int) ((col & 0xFF00FF) * brightness) & 0xFF00FF;
-			int g =  (int) ((col & 0x00FF00) * brightness) & 0x00FF00;
-			
-			pixels[i] = rb | g;
-		}
+	public  void SwapBuffers() {
+		frameBuffer.copyTobyteArray(engine.getPixels());
+		graphics.drawImage(engine.getView(), 0, 0, frameBuffer.getWidth(), frameBuffer.getHeight(), null);
+		bufferStrategy.show();
+	}
+	
+	public Bitmap getFrameBuffer() {
+		return frameBuffer;
 	}
 }

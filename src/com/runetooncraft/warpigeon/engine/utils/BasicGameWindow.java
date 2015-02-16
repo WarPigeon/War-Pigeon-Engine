@@ -55,6 +55,21 @@ public class BasicGameWindow extends Canvas implements Window {
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setLocationRelativeTo(null);
 			frame.setVisible(true);
+		} else if(gametype.equals(GameType.THREE_DIMENSIONAL_GAME)) {
+			this.width = Width;
+			this.height = Height;
+			this.scale = Scale;
+			size = new Dimension(width * (scale / 1000), height * (scale / 1000));
+			setPreferredSize(size);
+			setMinimumSize(size);
+			setMaximumSize(size);
+			frame = new JFrame();
+			frame.pack();
+			frame.setResizable(true);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setLocationRelativeTo(null);
+			frame.setSize(size);
+			frame.setVisible(true);
 		}
 	}
 	
@@ -147,9 +162,6 @@ public class BasicGameWindow extends Canvas implements Window {
 	/**
 	 * Sets the Frame size the same as the component
 	 */
-	public void PackFrame() {
-//		frame.pack();
-	}
 	
 	/**
 	 * By default true 
