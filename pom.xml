@@ -38,6 +38,23 @@
                         </descriptorRefs>
                         <finalName>${project.artifactId}-${project.version}-SDK</finalName>
                         <appendAssemblyId>false</appendAssemblyId>
+                        <appendAssemblyId>false</appendAssemblyId>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>make-assembly</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.4</version>
+                    <configuration>
                         <archive>
                             <manifest>
                                 <mainClass>com.runetooncraft.warpigeon.testengine.Test3D</mainClass>
@@ -46,7 +63,8 @@
                         <descriptorRefs>
                             <descriptorRef>jar-with-dependencies</descriptorRef>
                         </descriptorRefs>
-                        <finalName>${project.artifactId}-${project.version}-3D_Demo</finalName>
+                        <finalName>${project.artifactId}-${project.version}-Demo3D</finalName>
+                        <appendAssemblyId>false</appendAssemblyId>
                         <appendAssemblyId>false</appendAssemblyId>
                     </configuration>
                     <executions>
