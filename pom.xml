@@ -38,6 +38,16 @@
                         </descriptorRefs>
                         <finalName>${project.artifactId}-${project.version}-SDK</finalName>
                         <appendAssemblyId>false</appendAssemblyId>
+                        <archive>
+                            <manifest>
+                                <mainClass>com.runetooncraft.warpigeon.testengine.Test3D</mainClass>
+                            </manifest>
+                        </archive>
+                        <descriptorRefs>
+                            <descriptorRef>jar-with-dependencies</descriptorRef>
+                        </descriptorRefs>
+                        <finalName>${project.artifactId}-${project.version}-3D_Demo</finalName>
+                        <appendAssemblyId>false</appendAssemblyId>
                     </configuration>
                     <executions>
                         <execution>
