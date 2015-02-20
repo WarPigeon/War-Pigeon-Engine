@@ -52,7 +52,7 @@ import com.runetooncraft.warpigeon.engine.utils.YamlConfig;
 import com.runetooncraft.warpigeon.pigionsdk.tilesdk.NewTile;
 
 @SuppressWarnings("unchecked")
-public class PigionSDK {
+public class PigeonSDK {
 	@SuppressWarnings("rawtypes")
 	private JComboBox selectedtile,selectedtile2,selectedLayer;
 	private JCheckBox collisionsCheck;
@@ -68,13 +68,13 @@ public class PigionSDK {
 	public static int Mouse2TileID = 0;
 	private WPEngine4 engine;
 	private LevelAlreadyExists exists = new LevelAlreadyExists();
-	public PigionSDK(WPEngine4 engine) {
+	public PigeonSDK(WPEngine4 engine) {
 		engine.getSDKFrame().newtile.SDK = this;
 		this.engine = engine;
 		collisionsCheck = engine.getSDKFrame().TopPanel.collisionsCheck;
 		selectedtile = engine.getSDKFrame().BottomPanel.selectedtile;
 		selectedtile2 = engine.getSDKFrame().BottomPanel.selectedtile2;
-		selectedLayer = engine.getSDKFrame().BottomPanel.selectedLayer; //Stopped here
+		selectedLayer = engine.getSDKFrame().BottomPanel.selectedLayer; 
 		TileSelection = (com.runetooncraft.warpigeon.pigionsdk.TileSelection) engine.getSDKFrame().TileSelection;
 		mnRenderLayers = engine.getSDKFrame().mnRenderLayers;
 		selectedLayer.addItem("Layer1");
@@ -90,6 +90,15 @@ public class PigionSDK {
 			LayersEnabled.add(item);
 		}
 		Update();
+		
+		selectedLayer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(collisionsCheck.isSelected()) {
+					engine.getLevel().renderCollLayer(true, selectedLayer.getSelectedIndex() + 1);
+				}
+			}
+			
+		});
 		
 		engine.getSDKFrame().newlevel.okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -187,12 +196,12 @@ public class PigionSDK {
 
 	private void editCollisions(boolean enabled) {
 		if(enabled) {
+			engine.getLevel().renderCollLayer(true, (selectedLayer.getSelectedIndex() + 1));
 			selectedLayer.removeAllItems();
 			selectedLayer.addItem("Layer1_Collisions");
 			for(int i = 2; i<= engine.getLevel().Layers; i++) {
 				selectedLayer.addItem("Layer" + i + "_Collisions");
 			}
-			engine.getLevel().renderCollLayer(true, (selectedLayer.getSelectedIndex() + 1));
 			forceTileSelectionHash(Level.CollTileIDS);
 		} else {
 			engine.getLevel().renderCollLayer(false, 0);
@@ -624,7 +633,7 @@ public class PigionSDK {
 
 
 	private void insertFileFromResource(String location, File output) {
-		InputStream is = PigionSDK.class.getResourceAsStream(location);
+		InputStream is = PigeonSDK.class.getResourceAsStream(location);
 		System.out.println(location);
 		if(is == null) System.out.println("lol....it be null brah");
 		if (!output.exists()) {
@@ -669,8 +678,8 @@ public class PigionSDK {
 class CheckBoxCellEditor extends AbstractCellEditor implements TableCellEditor {  
 	private static final long serialVersionUID = 1L;
 	protected JCheckBox checkBox;  
-    private PigionSDK pigion;
-    public CheckBoxCellEditor(PigionSDK pigion) {
+    private PigeonSDK pigion;
+    public CheckBoxCellEditor(PigeonSDK pigion) {
     	this.pigion = pigion;
         checkBox = new JCheckBox();  
         checkBox.setHorizontalAlignment(SwingConstants.CENTER);  
@@ -680,10 +689,10 @@ class CheckBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
     public Component getTableCellEditorComponent(JTable table,Object value, boolean isSelected, int row, int column) {
 			checkBox.setSelected(((Boolean) value).booleanValue());
 			if(column == 3) {
-				PigionSDK.Mouse1TileID = Integer.parseInt(table.getValueAt(row, 2).toString());
+				PigeonSDK.Mouse1TileID = Integer.parseInt(table.getValueAt(row, 2).toString());
 			}
 			if(column == 4){
-				PigionSDK.Mouse2TileID = Integer.parseInt(table.getValueAt(row, 2).toString());
+				PigeonSDK.Mouse2TileID = Integer.parseInt(table.getValueAt(row, 2).toString());
 			}
 			pigion.UpdateTileSelected();
 			return checkBox;
@@ -707,12 +716,12 @@ class CWCheckBoxRenderer extends JCheckBox implements TableCellRenderer {
 		if (value instanceof Boolean) {
 			setSelected(((Boolean)value).booleanValue());
 			if(column == 3) {
-				if(PigionSDK.Mouse1TileID == Integer.parseInt(table.getValueAt(row, 2).toString())) {
+				if(PigeonSDK.Mouse1TileID == Integer.parseInt(table.getValueAt(row, 2).toString())) {
 					setSelected(true);
 				}
 			}
 			if(column == 4) {
-				if(PigionSDK.Mouse2TileID == Integer.parseInt(table.getValueAt(row, 2).toString())) {
+				if(PigeonSDK.Mouse2TileID == Integer.parseInt(table.getValueAt(row, 2).toString())) {
 					setSelected(true);
 				}
 			}

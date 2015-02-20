@@ -2,10 +2,8 @@ package com.runetooncraft.warpigeon.engine;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
 import java.io.File;
 
-import com.runetooncraft.warpigeon.engine.entity.Position;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine3D;
 import com.runetooncraft.warpigeon.engine.utils.BasicGameWindow;
 import com.runetooncraft.warpigeon.engine.utils3d.KeyListener;

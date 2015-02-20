@@ -33,7 +33,7 @@ import java.io.IOException;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
-import com.runetooncraft.warpigeon.pigionsdk.PigionSDK;
+import com.runetooncraft.warpigeon.pigionsdk.PigeonSDK;
 import com.runetooncraft.warpigeon.pigionsdk.windowadapters.EventHandlerSimpleDispose;
 
 @SuppressWarnings("rawtypes")
@@ -57,7 +57,7 @@ public class NewTile extends JFrame {
 	public JComboBox comboBox;
 	private JButton btnNewButton;
 	private boolean chosen = false;
-	public PigionSDK SDK;
+	public PigeonSDK SDK;
 	private JLabel lblName;
 	public JTextField NameField;
 

@@ -13,7 +13,7 @@ import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngineLoading;
 import com.runetooncraft.warpigeon.engine.utils.MediaFile;
 import com.runetooncraft.warpigeon.engine.utils.MouseEvents;
-import com.runetooncraft.warpigeon.pigionsdk.PigionSDK;
+import com.runetooncraft.warpigeon.pigionsdk.PigeonSDK;
 
 public class WPEngine4 extends WPEngine3 {
 	private static final long serialVersionUID = 1L;
@@ -27,7 +27,7 @@ public class WPEngine4 extends WPEngine3 {
 	public BufferedImage SideScrollerBackground = null;
 	public static State state = State.PLAY;
 	protected BufferStrategy bs;
-	private PigionSDK pigionsdk;
+	private PigeonSDK pigionsdk;
 	private boolean firsttime = true;
 	public ArrayList<MediaFile> MediaList = new ArrayList<MediaFile>();
 	public int SDKx,SDKy;
@@ -122,7 +122,7 @@ public class WPEngine4 extends WPEngine3 {
 	
 	private void firstTimeSetup() {
 		if(gametype.equals(GameType.PIGION_SDK)) {
-			pigionsdk = new PigionSDK(this);
+			pigionsdk = new PigeonSDK(this);
 		}
 	}
 
@@ -258,7 +258,7 @@ public class WPEngine4 extends WPEngine3 {
 	/**
 	 * this will return null if the PIGION_SDK gamemode is not enabled
 	 */
-	public PigionSDK GetSDK() {
+	public PigeonSDK GetSDK() {
 		return pigionsdk;
 	}
 	

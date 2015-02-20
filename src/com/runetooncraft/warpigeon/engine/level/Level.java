@@ -607,7 +607,7 @@ public class Level {
 					for (int x = x0; x < x1; x++) {
 						for(int Layer = 0; Layer < LayerList.size(); Layer++) {
 							int[] layer = LayerList.get(Layer).tiles;
-							if(RenderLayers.get(Layer + 1)) {
+							if(RenderLayers.get(Layer + 2)) {
 								getTileIntArray(layer,x,y).render(x, y, screen, 2);
 							}
 							if(renderColl && collLayerselected != 0) {

@@ -18,7 +18,7 @@ import com.runetooncraft.warpigeon.engine.utils.Vector2i;
 import com.runetooncraft.warpigeon.engine.utils3d.KeyListener;
 import com.runetooncraft.warpigeon.testengine.tiles.Tiles;
 
-public class PigionSDK extends WPEngine4 {
+public class PigeonSDK extends WPEngine4 {
 	private static final long serialVersionUID = 1L;
 	KeyListener KL;
 	Sprites sprites = new Sprites();
@@ -27,7 +27,7 @@ public class PigionSDK extends WPEngine4 {
 	private boolean up = true,down = true,left = true,right = true;
 	private int u,d,l,r = 0;
 	
-	public PigionSDK(int Height, int Width, int Scale, int PixelWidth, int PixelHeight, int ImageToPixelRatio, File DataFolder) {
+	public PigeonSDK(int Height, int Width, int Scale, int PixelWidth, int PixelHeight, int ImageToPixelRatio, File DataFolder) {
 		super(Height, Width, Scale, PixelWidth, PixelHeight, ImageToPixelRatio, DataFolder, GameType.PIGION_SDK);
 		DataFolder.mkdirs();
 		setIconImage();
@@ -58,7 +58,7 @@ public class PigionSDK extends WPEngine4 {
 	
 	private void setIconImage() {
 		try {
-			InputStream imgStream = PigionSDK.class.getResourceAsStream("/warpigeon.png");
+			InputStream imgStream = PigeonSDK.class.getResourceAsStream("/warpigeon.png");
 			BufferedImage myImg = ImageIO.read(imgStream);
 			GetFrame().setIconImage(myImg);
 		} catch (IOException e) {
@@ -78,7 +78,7 @@ public class PigionSDK extends WPEngine4 {
 		workingDirectory = workingDirectory + "/WarPigeon/TestGame1";
 		File DataFolder = new File(workingDirectory);
 		
-		new PigionSDK(640, 360, 2000, 32, 32, 32, DataFolder);
+		new PigeonSDK(640, 360, 2000, 32, 32, 32, DataFolder);
 	}
 	
 	public void update() {

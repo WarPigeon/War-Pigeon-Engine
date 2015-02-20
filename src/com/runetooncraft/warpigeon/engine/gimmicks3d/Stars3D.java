@@ -1,5 +1,7 @@
 package com.runetooncraft.warpigeon.engine.gimmicks3d;
 
+import java.util.Random;
+
 import com.runetooncraft.warpigeon.engine.utils3d.Bitmap;
 
 
@@ -10,6 +12,8 @@ public class Stars3D {
 	private final float starX[];
 	private final float starY[];
 	private final float starZ[];
+	private Random random = new Random();
+	byte[] randombytes;
 	
 	public Stars3D(int numStars, float spread, float speed) {
 		this.spread = spread;
@@ -18,7 +22,8 @@ public class Stars3D {
 		starX = new float[numStars];
 		starY = new float[numStars];
 		starZ = new float[numStars];
-		
+		randombytes = new byte[5000];
+		random.nextBytes(randombytes);
 		for(int i = 0; i < starX.length; i++) {
 			InitStar(i);
 		}
