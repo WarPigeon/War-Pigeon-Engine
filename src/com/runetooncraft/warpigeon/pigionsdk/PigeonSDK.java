@@ -66,11 +66,11 @@ public class PigeonSDK {
 	ArrayList<Tile> TileSelectionList = new ArrayList<Tile>();
 	public static int Mouse1TileID = 0;
 	public static int Mouse2TileID = 0;
-	private WPEngine4 engine;
+	private final WPEngine4 engine;
 	private LevelAlreadyExists exists = new LevelAlreadyExists();
-	public PigeonSDK(WPEngine4 engine) {
-		engine.getSDKFrame().newtile.SDK = this;
-		this.engine = engine;
+	public PigeonSDK(WPEngine4 engineimport) {
+		engineimport.getSDKFrame().newtile.SDK = this;
+		this.engine = engineimport;
 		collisionsCheck = engine.getSDKFrame().TopPanel.collisionsCheck;
 		selectedtile = engine.getSDKFrame().BottomPanel.selectedtile;
 		selectedtile2 = engine.getSDKFrame().BottomPanel.selectedtile2;
