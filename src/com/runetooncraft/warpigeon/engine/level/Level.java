@@ -208,9 +208,10 @@ public class Level {
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		if(isSDK) {
-			RenderLayers.put(1, true);
-			RenderLayers.put(2, true);
-		}	
+			for(int i = 1; i <= Layers; i++) {
+				RenderLayers.put(i, true);
+			}
+		}
 		generateLevel();
 		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		setupOverlay();
@@ -295,8 +296,9 @@ public class Level {
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		if(isSDK) {
-			RenderLayers.put(1, true);
-			RenderLayers.put(2, true);
+			for(int i = 1; i <= Layers; i++) {
+				RenderLayers.put(i, true);
+			}
 		}
 		generateLevel();
 		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
@@ -336,8 +338,9 @@ public class Level {
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		if(isSDK) {
-			RenderLayers.put(1, true);
-			RenderLayers.put(2, true);
+			for(int i = 1; i <= Layers; i++) {
+				RenderLayers.put(i, true);
+			}
 		}
 		generateLevel();
 		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
@@ -413,10 +416,6 @@ public class Level {
 		workingDir = new File(Dir.getPath() + "/Levels/" + name + "/");
 		LayerList = new ArrayList<Layer>();
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
-		if(isSDK) {
-			RenderLayers.put(1, true);
-			RenderLayers.put(2, true);
-		}
 		if(!workingDir.exists()) {
 			System.out.println("Level " + name + " does not exist, generating level with size 64*64.");
 			GenLevelDefault();
@@ -475,6 +474,11 @@ public class Level {
 						CorruptLevel();
 					}
 				}
+			}
+		}
+		if(isSDK) {
+			for(int i = 1; i <= Layers; i++) {
+				RenderLayers.put(i, true);
 			}
 		}
 		render = true;
@@ -753,13 +757,20 @@ public class Level {
 
 	public void deleteLayerFile(int selectedLayer) {
 		File layer = new File(workingDir, "Layer" + selectedLayer + ".dat");
+		File layerColl = new File(workingDir, "Layer" + selectedLayer + "_Collision.dat");
 		if(layer.exists()) layer.delete();
+		if(layerColl.exists()) layerColl.delete();
 		if(Layers >= selectedLayer) {
 			//rename all layer files after this one
 			for(int i = (selectedLayer + 1); i <= (Layers + 1); i++) {
 				File Old = new File(workingDir, "Layer" + i + ".dat");
 				File New = new File(workingDir, "Layer" + (i - 1) + ".dat");
-				Old.renameTo(New); 
+				Old.renameTo(New);
+				if(colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
+					File Old2 = new File(workingDir, "Layer" + i + "_Collision.dat");
+					File New2 = new File(workingDir, "Layer" + (i - 1) + "_Collision.dat");
+					Old2.renameTo(New2);
+				}
 			}
 		}
 	}
@@ -850,6 +861,20 @@ public boolean tileCollision(double x, double y, int sizex, int sizey, int layer
  */
 public void add(Entity entity) {
 	Que.add(entity);
+}
+
+public void deleteLayer(int layerid) {
+	if(layerid != 1) {
+		render = false;
+		
+		LayerList.remove(layerid - 2);
+		collisionLayers.remove(layerid - 1);
+		Layers-=1;
+		deleteLayerFile(layerid);
+		RenderLayers.remove(layerid);
+		
+		render = true;
+	}
 }
 
 }

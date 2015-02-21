@@ -93,7 +93,7 @@ public class PigeonSDK {
 		
 		selectedLayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(collisionsCheck.isSelected()) {
+				if(collisionsCheck.isSelected() && selectedLayer.getSelectedIndex() >= 0) {
 					engine.getLevel().renderCollLayer(true, selectedLayer.getSelectedIndex() + 1);
 				}
 			}
@@ -169,9 +169,9 @@ public class PigeonSDK {
 			
 		});
 
-		engine.getSDKFrame().TopPanel.collisionsCheck.addChangeListener(new ChangeListener() {
+		engine.getSDKFrame().TopPanel.collisionsCheck.addItemListener(new ItemListener() {
 
-			public void stateChanged(ChangeEvent e) {
+			public void itemStateChanged(ItemEvent e) {
 				editCollisions(collisionsCheck.isSelected());
 			}
 		});
@@ -310,11 +310,10 @@ public class PigeonSDK {
 			}
 		});
 		engine.getLevel().RenderLayers.put(engine.getLevel().Layers, true);
-		Layer Layer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-					Layer.tiles[x+y*width] = Level.EmptyTile.getTileID();
-			}
+		Layer Layer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER, Level.EmptyTile.getTileID());
+		if(engine.getLevel().colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
+			Layer LayerColl = new Layer(new int[width * height],LayerType.COLLISION_LAYER,-3);
+			engine.getLevel().collisionLayers.add(LayerColl);
 		}
 		engine.getLevel().LayerList.add(Layer);
 		selectedLayer.addItem("Layer" + LayerNumber);
@@ -323,26 +322,20 @@ public class PigeonSDK {
 	
 
 	private void deleteLayer() {
-		if(getSelectedLayer() == engine.getLevel().getmainLayer()) {
+		if(engine.getLevel().getLayer(selectedLayer.getSelectedIndex() + 1) == engine.getLevel().getmainLayer()) {
 			JOptionPane.showMessageDialog(null, "You can't delete the first Layer.", "Error",
                     JOptionPane.ERROR_MESSAGE);
 		} else {
-		engine.getLevel().render = false;
-		int Layerid = engine.getLevel().getLayerID(getSelectedLayer());
-		engine.getLevel().LayerList.remove(Layerid - 2);
-		engine.getLevel().Layers-=1;
-		selectedLayer.removeItem("Layer" + Layerid);
-		engine.getLevel().deleteLayerFile(Layerid);
+		int Layerid = selectedLayer.getSelectedIndex() + 1;
+		JCheckBoxMenuItem item = LayersEnabled.get(Layerid - 1);
+		mnRenderLayers.remove(item);
+		LayersEnabled.remove(item);
+		engine.getLevel().deleteLayer(Layerid);
 		selectedLayer.removeAllItems();
 		selectedLayer.addItem("Layer1");
 		for(int i = 2; i<= engine.getLevel().Layers; i++) {
 			selectedLayer.addItem("Layer" + i);
 		}
-		JCheckBoxMenuItem item = LayersEnabled.get(Layerid);
-		mnRenderLayers.remove(item);
-		LayersEnabled.remove(item);
-		engine.getLevel().RenderLayers.remove(Layerid);
-		engine.getLevel().render = true;
 	}
 	}
 	
