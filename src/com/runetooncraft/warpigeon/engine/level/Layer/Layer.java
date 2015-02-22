@@ -1,11 +1,30 @@
 package com.runetooncraft.warpigeon.engine.level.Layer;
 
+import java.util.ArrayList;
+
+import com.runetooncraft.warpigeon.engine.entity.Entity;
+import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
+import com.runetooncraft.warpigeon.engine.level.Level;
+
 import edu.emory.mathcs.backport.java.util.Arrays;
 
 public class Layer {
 	public int[] tiles;
 	public LayerType type = null;
 	public String name = "";
+	private ArrayList<Entity> entities = new ArrayList<Entity>();
+	
+	public ArrayList<Entity> getEntities() {
+		return entities;
+	}
+	
+	public void addEntity(Entity e) {
+		if(!entities.contains(e)) entities.add(e);
+	}
+	
+	public void removeEntity(Entity e) {
+		if(entities.contains(e)) entities.remove(e);
+	}
 	
 	public Layer(int[] tiles, LayerType type) {
 		this.tiles = tiles;
@@ -32,5 +51,18 @@ public class Layer {
 	
 	public void fillArray(int id) {
 		Arrays.fill(tiles, id);
+	}
+
+	public void render(Level level, ScreenEngine2D screen, int y0, int y1, int x0, int x1) {
+		for (int y = y0; y < y1; y++) {
+			for (int x = x0; x < x1; x++) {
+				level.getTileIntArray(tiles,x,y).render(x, y, screen, 2);
+			}
+		}
+		if(!entities.isEmpty()) {
+			for(int e = 0; e < entities.size(); e++) {
+				entities.get(e).render(screen);
+			}
+		}
 	}
 }

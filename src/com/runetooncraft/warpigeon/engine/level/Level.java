@@ -67,6 +67,7 @@ public class Level {
 	};
 	
 	private ArrayList<Entity> Que = new ArrayList<Entity>();
+	private ArrayList<Entity> Layer1Entities = new ArrayList<Entity>();
 	
 	public void ExpandLevel(int xExpand, int yExpand) {
 		render = false;
@@ -501,7 +502,16 @@ public class Level {
 	 * Updates Level enemies, etc.
 	 */
 	public void update() {
-		for(Entity entity: Que) {
+		for(int e = 0; e < Que.size(); e++) {
+			Entity entity = Que.get(e);
+			if(entity.shouldChangeLayer()) {
+				if(entity.getLayer() == 1) {
+					Layer1Entities.add(entity);
+					entity.layerWasChanged();
+				} else if(entity.getLayer() > 1) {
+					getLayer(entity.getLayer()).addEntity(entity);
+				}
+			}
 			entity.update();
 		}
 	}
@@ -569,8 +579,10 @@ public class Level {
 					}	
 				}
 			}
-			for(Entity entity: Que) {
-				entity.render(screen);
+			if(!Layer1Entities.isEmpty()) {
+				for(int e = 0; e < Layer1Entities.size(); e++) {
+					Layer1Entities.get(e).render(screen);
+				}
 			}
 	}
 	
@@ -586,17 +598,14 @@ public class Level {
 				y0double = yScroll;
 				y0 = yScroll >> PDR;
 				y1 = (yScroll + screen.height + screen.ImageToPixelRatio) >> PDR;
-				for (int y = y0; y < y1; y++) {
-					for (int x = x0; x < x1; x++) {
-						for(Layer layer: LayerList) {
-							getTileIntArray(layer.tiles,x,y).render(x, y, screen, 2);
-						}
-						if(renderColl) {
-							Layer coll = collisionLayers.get(collLayerselected - 1);
-							getTileIntArray(coll.tiles,x,y).render(x, y, screen, collLayerselected);
-						}
-					}
-				}
+			for(int layer = 0; layer < LayerList.size(); layer++) {
+				Layer l = LayerList.get(layer);
+				l.render(this,screen,y0,y1,x0,x1);
+			}
+			if(renderColl) {
+				Layer coll = collisionLayers.get(collLayerselected - 1);
+				coll.render(this,screen,y0,y1,x0,x1);
+			}
 			} else {
 				xScroll = xScroll - screen.width / 2;
 				yScroll = yScroll - screen.height / 2;
@@ -607,22 +616,13 @@ public class Level {
 				y0double = yScroll;
 				y0 = yScroll >> PDR;
 				y1 = (yScroll + screen.height + screen.ImageToPixelRatio) >> PDR;
-				for (int y = y0; y < y1; y++) {
-					for (int x = x0; x < x1; x++) {
-						for(int Layer = 0; Layer < LayerList.size(); Layer++) {
-							int[] layer = LayerList.get(Layer).tiles;
-							if(RenderLayers.get(Layer + 2)) {
-								getTileIntArray(layer,x,y).render(x, y, screen, 2);
-							}
-							if(renderColl && collLayerselected != 0) {
-								Layer coll = collisionLayers.get(collLayerselected - 1);
-								getTileLayerCollision(coll, x,y).render(x, y, screen, collLayerselected);
-							}
-							if(overlayEnabled && !(x < 0 || y < 0 || x >= width || y >= height)) {
-								overlayTile.render(x,y, screen, 2);
-							}
-						}
-					}
+				for(int layer = 0; layer < LayerList.size(); layer++) {
+					Layer l = LayerList.get(layer);
+					l.render(this,screen,y0,y1,x0,x1);
+				}
+				if(renderColl) {
+					Layer coll = collisionLayers.get(collLayerselected - 1);
+					coll.render(this,screen,y0,y1,x0,x1);
 				}
 			}
 		}

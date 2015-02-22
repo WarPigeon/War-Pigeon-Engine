@@ -13,7 +13,25 @@ public abstract class Entity {
 	protected Level level;
 	protected WPEngine4 engine;
 	protected final Random random = new Random();
+	private int Layer = 1;
+	private boolean layerChanged = true;
 	
+	public int getLayer() {
+		return Layer;
+	}
+	
+	public boolean shouldChangeLayer() {
+		return layerChanged;
+	}
+	
+	public void layerWasChanged() {
+		layerChanged = false;
+	}
+
+	public void setLayer(int layer) {
+		Layer = layer;
+	}
+
 	public void update() {
 	}
 	

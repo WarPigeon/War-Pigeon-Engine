@@ -58,7 +58,7 @@ public class FreeRoam extends WPEngine4 {
 			npc.init(level, this);
 			level.add(npc);
 		}
-		
+		level.add(player);
 		//Start
 		start();
 //		getScreenEngine2D().SetSpriteWall(Sprites.Grass);
@@ -96,13 +96,9 @@ public class FreeRoam extends WPEngine4 {
 	
 	public void update() {
 		KeyEvents.update();
-		player.update();
 	}
 	
 	public void privateRender() {
-		int xScroll = player.x + screen.width /2 - 32;
-		int yScroll = player.y + screen.height /2 - 32;
-		player.render(xScroll, yScroll, screen);
 	}
 	
 	public void MouseLeftclicked() {

@@ -3,6 +3,7 @@ package com.runetooncraft.warpigeon.engine.entity.mob;
 import java.util.Random;
 
 import com.runetooncraft.warpigeon.engine.graphics.AnimatedSprite;
+import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.Level;
 import com.runetooncraft.warpigeon.engine.utils.KeyBoardEvents;
@@ -10,7 +11,6 @@ import com.runetooncraft.warpigeon.engine.utils.KeyBoardEvents;
 public class Player extends Mob {
 
 	protected KeyBoardEvents input;
-//	protected int lastXa, lastYa = 0;
 	protected int xa,ya;
 	public Player(int x, int y, Sprite[] ForwardAnims, Sprite[] BackwardAnims, Sprite[] LeftAnims, Sprite[] RightAnims, KeyBoardEvents input, int xSize, int ySize) {
 		super(x, y, ForwardAnims, BackwardAnims, LeftAnims, RightAnims, xSize, ySize);
@@ -26,6 +26,12 @@ public class Player extends Mob {
 		super(x,y);
 		this.input = input;
 		sprite = new Sprite(playerSize,new Random().nextInt(0xffffff));
+	}
+	
+	public void render(ScreenEngine2D screen) {
+		int xScroll = x + screen.width /2 - screen.PixelWidth;
+		int yScroll = y + screen.height /2 - screen.PixelHeight;
+		render(xScroll, yScroll, screen);
 	}
 
 	public void update() {
