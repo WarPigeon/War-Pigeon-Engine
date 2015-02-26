@@ -27,9 +27,11 @@ public abstract class Entity {
 	public void layerWasChanged() {
 		layerChanged = false;
 	}
+	
 
 	public void setLayer(int layer) {
 		Layer = layer;
+		layerChanged = true;
 	}
 
 	public void update() {

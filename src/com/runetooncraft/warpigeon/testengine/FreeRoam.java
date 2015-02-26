@@ -14,6 +14,8 @@ import com.runetooncraft.warpigeon.engine.graphics.AnimatedSprite;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.CoordinateHandler;
 import com.runetooncraft.warpigeon.engine.level.Level;
+import com.runetooncraft.warpigeon.engine.particles.BasicSpread;
+import com.runetooncraft.warpigeon.engine.particles.Particle;
 import com.runetooncraft.warpigeon.engine.utils.MediaFile;
 import com.runetooncraft.warpigeon.engine.utils.MediaType;
 import com.runetooncraft.warpigeon.engine.utils3d.KeyListener;
@@ -58,7 +60,9 @@ public class FreeRoam extends WPEngine4 {
 			npc.init(level, this);
 			level.add(npc);
 		}
+		Particle particle = new Particle(new Sprite(1,1,0xC2C1C2), 128, 128, new BasicSpread(), 50000);
 		level.add(player);
+		level.add(particle);
 		//Start
 		start();
 //		getScreenEngine2D().SetSpriteWall(Sprites.Grass);
