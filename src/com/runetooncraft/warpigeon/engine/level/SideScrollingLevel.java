@@ -38,9 +38,13 @@ public class SideScrollingLevel extends Level {
 	public void generateLevel() {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				mainLayer.tiles[x+y*width] = random.nextInt(3); //Very basic
-				for(Layer Layer: LayerList) {
-					Layer.tiles[x+y*width] = EmptyTile.getTileID();
+				for(int i = 0; i < LayerList.size(); i++) {
+					Layer layer = LayerList.get(i);
+					if(i == 0) {
+						layer.tiles[x+y*height] = random.nextInt(3); //Very basic
+					} else {
+						layer.tiles[x+y*height] = EmptyTile.getTileID();
+					}
 				}
 			}
 		}

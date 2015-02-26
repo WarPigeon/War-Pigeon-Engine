@@ -27,7 +27,6 @@ import edu.emory.mathcs.backport.java.util.Collections;
 public class Level {
 	
 	protected int width, height;
-	protected Layer mainLayer;
 	protected BasicTile overlayTile;
 	protected int PSpawnX, PSpawnY;
 	public ArrayList<Layer> LayerList = new ArrayList<Layer>();
@@ -49,8 +48,13 @@ public class Level {
 	public boolean GravityEnabled = false;
 	public Gravity gravity = null;
 	public WPEngine4 engine;
-	public HashMap<Integer,Boolean> RenderLayers = new HashMap<Integer,Boolean>(); //Only used if isSDK is true
+	public ArrayList<Boolean> RenderLayers = new ArrayList<Boolean>();
 	private boolean isSDK;
+	
+	public boolean isSDK() {
+		return isSDK;
+	}
+
 	public boolean renderColl;
 	public int collLayerselected;
 	public boolean overlayEnabled = false;
@@ -67,8 +71,38 @@ public class Level {
 	};
 	
 	private ArrayList<Entity> Que = new ArrayList<Entity>();
-	private ArrayList<Entity> Layer1Entities = new ArrayList<Entity>();
 	
+	/**
+	 * The amount of layers rendered under the player's current layer
+	 */
+	public int getLayersRenderedUnder() {
+		return layersRenderedUnder;
+	}
+
+	/**
+	 * The amount of layers rendered under the player's current layer
+	 */
+	public void setLayersRenderedUnder(int layersRenderedUnder) {
+		this.layersRenderedUnder = layersRenderedUnder;
+	}
+
+	/**
+	 * The amount of layers rendered Above the player's current layer
+	 */
+	public int getLayersRenderedAbove() {
+		return layersRenderedAbove;
+	}
+
+	/**
+	 * The amount of layers rendered Above the player's current layer
+	 */
+	public void setLayersRenderedAbove(int layersRenderedAbove) {
+		this.layersRenderedAbove = layersRenderedAbove;
+	}
+
+	private int layersRenderedUnder = 1;
+	private int layersRenderedAbove = 1;
+
 	public void ExpandLevel(int xExpand, int yExpand) {
 		render = false;
 		HashMap<Integer,HashMap<Vector2i,Tile>> LayerMap = new HashMap<Integer,HashMap<Vector2i,Tile>>();
@@ -79,11 +113,7 @@ public class Level {
 			for(int yt = 0; yt < height; yt++) {
 				for(int xt = 0; xt < width; xt++) {
 					Tc = new Vector2i(xt,yt, Vector2Type.BY_TILE);
-					if(layer == 1) {
-						TileMap.put(Tc, getTile(xt,yt));
-					} else {
-						TileMap.put(Tc, getTileLayer(LayerList.get(layer-1),xt,yt));
-					}
+					TileMap.put(Tc, getTileLayer(LayerList.get(layer-1),xt,yt));
 				}
 			}
 			LayerMap.put(layer, TileMap);
@@ -94,14 +124,10 @@ public class Level {
 		render = false;
 		Layers = LayerMap.size();
 		for(int clayer = 1; clayer <= Layers; clayer++) {
-			if(clayer == 1) {
-				mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
-			} else if(LayerList.size() < clayer) {
 				LayerList.add(new Layer(new int[width * height],LayerType.DEFAULT_LAYER));
-			}
 			
 			for(Vector2i coords: TileMap.keySet()) {
-				setTile(coords, TileMap.get(coords), LayerList.get(clayer-2));
+				setTile(coords, TileMap.get(coords), LayerList.get(clayer-1));
 			}
 		}
 		render = true;
@@ -137,7 +163,7 @@ public class Level {
 				int y = current.tile.getY();
 				int xi = (i % 3) - 1;
 				int yi = (i / 3) - 1;
-				Tile at = getTile(x + xi, y + yi);
+				Tile at = getTileLayer(getLayer(1),x + xi, y + yi);
 				if(at == null) continue;
 				if (at.solid()) continue;
 				Vector2i a = new Vector2i(x + xi, y + yi, Vector2Type.BY_TILE);
@@ -204,15 +230,14 @@ public class Level {
 		TileIDS.put(-1, EmptyTile);
 		this.width = width;
 		this.height = height;
-		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		Layer mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		LayerList.add(mainLayer);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
-		if(isSDK) {
-			for(int i = 1; i <= Layers; i++) {
-				RenderLayers.put(i, true);
+			for(int i = 0; i < Layers; i++) {
+				RenderLayers.add(i, true);
 			}
-		}
 		generateLevel();
 		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		setupOverlay();
@@ -225,25 +250,11 @@ public class Level {
 	
 	private void advancedCollLayers() {
 		collisionLayers.clear();
-		Layer layer1_collision = new Layer(new int[width * height], LayerType.COLLISION_LAYER, "Layer1_Collision");
-		
-		collTiles();
-		
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				Tile gTile = getTile(x, y);
-				if(gTile.Collide) {
-					layer1_collision.tiles[x+y*height] = -2;
-				}
-			}
-		}
-		collisionLayers.add(layer1_collision);
-		
-		for(int i = 2; i<=Layers; i++) {
+		for(int i = 1; i<=Layers; i++) {
 			Layer layeri_collision = new Layer(new int[width * height], LayerType.COLLISION_LAYER, "Layer" + i +"_Collision");
 			for (int y = 0; y < height; y++) {
 				for (int x = 0; x < width; x++) {
-					Tile gTile = getTileLayer(LayerList.get(i-2), x, y);
+					Tile gTile = getTileLayer(LayerList.get(i-1), x, y);
 					if(gTile.Collide) {
 						layeri_collision.tiles[x+y*height] = -2;
 					}
@@ -251,6 +262,19 @@ public class Level {
 			}
 			collisionLayers.add(layeri_collision);
 		}
+	}
+	
+	public Layer resetCollisionLayer(Layer layer, Layer collisionLayer) {
+		collisionLayer = new Layer(new int[width * height], LayerType.COLLISION_LAYER);
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				Tile gTile = getTileLayer(layer, x, y);
+				if(gTile.Collide) {
+					collisionLayer.tiles[x+y*height] = -2;
+				}
+			}
+		}
+		return collisionLayer;
 	}
 	/**
 	 * PigionSDK Tile Overlay
@@ -292,15 +316,14 @@ public class Level {
 		this.workingDir.mkdirs();
 		this.width = width;
 		this.height = height;
-		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		Layer mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		LayerList.add(mainLayer);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
-		if(isSDK) {
-			for(int i = 1; i <= Layers; i++) {
-				RenderLayers.put(i, true);
+			for(int i = 0; i < Layers; i++) {
+				RenderLayers.add(i, true);
 			}
-		}
 		generateLevel();
 		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		setupOverlay();
@@ -334,15 +357,14 @@ public class Level {
 		this.workingDir.mkdirs();
 		this.width = width;
 		this.height = height;
-		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		Layer mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		LayerList.add(mainLayer);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
-		if(isSDK) {
-			for(int i = 1; i <= Layers; i++) {
-				RenderLayers.put(i, true);
+			for(int i = 0; i < Layers; i++) {
+				RenderLayers.add(i, true);
 			}
-		}
 		generateLevel();
 		if(colltype == CollisionType.ADVANCED_COLLBOX) advancedCollLayers();
 		setupOverlay();
@@ -366,8 +388,9 @@ public class Level {
 		this.width = 64;
 		this.height = 64;
 		colltype = CollisionType.BASIC;
-		mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		Layer mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
+		LayerList.add(mainLayer);
 		LayerList.add(Layer2);
 		isSDK = engine.gametype.equals(GameType.PIGION_SDK);
 		generateLevel();
@@ -380,29 +403,28 @@ public class Level {
 			int Tilex = coords.tileX();
 			if((Tiley + Tilex) <= (width * height)) {
 				int ChosenTile = Tiley + Tilex;
-				if(Layer.equals(mainLayer)) {
-					if(mainLayer.tiles.length > 0) {
-						mainLayer.tiles[ChosenTile] = tile.getTileID();
-					}
-				} else {
-					int TileID = tile.getTileID();
-					if(TileID == VoidTile.getTileID()) TileID = -1;
-					Layer.tiles[ChosenTile] = TileID;
-				}
+				
+				int TileID = tile.getTileID();
+				if(TileID == VoidTile.getTileID()) TileID = -1;
+				Layer.tiles[ChosenTile] = TileID;
+				
 				if(colltype == CollisionType.ADVANCED_COLLBOX && tile.Collide) {
-					if(Layer.equals(mainLayer)) {
-						collisionLayers.get(0).tiles[ChosenTile] = -2; //change later when collision layers is worked on thoroughly
+					int index = indexofLayer(Layer);
+					if(index >= 0) {
+						collisionLayers.get(index).tiles[ChosenTile] = -2; //change later when collision layers is worked on thoroughly
+					} else {
+						System.out.println("Returne layer index of " + index +  " during setTile. unable to update collisions correctly.");
 					}
 				}
 			}
 	}
 	
-	public Layer getmainLayer() {
-		return mainLayer;
+	private int indexofLayer(Layer layer) {
+		return LayerList.indexOf(layer);
 	}
-	
-	public Tile getTile(Vector2i coords) {
-		return TileIDS.get(mainLayer.tiles[coords.getX() * (coords.getY() * height)]);
+
+	public Layer getmainLayer() {
+		return LayerList.get(0);
 	}
 	
 	private void CorruptLevel() {
@@ -438,15 +460,14 @@ public class Level {
 						Layers = Integer.parseInt((String) config.get("Layers"));
 						colltype = CollisionType.valueOf((String) config.get("CollisionType"));
 						
-						int[] tilesload = FileSystem.LoadDatFile(Layer1);
-						mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
-						for(int tilenumber = 0; tilenumber < (width * height); tilenumber++) {
-							mainLayer.tiles[tilenumber] = tilesload[tilenumber];
-						}
-						
-						for(int i = 2; i<=Layers; i++) {
+						for(int i = 1; i<=Layers; i++) {
 							String LayerString = "Layer" + i + ".dat";
-							File LayerFile = new File(workingDir, LayerString);
+							File LayerFile;
+							if(i == 1) {
+								LayerFile = Layer1;
+							} else {
+								LayerFile = new File(workingDir, LayerString);
+							}
 							int[] Tilesload = FileSystem.LoadDatFile(LayerFile);
 							Layer layer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 							for(int tilenumber = 0; tilenumber < (width * height); tilenumber++) {
@@ -456,12 +477,7 @@ public class Level {
 						}
 						
 						if(colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
-							File Layer1_collision_file = new File(workingDir, "Layer1_Collision.dat");
-							int[] Layer1_collision_file_load = FileSystem.LoadDatFile(Layer1_collision_file);
-							Layer Layer1_collision = new Layer(Layer1_collision_file_load,LayerType.COLLISION_LAYER);
-							collisionLayers.add(Layer1_collision);
-							
-							for(int i = 2; i<=Layers; i++) {
+							for(int i = 1; i<=Layers; i++) {
 								File Layeri_collision_file = new File(workingDir, "Layer" + i + "_Collision.dat");
 								int[] Layeri_collision_file_load = FileSystem.LoadDatFile(Layeri_collision_file);
 								Layer Layeri_collision = new Layer(Layeri_collision_file_load,LayerType.COLLISION_LAYER);
@@ -477,11 +493,9 @@ public class Level {
 				}
 			}
 		}
-		if(isSDK) {
-			for(int i = 1; i <= Layers; i++) {
-				RenderLayers.put(i, true);
+			for(int i = 0; i < Layers; i++) {
+				RenderLayers.add(i, true);
 			}
-		}
 		render = true;
 		System.out.println( "\"" + LevelName + "\" loaded \n"
 				+ "--------------------\n"
@@ -499,20 +513,28 @@ public class Level {
 	}
 	
 	/**
-	 * Updates Level enemies, etc.
+	 * List of updates:
+	 * - Entities are attached to their layers if entity.shouldChangeLayer() is true.
+	 * - Layer render Range is updated according to the player's layer position
 	 */
 	public void update() {
 		for(int e = 0; e < Que.size(); e++) {
 			Entity entity = Que.get(e);
 			if(entity.shouldChangeLayer()) {
-				if(entity.getLayer() == 1) {
-					Layer1Entities.add(entity);
-					entity.layerWasChanged();
-				} else if(entity.getLayer() > 1) {
-					getLayer(entity.getLayer()).addEntity(entity);
-				}
+				getLayer(entity.getLayer()).addEntity(entity);
 			}
 			entity.update();
+		}
+		if(engine.getPlayer() != null) {
+			Entity player = engine.getPlayer();
+			int playerLayer = player.getLayer();
+			for(int i = 1; i <= RenderLayers.size(); i++) {
+				if(i == playerLayer || i >= (playerLayer - layersRenderedUnder) && i <= (playerLayer + layersRenderedAbove)) {
+					RenderLayers.set(i - 1, true);
+				} else {
+					RenderLayers.set(i - 1, false);
+				}
+			}
 		}
 	}
 	
@@ -527,86 +549,7 @@ public class Level {
 	 * Renders what the level is scrolled to.
 	 */
 	public void render(int xScroll, int yScroll, ScreenEngine2D screen) {
-		xScroll = xScroll - screen.width / 2;
-		yScroll = yScroll - screen.height / 2;
-		screen.setOffset(xScroll, yScroll);
-		x0double = xScroll;
-		x0 = xScroll >> PDR;
-		x1 = (xScroll + screen.width + screen.ImageToPixelRatio) >> PDR;
-		y0double = yScroll;
-		y0 = yScroll >> PDR;
-		y1 = (yScroll + screen.height + screen.ImageToPixelRatio) >> PDR;
-			if(!isSDK) {
-				if(render) {
-					for (int y = y0; y < y1; y++) {
-						for (int x = x0; x < x1; x++) {
-							getTile(x,y).render(x,y,screen, 1);
-						}
-					}
-					if(GravityEnabled) {
-						gravity.Update(); //test
-					}
-				} else {
-					for (int y = y0; y < y1; y++) {
-						for (int x = x0; x < x1; x++) {
-							if(LoadingTile == null) {
-								VoidTile.render(x,y,screen, 1);
-							} else {
-								LoadingTile.render(x,y,screen, 1);
-							}
-						}
-					}	
-				}
-			} else {
-				if(render && RenderLayers.get(1)) {
-					for (int y = y0; y < y1; y++) {
-						for (int x = x0; x < x1; x++) {
-							getTile(x,y).render(x,y,screen, 1);
-						}
-					}
-					if(GravityEnabled) {
-						gravity.Update();
-					}
-				} else {
-					for (int y = y0; y < y1; y++) {
-						for (int x = x0; x < x1; x++) {
-							if(LoadingTile == null) {
-								VoidTile.render(x,y,screen, 1);
-							} else {
-								LoadingTile.render(x,y,screen, 1);
-							}
-						}
-					}	
-				}
-			}
-			if(!Layer1Entities.isEmpty()) {
-				for(int e = 0; e < Layer1Entities.size(); e++) {
-					Layer1Entities.get(e).render(screen);
-				}
-			}
-	}
-	
-	public void renderUpperLayers(int xScroll, int yScroll, ScreenEngine2D screen) {
 		if(render) {
-			if(!isSDK) {
-				xScroll = xScroll - screen.width / 2;
-				yScroll = yScroll - screen.height / 2;
-				screen.setOffset(xScroll, yScroll);
-				x0double = xScroll;
-				x0 = xScroll >> PDR;
-				x1 = (xScroll + screen.width + screen.ImageToPixelRatio) >> PDR;
-				y0double = yScroll;
-				y0 = yScroll >> PDR;
-				y1 = (yScroll + screen.height + screen.ImageToPixelRatio) >> PDR;
-			for(int layer = 0; layer < LayerList.size(); layer++) {
-				Layer l = LayerList.get(layer);
-				l.render(this,screen,y0,y1,x0,x1);
-			}
-			if(renderColl) {
-				Layer coll = collisionLayers.get(collLayerselected - 1);
-				coll.render(this,screen,y0,y1,x0,x1);
-			}
-			} else {
 				xScroll = xScroll - screen.width / 2;
 				yScroll = yScroll - screen.height / 2;
 				screen.setOffset(xScroll, yScroll);
@@ -618,23 +561,50 @@ public class Level {
 				y1 = (yScroll + screen.height + screen.ImageToPixelRatio) >> PDR;
 				for(int layer = 0; layer < LayerList.size(); layer++) {
 					Layer l = LayerList.get(layer);
-					l.render(this,screen,y0,y1,x0,x1);
+					if(RenderLayers.get(layer).equals(true)) {
+						l.render(this,screen,y0,y1,x0,x1);
+					} else {
+						if(layer == 0) {
+							renderLayerofVoidTiles(this,screen,y0,y1,x0,x1, l);
+						}
+					}
 				}
 				if(renderColl) {
 					Layer coll = collisionLayers.get(collLayerselected - 1);
 					coll.render(this,screen,y0,y1,x0,x1);
 				}
-			}
 		}
 	}
 	
-	public Tile getTile(int x, int y) {
+	private void renderLayerofVoidTiles(Level level, ScreenEngine2D screen, int y02, int y12, int x02, int x12, Layer l) {
+		for (int y = y0; y < y1; y++) {
+			for (int x = x0; x < x1; x++) {
+				VoidTile.render(x, y, screen, l);
+			}
+		}
+	}
+
+	/**
+	 * @param e
+	 * @param x
+	 * @param y
+	 * @return the tile at the given position on the layer the entity is on
+	 */
+	public Tile getTile(Entity e, int x, int y) {
 		if(x < 0 || y < 0 || x >= width || y >= height) return VoidTile;
-		if(mainLayer.tiles[x + y * width] < TileIDS.size()) {
-			return TileIDS.get(mainLayer.tiles[x + y * width]);
+		if(getLayer(e.getLayer()).tiles[x + y * width] < TileIDS.size()) {
+			return TileIDS.get(getLayer(e.getLayer()).tiles[x + y * width]);
 		} else {
 			return VoidTile;
 		}
+	}
+	
+	/**
+	 * @param e
+	 * @return the tile directly behind the entity
+	 */
+	public Tile getTile(Entity e) {
+		return getTile(e, e.getX(), e.getY());
 	}
 	
 	public Tile getTileLayer(Layer layer, int x, int y) {
@@ -670,18 +640,14 @@ public class Level {
 		System.out.println("Attempting level save.");
 		new Thread(new Runnable() {
 			public void run() {
-				File Layer1 = new File(workingDir, "Layer1.dat");
-				FileSystem.SaveDatFile(mainLayer.tiles, Layer1);
-				for(int i = 2; i<=Layers; i++) {
+				for(int i = 1; i<=Layers; i++) {
 					File layer_file = new File(workingDir, ("Layer" + i + ".dat"));
-					FileSystem.SaveDatFile(LayerList.get((i - 2)).tiles, layer_file);
+					FileSystem.SaveDatFile(LayerList.get((i - 1)).tiles, layer_file);
 				}
 				if(colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
-					int layerid = 0;
-					for(Layer layer: collisionLayers) {
-						layerid++;
-						File layer_file = new File(workingDir, ("Layer" + layerid + "_Collision.dat"));
-						FileSystem.SaveDatFile(layer.tiles, layer_file);
+					for(int e = 1; e<=Layers; e++) {
+						File layer_file = new File(workingDir, ("Layer" + e + "_Collision.dat"));
+						FileSystem.SaveDatFile(collisionLayers.get(e - 1).tiles, layer_file);
 					}
 				}
 				
@@ -779,18 +745,10 @@ public class Level {
 		return workingDir;
 	}
 	public int getLayerID(Layer selectedLayer) {
-		if(selectedLayer == mainLayer) {
-			return 1;
-		} else {
-			return LayerList.indexOf(selectedLayer) + 2;
-		}
+		return LayerList.indexOf(selectedLayer) + 1;
 	}
 	public Layer getLayer(int layer) {
-		if(layer == 1) {
-			return mainLayer;
-		} else {
-			return LayerList.get(layer-2);
-		}
+		return LayerList.get(layer-1);
 	}
 	public Layer getCollisionLayer(int layer) {
 		return collisionLayers.get(layer-1);
@@ -871,7 +829,7 @@ public void deleteLayer(int layerid) {
 		collisionLayers.remove(layerid - 1);
 		Layers-=1;
 		deleteLayerFile(layerid);
-		RenderLayers.remove(layerid);
+		RenderLayers.remove(layerid - 1);
 		
 		render = true;
 	}

@@ -225,7 +225,7 @@ public class PigeonSDK {
 	}
 	
 	private void changeRenderLayer(int itemNumber, boolean selected) {
-		engine.getLevel().RenderLayers.put(itemNumber, selected);
+		engine.getLevel().RenderLayers.set(itemNumber - 1, selected);
 	}
 	
 	public void expandFrame() {
@@ -309,10 +309,10 @@ public class PigeonSDK {
 				changeRenderLayer(engine.getLevel().Layers, selected);
 			}
 		});
-		engine.getLevel().RenderLayers.put(engine.getLevel().Layers, true);
+		engine.getLevel().RenderLayers.add(engine.getLevel().Layers - 1, true);
 		Layer Layer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER, Level.EmptyTile.getTileID());
 		if(engine.getLevel().colltype.equals(CollisionType.ADVANCED_COLLBOX)) {
-			Layer LayerColl = new Layer(new int[width * height],LayerType.COLLISION_LAYER,-3);
+			Layer LayerColl = engine.getLevel().resetCollisionLayer(Layer, new Layer(new int[width * height],LayerType.COLLISION_LAYER));
 			engine.getLevel().collisionLayers.add(LayerColl);
 		}
 		engine.getLevel().LayerList.add(Layer);

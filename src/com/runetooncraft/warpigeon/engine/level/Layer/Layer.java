@@ -56,7 +56,11 @@ public class Layer {
 	public void render(Level level, ScreenEngine2D screen, int y0, int y1, int x0, int x1) {
 		for (int y = y0; y < y1; y++) {
 			for (int x = x0; x < x1; x++) {
-				level.getTileIntArray(tiles,x,y).render(x, y, screen, 2);
+				if(type.equals(LayerType.DEFAULT_LAYER)) {
+					level.getTileLayer(this,x,y).render(x, y, screen, this);
+				} else if(type.equals(LayerType.COLLISION_LAYER)) {
+					level.getTileLayerCollision(this,x,y).render(x, y, screen, this);
+				}
 			}
 		}
 		if(!entities.isEmpty()) {

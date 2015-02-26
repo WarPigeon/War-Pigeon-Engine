@@ -2,6 +2,7 @@ package com.runetooncraft.warpigeon.engine.level;
 
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
+import com.runetooncraft.warpigeon.engine.level.Layer.Layer;
 
 public class Tile {
 
@@ -19,7 +20,7 @@ public class Tile {
 		this.TileID = TileID;
 	}
 	
-	public void render(int x, int y, ScreenEngine2D screen, int Layer) {
+	public void render(int x, int y, ScreenEngine2D screen, Layer Layer) {
 		if(sprite != null) {
 			if(isCollisionLayerTile) {
 				screen.renderCollisionLayerTile(x << Level.PDR, y << Level.PDR, this);

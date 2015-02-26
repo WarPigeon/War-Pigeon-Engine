@@ -141,7 +141,6 @@ public class WPEngine4 extends WPEngine3 {
 			screen.ClearBuffer();
 			RenderLevelState();
 			privateRender();
-			RenderLevelStateUpperLayers();
 			privateRenderAfterUpperLayers();
 			for (int i = 0; i < pixels.length; i++) {
 				alphaPixels[i] = screen.alphaOverlay[i];
@@ -243,18 +242,18 @@ public class WPEngine4 extends WPEngine3 {
 	/**
 	 * Renders the level upper Layers after the players and npc's are rendered
 	 */
-	private void RenderLevelStateUpperLayers() {
-		switch(gametype) {
-		case FREE_ROAM_TILE_BASED:
-			level.renderUpperLayers(player.x, player.y, screen);
-		break;
-		case PIGION_SDK:
-			level.renderUpperLayers(SDKx, SDKy, screen);
-		break;
-		default:
-			break;
-		}
-	}
+//	private void RenderLevelStateUpperLayers() {
+//		switch(gametype) {
+//		case FREE_ROAM_TILE_BASED:
+//			level.renderUpperLayers(player.x, player.y, screen);
+//		break;
+//		case PIGION_SDK:
+//			level.renderUpperLayers(SDKx, SDKy, screen);
+//		break;
+//		default:
+//			break;
+//		}
+//	}
 	
 	/**
 	 * this will return null if the PIGION_SDK gamemode is not enabled
