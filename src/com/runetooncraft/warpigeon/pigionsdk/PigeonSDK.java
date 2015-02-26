@@ -7,20 +7,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.PatternSyntaxException;
 
-import javax.imageio.ImageIO;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
@@ -40,7 +33,6 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-import com.runetooncraft.warpigeon.engine.WPEngine1;
 import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.level.CollisionType;
 import com.runetooncraft.warpigeon.engine.level.Level;
@@ -48,8 +40,6 @@ import com.runetooncraft.warpigeon.engine.level.Tile;
 import com.runetooncraft.warpigeon.engine.level.Layer.Layer;
 import com.runetooncraft.warpigeon.engine.level.Layer.LayerType;
 import com.runetooncraft.warpigeon.engine.utils.ExpandLevel;
-import com.runetooncraft.warpigeon.engine.utils.YamlConfig;
-import com.runetooncraft.warpigeon.pigionsdk.tilesdk.NewTile;
 
 @SuppressWarnings("unchecked")
 public class PigeonSDK {
@@ -69,7 +59,6 @@ public class PigeonSDK {
 	private final WPEngine4 engine;
 	private LevelAlreadyExists exists = new LevelAlreadyExists();
 	public PigeonSDK(WPEngine4 engineimport) {
-		engineimport.getSDKFrame().newtile.SDK = this;
 		this.engine = engineimport;
 		collisionsCheck = engine.getSDKFrame().TopPanel.collisionsCheck;
 		selectedtile = engine.getSDKFrame().BottomPanel.selectedtile;
@@ -541,130 +530,130 @@ public class PigeonSDK {
 		sorter.setRowFilter(rf);
 	}
 
-	@SuppressWarnings("rawtypes")
-	public void AddTile(NewTile newTile) {
-		if(newTile.comboBox.getSelectedItem().equals("This Game")) {
-			File dir = new File(engine.getWorkingDir() + "\\Tiles");
-			if (!dir.exists()) dir.mkdirs();
-			File TileYMLFile = new File(dir + "\\Tiles.yml");
-			Map config = null;
-			YamlConfig TileYML = null;
-			if(!TileYMLFile.exists()) {
-				try {
-					System.out.println(TileYMLFile);
-					TileYMLFile.createNewFile();
-					TileYML = new YamlConfig(TileYMLFile);
-					config = TileYML.getMap();
-					if(config == null) config = new HashMap();
-					config.put("WarPigionVersion", WPEngine1.Version);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} else {
-				TileYML = new YamlConfig(TileYMLFile);
-				config = TileYML.getMap();
-				if(config == null) {
-					config = new HashMap();
-					config.put("WarPigionVersion", WPEngine1.Version);
-				}
-			}
-			
-			if(config == null) {
-				JOptionPane.showMessageDialog(engine.getSDKFrame(), "There was an error with processing the yml config file");
-				return;
-			}
-			
-			BufferedImage image = newTile.imageUnchanged;
-			int w = image.getWidth();
-			int h = image.getHeight();
-			
-			if(w == 8 && h == 8) {
-				File SpriteSheet = new File(dir + "\\8x8.png");
-				insertFileFromResource("/Templates/SpriteSheets/8x8.png", SpriteSheet);
-				int x,y;
-				if(config.get("Sheets.8x8.CurrentPositionX") != null) {
-					x = Integer.parseInt((String) config.get("Sheets.8x8.CurrentPositionX"));
-				} else {
-					x = 0;
-					config.put("Sheets.8x8.CurrentPositionX", 1);
-				}
-				
-				if(config.get("Sheets.8x8.CurrentPositionY") != null) {
-					y = Integer.parseInt((String) config.get("Sheets.8x8.CurrentPositionY"));
-					
-					if(x == 28) {
-						config.put("Sheets.8x8.CurrentPositionX", 0);
-						config.put("Sheets.8x8.CurrentPositionY", y + 1);
-					} else {
-						config.put("Sheets.8x8.CurrentPositionX", x + 1);
-					}
-				} else {
-					y = 0;
-					config.put("Sheets.8x8.CurrentPositionY", 0);
-				}
-				TileYML.save();
-				insertImageIntoSpriteSheet(SpriteSheet,8,image,x,y);
-			}
-		}
-	}
+//	@SuppressWarnings("rawtypes")
+//	public void AddTile(NewTile newTile) {
+//		if(newTile.comboBox.getSelectedItem().equals("This Game")) {
+//			File dir = new File(engine.getWorkingDir() + "\\Tiles");
+//			if (!dir.exists()) dir.mkdirs();
+//			File TileYMLFile = new File(dir + "\\Tiles.yml");
+//			Map config = null;
+//			YamlConfig TileYML = null;
+//			if(!TileYMLFile.exists()) {
+//				try {
+//					System.out.println(TileYMLFile);
+//					TileYMLFile.createNewFile();
+//					TileYML = new YamlConfig(TileYMLFile);
+//					config = TileYML.getMap();
+//					if(config == null) config = new HashMap();
+//					config.put("WarPigionVersion", WPEngine1.Version);
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			} else {
+//				TileYML = new YamlConfig(TileYMLFile);
+//				config = TileYML.getMap();
+//				if(config == null) {
+//					config = new HashMap();
+//					config.put("WarPigionVersion", WPEngine1.Version);
+//				}
+//			}
+//			
+//			if(config == null) {
+//				JOptionPane.showMessageDialog(engine.getSDKFrame(), "There was an error with processing the yml config file");
+//				return;
+//			}
+//			
+//			BufferedImage image = newTile.imageUnchanged;
+//			int w = image.getWidth();
+//			int h = image.getHeight();
+//			
+//			if(w == 8 && h == 8) {
+//				File SpriteSheet = new File(dir + "\\8x8.png");
+//				insertFileFromResource("/Templates/SpriteSheets/8x8.png", SpriteSheet);
+//				int x,y;
+//				if(config.get("Sheets.8x8.CurrentPositionX") != null) {
+//					x = Integer.parseInt((String) config.get("Sheets.8x8.CurrentPositionX"));
+//				} else {
+//					x = 0;
+//					config.put("Sheets.8x8.CurrentPositionX", 1);
+//				}
+//				
+//				if(config.get("Sheets.8x8.CurrentPositionY") != null) {
+//					y = Integer.parseInt((String) config.get("Sheets.8x8.CurrentPositionY"));
+//					
+//					if(x == 28) {
+//						config.put("Sheets.8x8.CurrentPositionX", 0);
+//						config.put("Sheets.8x8.CurrentPositionY", y + 1);
+//					} else {
+//						config.put("Sheets.8x8.CurrentPositionX", x + 1);
+//					}
+//				} else {
+//					y = 0;
+//					config.put("Sheets.8x8.CurrentPositionY", 0);
+//				}
+//				TileYML.save();
+//				insertImageIntoSpriteSheet(SpriteSheet,8,image,x,y);
+//			}
+//		}
+//	}
 
 
-	private void insertImageIntoSpriteSheet(File spriteSheet, int BitSize, BufferedImage image, int PositionX, int PositionY) {
-		try {
-			int xp = (PositionX * BitSize) + 1;
-			int yp = (PositionY * BitSize) + 1;
-			BufferedImage Sheet = ImageIO.read(spriteSheet);
-			int[] Pixels = new int[image.getWidth() * image.getHeight()];
-			image.getRGB(0, 0, BitSize, BitSize, Pixels, 0, BitSize);	//fix later
-			Sheet.setRGB(xp, yp, BitSize, BitSize, Pixels, 0, image.getWidth());
-			
-			ImageIO.write(Sheet, "png", spriteSheet);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	private void insertImageIntoSpriteSheet(File spriteSheet, int BitSize, BufferedImage image, int PositionX, int PositionY) {
+//		try {
+//			int xp = (PositionX * BitSize) + 1;
+//			int yp = (PositionY * BitSize) + 1;
+//			BufferedImage Sheet = ImageIO.read(spriteSheet);
+//			int[] Pixels = new int[image.getWidth() * image.getHeight()];
+//			image.getRGB(0, 0, BitSize, BitSize, Pixels, 0, BitSize);	//fix later
+//			Sheet.setRGB(xp, yp, BitSize, BitSize, Pixels, 0, image.getWidth());
+//			
+//			ImageIO.write(Sheet, "png", spriteSheet);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 
-	private void insertFileFromResource(String location, File output) {
-		InputStream is = PigeonSDK.class.getResourceAsStream(location);
-		System.out.println(location);
-		if(is == null) System.out.println("lol....it be null brah");
-		if (!output.exists()) {
-			FileOutputStream os = null;
-			try {
-				os = new FileOutputStream(output);
-				int read = 0;
-				byte[] bytes = new byte[1024];
-		 
-				while ((read = is.read(bytes)) != -1) {
-					os.write(bytes, 0, read);
-				}
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally {
-				if (is != null) {
-					try {
-						is.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-				if (os != null) {
-					try {
-						os.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-		 
-				}
-			}
-			
-			
-			
-		}
-	}
+//	private void insertFileFromResource(String location, File output) {
+//		InputStream is = PigeonSDK.class.getResourceAsStream(location);
+//		System.out.println(location);
+//		if(is == null) System.out.println("lol....it be null brah");
+//		if (!output.exists()) {
+//			FileOutputStream os = null;
+//			try {
+//				os = new FileOutputStream(output);
+//				int read = 0;
+//				byte[] bytes = new byte[1024];
+//		 
+//				while ((read = is.read(bytes)) != -1) {
+//					os.write(bytes, 0, read);
+//				}
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			} finally {
+//				if (is != null) {
+//					try {
+//						is.close();
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					}
+//				}
+//				if (os != null) {
+//					try {
+//						os.close();
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					}
+//		 
+//				}
+//			}
+//			
+//			
+//			
+//		}
+//	}
 }
 
 

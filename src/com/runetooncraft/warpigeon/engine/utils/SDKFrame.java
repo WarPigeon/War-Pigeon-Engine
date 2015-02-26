@@ -9,7 +9,6 @@ import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 
 import com.runetooncraft.warpigeon.pigionsdk.*;
-import com.runetooncraft.warpigeon.pigionsdk.tilesdk.NewTile;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -23,13 +22,12 @@ public class SDKFrame extends JFrame {
 	public SDKBotPanel BottomPanel;
 	public SDKTopRightPanel TopRightPanel;
 	public JPanel TileSelection = new TileSelection();
-	public NewTile newtile = new NewTile();
 	public Newlevel newlevel = new Newlevel();
 	public OpenLevel openlevel = new OpenLevel();
 	public ExpandLevel expandLevel = new ExpandLevel();
 	public JMenuItem mntmSave = new JMenuItem("Save");
 	public JMenuItem OpenLevel, AddLayer, DeleteLayer, mntmNewTile, mntmExpand;
-	public JMenu mnLevel, mnTile;
+	public JMenu mnLevel;
 	public JMenu mnRenderLayers;
 	public SDKTopPanel TopPanel;
 	
@@ -110,17 +108,6 @@ public class SDKFrame extends JFrame {
 		
 		DeleteLayer = new JMenuItem("Delete Layer");
 		mnLayer.add(DeleteLayer);
-		
-		mnTile = new JMenu("Tile");
-		menuBar.add(mnTile);
-		
-		mntmNewTile = new JMenuItem("New Tile");
-		mntmNewTile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				newtile.setVisible(true);
-			}
-		});
-		mnTile.add(mntmNewTile);
 		
 		mnLevel = new JMenu("Level");
 		menuBar.add(mnLevel);

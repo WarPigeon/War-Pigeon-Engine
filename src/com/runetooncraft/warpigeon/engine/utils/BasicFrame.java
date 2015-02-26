@@ -9,7 +9,6 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 import com.runetooncraft.warpigeon.pigionsdk.*;
-import com.runetooncraft.warpigeon.pigionsdk.tilesdk.*;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -34,9 +33,6 @@ public class BasicFrame extends JFrame implements ComponentListener {
 	public JMenuItem AddLayer;
 	public JMenuItem DeleteLayer;
 	public JPanel TileSelection = new TileSelection();
-	public NewTile newtile = new NewTile();
-	private JMenu mnTile;
-	private JMenuItem mntmNewTile;
 	private JMenu mnLevel;
 	public JMenuItem mntmExpand;
 	/**
@@ -104,17 +100,6 @@ public class BasicFrame extends JFrame implements ComponentListener {
 		
 		DeleteLayer = new JMenuItem("Delete Layer");
 		mnLayer.add(DeleteLayer);
-		
-		mnTile = new JMenu("Tile");
-		menuBar.add(mnTile);
-		
-		mntmNewTile = new JMenuItem("New Tile");
-		mntmNewTile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				newtile.setVisible(true);
-			}
-		});
-		mnTile.add(mntmNewTile);
 		
 		mnLevel = new JMenu("Level");
 		menuBar.add(mnLevel);
