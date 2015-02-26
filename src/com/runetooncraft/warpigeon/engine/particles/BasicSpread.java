@@ -12,22 +12,22 @@ public class BasicSpread implements ParticleType {
 
 	@Override
 	public int getLife() {
-		return 500;
+		return 300;
 	}
 
 	@Override
 	public int getSpawnTime() {
-		return 50;
+		return 100;
 	}
 
 	@Override
 	public double getDisperseDirectionX() {
-		return rand.nextGaussian();
+		return -0.03 + (0.03 - -0.03) * rand.nextDouble();
 	}
 
 	@Override
 	public double getDisperseDirectionY() {
-		return rand.nextGaussian();
+		return rand.nextDouble() * 0.05;
 	}
 
 

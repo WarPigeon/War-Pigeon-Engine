@@ -30,12 +30,23 @@ public class Particle extends Entity {
 	public Particle(Sprite sprite, int x, int y, ParticleType type,int amount) {
 		this(sprite, x, y, type);
 		for (int i = 0; i < amount - 1; i ++) {
-			particles.add(new Particle(new Sprite(1,1,random.nextInt(0xffffff)), x, y, type));
+			particles.add(new Particle(sprite, x, y, type));
 		}
 	}
 	
-	
+	private int timeStatic;
+	private int currentParticle = 0;
 	public void update() {
+		timeStatic++;
+		if(timeStatic >= 9200) timeStatic = 0;
+		if(timeStatic >= type.getSpawnTime()) {
+			currentParticle++;
+			if(currentParticle >= particles.size()) {
+				currentParticle = 0;
+			}
+			particles.get(currentParticle).spawned = true;
+			timeStatic = 0;
+		}
 		for(int i = 0; i < particles.size(); i++) {
 			particles.get(i).updateIndividual();
 		}
@@ -43,22 +54,15 @@ public class Particle extends Entity {
 	
 	private int time = 0;
 	public void updateIndividual() {
-		time++;
-		if(time >= 9200) time = 0;
 		if(spawned) {
+			time++;
+			if(time >= 9200) time = 0;
 			if(time >= type.getLife()) {
 				spawned = false;
 				time = 0;
 			}
 			xx += xa;
 			yy += ya;
-		} else {
-			if(time >= type.getSpawnTime()) {
-				spawned = true;
-				time = 0;
-				xx = x;
-				yy = y;
-			}
 		}
 	}
 	
