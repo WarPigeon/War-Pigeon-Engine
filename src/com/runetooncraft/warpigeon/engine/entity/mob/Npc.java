@@ -26,11 +26,11 @@ public class Npc extends Mob {
 	}
 	
 	public void render(ScreenEngine2D screen) {
-		screen.renderMob(x, y, sprite);
+		screen.renderSprite(x, y, sprite);
 	}
 	
 	public void render(int x, int y, ScreenEngine2D screen) {
-		screen.renderMob(x, y, sprite);
+		screen.renderSprite(x, y, sprite);
 	}
 
 }

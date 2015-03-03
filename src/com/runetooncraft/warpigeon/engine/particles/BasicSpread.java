@@ -27,7 +27,12 @@ public class BasicSpread implements ParticleType {
 
 	@Override
 	public double getDisperseDirectionY() {
-		return rand.nextDouble() * 0.05;
+		return rand.nextDouble() * 0.1;
+	}
+
+	@Override
+	public int getFadeTime() {
+		return 100;
 	}
 
 

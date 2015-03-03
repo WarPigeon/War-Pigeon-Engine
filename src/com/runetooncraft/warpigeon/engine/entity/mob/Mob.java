@@ -90,11 +90,11 @@ public abstract class Mob extends Entity {
 	public abstract void update();
 	
 	public void render(ScreenEngine2D screen) {
-		screen.renderMob(x - screen.XMid, y - screen.YMid, sprite);
+		screen.renderSprite(x - screen.XMid, y - screen.YMid, sprite);
 	}
 	
 	public void render(int x, int y, ScreenEngine2D screen) {
-		screen.renderMob(x - screen.XMid, y - screen.YMid, sprite);
+		screen.renderSprite(x - screen.XMid, y - screen.YMid, sprite);
 	}
 	
 	public void setCollisionOffset(int x, int y) {

@@ -1,5 +1,6 @@
 package com.runetooncraft.warpigeon.engine.graphics;
 
+import java.awt.Color;
 import java.util.Random;
 
 import com.runetooncraft.warpigeon.engine.entity.mob.Mob;
@@ -132,7 +133,38 @@ public class ScreenEngine2D {
 		}
 	}
 	
-	public void renderMob(int xp, int yp, Sprite sprite) {
+	public void renderSpriteWithAlpha(int xp, int yp, Sprite sprite, int alphaPercentage) {
+		xp -= xOffset;
+		yp -= yOffset;
+		for (int y = 0; y < sprite.SIZEY; y++) {
+			int ya = y + yp;
+			for (int x = 0; x < sprite.SIZEX; x++) {
+				int xa = x + xp;
+				if (xa < - sprite.SIZEX || xa >= width || ya < 0 || ya >= height) break;
+				if (xa < 0) xa = 0;
+				int col = sprite.pixels[x+y*sprite.SIZE];
+				if (col != 0xFFFF00D0) pixels[xa + ya * width] = AlphaFade(pixels[xa + ya * width],col,alphaPercentage);
+			}
+		}
+	}
+	
+	private int AlphaFade(int background, int foreground, int AlphaPercentage) {
+		if(AlphaPercentage >= 0 && AlphaPercentage <= 100) {
+			Color Back = Color.decode(Integer.toString(background));
+			double weightBack = ((100.0 - AlphaPercentage) / 100.0);
+			double weightFront = (AlphaPercentage / 100.0);
+			Color Front = Color.decode(Integer.toString(foreground));
+			int r = (int)((weightFront * Front.getRed()) + (weightBack * Back.getRed()));
+			int g = (int)((weightFront * Front.getGreen()) + (weightBack * Back.getGreen()));
+			int b = (int)((weightFront * Front.getBlue()) + (weightBack * Back.getBlue()));
+			String hexString = String.format("%02x%02x%02x", r, g, b);
+			return Integer.parseInt(hexString, 16);
+		} else {
+			return foreground;
+		}
+	}
+
+	public void renderSprite(int xp, int yp, Sprite sprite) {
 		xp -= xOffset;
 		yp -= yOffset;
 		for (int y = 0; y < sprite.SIZEY; y++) {

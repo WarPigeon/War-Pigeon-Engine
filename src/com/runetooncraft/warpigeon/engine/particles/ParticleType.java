@@ -5,4 +5,5 @@ public interface ParticleType {
 	public double getDisperseDirectionY();
 	public int getLife();
 	public int getSpawnTime();
+	public int getFadeTime();
 }

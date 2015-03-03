@@ -2,6 +2,7 @@ package com.runetooncraft.warpigeon.engine.particles;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.runetooncraft.warpigeon.engine.entity.Entity;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
@@ -14,6 +15,9 @@ public class Particle extends Entity {
 	private Sprite sprite;
 	private boolean spawned = false;
 	protected double xx,yy,xa,ya;
+	int alpha = 100;
+	int spawnRadiusX;
+	int spawnRadiusY;
 
 	public Particle(Sprite sprite, int x, int y, ParticleType type) {
 		this.x = x;
@@ -27,8 +31,19 @@ public class Particle extends Entity {
 		particles.add(this);
 	}
 	
-	public Particle(Sprite sprite, int x, int y, ParticleType type,int amount) {
+	public Particle(Sprite sprite, int x, int y, ParticleType type,int amount, int spawnRadius) {
 		this(sprite, x, y, type);
+		this.spawnRadiusX = spawnRadius;
+		this.spawnRadiusY = spawnRadius;
+		for (int i = 0; i < amount - 1; i ++) {
+			particles.add(new Particle(sprite, x, y, type));
+		}
+	}
+	
+	public Particle(Sprite sprite, int x, int y, ParticleType type,int amount, int spawnRadiusX, int spawnRadiusY) {
+		this(sprite, x, y, type);
+		this.spawnRadiusX = spawnRadiusX;
+		this.spawnRadiusY = spawnRadiusY;
 		for (int i = 0; i < amount - 1; i ++) {
 			particles.add(new Particle(sprite, x, y, type));
 		}
@@ -36,6 +51,7 @@ public class Particle extends Entity {
 	
 	private int timeStatic;
 	private int currentParticle = 0;
+	Random random = new Random();
 	public void update() {
 		timeStatic++;
 		if(timeStatic >= 9200) timeStatic = 0;
@@ -44,7 +60,12 @@ public class Particle extends Entity {
 			if(currentParticle >= particles.size()) {
 				currentParticle = 0;
 			}
-			particles.get(currentParticle).spawned = true;
+			Particle p = particles.get(currentParticle);
+			if(!p.spawned) {
+				p.xx = random.nextInt((x + spawnRadiusX) - (x - spawnRadiusX) + 1) + (x - spawnRadiusX);
+				p.yy = random.nextInt((y + spawnRadiusY) - (y - spawnRadiusY) + 1) + (y - spawnRadiusY);
+				p.spawned = true;
+			}
 			timeStatic = 0;
 		}
 		for(int i = 0; i < particles.size(); i++) {
@@ -57,9 +78,13 @@ public class Particle extends Entity {
 		if(spawned) {
 			time++;
 			if(time >= 9200) time = 0;
+			if(time >= (type.getLife() - type.getFadeTime())) {
+				alpha = (type.getLife() - time);
+			}
 			if(time >= type.getLife()) {
 				spawned = false;
 				time = 0;
+				alpha = 100;
 			}
 			xx += xa;
 			yy += ya;
@@ -73,7 +98,7 @@ public class Particle extends Entity {
 	}
 	
 	private void renderIndividual(ScreenEngine2D screen) {
-		if(spawned) screen.renderMob((int)xx, (int)yy, sprite);
+		if(spawned) screen.renderSpriteWithAlpha((int)xx, (int)yy, sprite, alpha);
 	}
 	
 }

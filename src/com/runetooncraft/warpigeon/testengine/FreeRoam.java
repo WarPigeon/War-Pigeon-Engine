@@ -60,7 +60,7 @@ public class FreeRoam extends WPEngine4 {
 			npc.init(level, this);
 			level.add(npc);
 		}
-		Particle particle = new Particle(new Sprite(4,4,0xC2C1C2), 128, 128, new BasicSpread(), 5);
+		Particle particle = new Particle(new Sprite(4,4,0xC2C1C2), 128, 128, new BasicSpread(), 5, 4);
 		level.add(player);
 		level.add(particle);
 		//Start
