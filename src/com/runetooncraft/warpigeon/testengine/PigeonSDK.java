@@ -83,6 +83,7 @@ public class PigeonSDK extends WPEngine4 {
 	
 	public void update() {
 		KeyEvents.update();
+		level.setSDKHoverTile(GetSDK().GetMouse1SelectedTile().getSprite());
 		if(KL.up) {
 			if(up) {
 				up = false;

@@ -17,42 +17,6 @@ public class CoordinateHandler {
 		return i;
 	}
 	
-//	public TileCoordinate getTileCoordinateAtMouse(int x, int y, ScreenEngine2D screen, Level level) {
-//		int Scale = screen.scale / 1000;
-//		double LeftBoundXScrollTile = level.getLeftBoundXScrolldouble() / screen.PixelWidth;
-//		double TopBoundsYScrollTile = level.getTopBoundYScrolldouble() / screen.PixelHeight;
-//		if(LeftBoundXScrollTile < 0) {
-//			LeftBoundXScrollTile += 1;
-//		}
-//		System.out.println("Derp: " + LeftBoundXScrollTile + "," + LeftBoundXScrollTile);
-//		System.out.println("Derp2: " + x + "," + y);
-//		int x0 = x / (screen.PixelWidth * Scale);
-//		int y0 = y / (screen.PixelHeight * Scale);
-//		System.out.println("Derp3: " + x0 + "," + y0);
-//		double x0double = x0 + (LeftBoundXScrollTile / screen.PixelWidth);
-//		double y0double = y0 + (TopBoundsYScrollTile / screen.PixelHeight);
-//		if(isSolidInteger(x0double)) {
-//			x0 = (int) x0double;
-//		} else {
-//			x0 = FindClosestInt(x0double);
-//		}
-//		if(isSolidInteger(y0double)) {
-//			y0 = (int) y0double;
-//		} else {
-//			y0 = FindClosestInt(y0double);
-//		}
-//		System.out.println("Derp4: " + x0double + "," + y0double);
-//		if(x0 < 0) {
-//			x0 = 0;
-//		}
-//		if(y0 < 0) {
-//			y0 = 0;
-//		}
-//		System.out.println("Derp4: " + x0 + "," + y0);
-//		screen.renderTile(x0, y0, Tiles.VoidTile);
-//		return new TileCoordinate(x0,y0);
-//	}
-
 	@SuppressWarnings("unused")
 	private int FindClosestInt(double TheDouble) {
 		double c1 = (int) TheDouble;
@@ -79,25 +43,31 @@ public class CoordinateHandler {
 	
 	public Vector2i getTileCoordinateAtMouse(int x, int y, ScreenEngine2D screen, Level level) {
 		int Scale = screen.scale / 1000;
+		int xCut = getXCut(screen, Scale);
+		int yCut = getYCut(screen, Scale);
 		int LeftBoundXScrollTile = level.getLeftBoundXScroll();
-		int TopBoundsYScrollTile = level.getTopBoundYScroll();
-		int x0 = x / (screen.PixelWidth * Scale);
-		int y0 = y / (screen.PixelHeight * Scale);
+		int TopBoundYScrollTile = level.getTopBoundYScroll();
+		int x0 = (x + xCut) / (screen.PixelWidth * Scale);
+		int y0 = (y + yCut) / (screen.PixelHeight * Scale);
 		x0 = x0 + (LeftBoundXScrollTile);
-		y0 = y0 + (TopBoundsYScrollTile);
-		if(x0 < 0) {
-			x0 = 0;
-//			return null;
-		}
-		if(y0 < 0) {
-			y0 = 0;
-//			return null;
-		}
-		screen.renderTile(x0, y0, Tiles.VoidTile);
-//		System.out.println(x0 + "," + y0);
-//		x0 = x0 / screen.PixelWidth;
-//		y0 = y0 / screen.PixelHeight;
-//		System.out.println(x0 + "," + y0);
+		y0 = y0 + (TopBoundYScrollTile);
 		return new Vector2i(x0,y0,Vector2Type.BY_TILE);
+	}
+
+	private int getXCut(ScreenEngine2D screen, int Scale) {
+		Double d = (double) (1.0 * screen.width / Vector2i.TILE_SIZEX);
+		int ReturnInt = 0;
+		if(d % 1 != 0) { //If d has decimal places
+			ReturnInt = (int) ((d % 1) * Vector2i.TILE_SIZEX * Scale);
+		}
+		return ReturnInt;
+	}
+	private int getYCut(ScreenEngine2D screen, int Scale) {
+		Double d = (double) (1.0 * screen.height / Vector2i.TILE_SIZEY);
+		int ReturnInt = 0;
+		if(d % 1 != 0) { //If d has decimal places
+			ReturnInt = (int) ((d % 1) * Vector2i.TILE_SIZEY * Scale);
+		}
+		return ReturnInt;
 	}
 }

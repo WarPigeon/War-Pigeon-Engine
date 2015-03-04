@@ -18,6 +18,7 @@ import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.Layer.*;
 import com.runetooncraft.warpigeon.engine.level.specialtiles.removeCollisionTile;
 import com.runetooncraft.warpigeon.engine.utils.FileSystem;
+import com.runetooncraft.warpigeon.engine.utils.MouseEvents;
 import com.runetooncraft.warpigeon.engine.utils.Vector2Type;
 import com.runetooncraft.warpigeon.engine.utils.Vector2i;
 import com.runetooncraft.warpigeon.engine.utils.YamlConfig;
@@ -50,7 +51,18 @@ public class Level {
 	public WPEngine4 engine;
 	public ArrayList<Boolean> RenderLayers = new ArrayList<Boolean>();
 	private boolean isSDK;
+	private Sprite SDKHoverTile = null; //Just in SDK
+	private Vector2i SDKHoverCoords = null;
+	CoordinateHandler CoordinateHandler = new CoordinateHandler();
 	
+	public Sprite getSDKHoverTile() {
+		return SDKHoverTile;
+	}
+
+	public void setSDKHoverTile(Sprite SDKHoverTile) {
+		this.SDKHoverTile = SDKHoverTile;
+	}
+
 	public boolean isSDK() {
 		return isSDK;
 	}
@@ -401,7 +413,7 @@ public class Level {
 	public void setTile(Vector2i coords, Tile tile, Layer Layer) {
 			int Tiley = coords.tileY() * (width);
 			int Tilex = coords.tileX();
-			if((Tiley + Tilex) <= (width * height)) {
+			if((Tiley + Tilex) <= (width * height) && (Tiley + Tilex) >= 0) {
 				int ChosenTile = Tiley + Tilex;
 				
 				int TileID = tile.getTileID();
@@ -413,10 +425,20 @@ public class Level {
 					if(index >= 0) {
 						collisionLayers.get(index).tiles[ChosenTile] = -2; //change later when collision layers is worked on thoroughly
 					} else {
-						System.out.println("Returne layer index of " + index +  " during setTile. unable to update collisions correctly.");
+						System.out.println("Returned layer index of " + index +  " during setTile. unable to update collisions correctly.");
 					}
 				}
 			}
+	}
+	
+	public Tile getTile(Vector2i coords, Layer layer) {
+		int Tiley = coords.tileY() * (width);
+		int Tilex = coords.tileX();
+		if((Tiley + Tilex) <= (width * height) && (Tiley + Tilex) >= 0) {
+			int ChosenTile = Tiley + Tilex;
+			return TileIDS.get(layer.tiles[ChosenTile]);
+		}
+		return VoidTile;
 	}
 	
 	private int indexofLayer(Layer layer) {
@@ -536,6 +558,9 @@ public class Level {
 				}
 			}
 		}
+		if(isSDK) {
+			SDKHoverCoords = CoordinateHandler.getTileCoordinateAtMouse(MouseEvents.mouseX, MouseEvents.mouseY, engine.getScreenEngine2D(), this);
+		}
 	}
 	
 	/**
@@ -572,6 +597,11 @@ public class Level {
 				if(renderColl) {
 					Layer coll = collisionLayers.get(collLayerselected - 1);
 					coll.render(this,screen,y0,y1,x0,x1);
+				}
+				if(isSDK) {
+					if(SDKHoverTile != null && SDKHoverCoords != null) {
+						screen.renderSpriteWithAlpha(SDKHoverCoords.getPixelX(), SDKHoverCoords.getPixelY(), SDKHoverTile, 40);
+					}
 				}
 		}
 	}
