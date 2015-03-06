@@ -55,6 +55,12 @@ public class FreeRoam extends WPEngine4 {
 		player = new PlayerMain(KL, 10, 13, FA, BA, FA, FA, 32, 32);
 		player.setLayer(1);
 		player.init(level,this);
+		getCamera().setFocusEntity(player);
+		getCamera().setMaxX(level.getPixelWidth());
+		getCamera().setMaxY(level.getPixelHeight());
+		getCamera().setMinX(0);
+		getCamera().setMinY(0);
+		getCamera().FixatExtremes(true);
 		//NPC1 Setup
 		for(int i = 0; i <=0; i++) {
 			Star npc = new Star(ForwardAnims,BackwardAnims,ForwardAnims,ForwardAnims,10,13,32,32);

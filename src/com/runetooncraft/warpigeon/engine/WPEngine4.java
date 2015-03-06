@@ -9,6 +9,7 @@ import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.runetooncraft.warpigeon.engine.entity.misc.Camera;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngineLoading;
 import com.runetooncraft.warpigeon.engine.utils.MediaFile;
@@ -23,6 +24,16 @@ public class WPEngine4 extends WPEngine3 {
 	}
 	
 	public GameType gametype;
+	private Camera camera = new Camera();
+	
+	public Camera getCamera() {
+		return camera;
+	}
+
+	public void setCamera(Camera camera) {
+		this.camera = camera;
+	}
+
 	public ScreenEngineLoading LoadingScreen;
 	public BufferedImage SideScrollerBackground = null;
 	public static State state = State.PLAY;
@@ -129,6 +140,11 @@ public class WPEngine4 extends WPEngine3 {
 	private void EngineStart(GameType gametype) {
 		this.gametype = gametype;
 	}
+	
+	public void EngineUpdate() {
+		level.update();
+		camera.update();
+	}
 
 	private void renderState() {
 		switch(state) {
@@ -229,7 +245,7 @@ public class WPEngine4 extends WPEngine3 {
 	private void RenderLevelState() {
 		switch(gametype) {
 		case FREE_ROAM_TILE_BASED:
-			level.render(player.x, player.y, screen);
+			level.render(camera.x, camera.y, screen);
 		break;
 		case PIGION_SDK:
 			level.render(SDKx, SDKy, screen);

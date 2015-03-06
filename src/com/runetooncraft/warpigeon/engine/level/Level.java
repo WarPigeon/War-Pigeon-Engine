@@ -28,6 +28,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
 public class Level {
 	
 	protected int width, height;
+	protected int pixelWidth, pixelHeight; //Pixel width and height of entire level, not screen
 	protected BasicTile overlayTile;
 	protected int PSpawnX, PSpawnY;
 	public ArrayList<Layer> LayerList = new ArrayList<Layer>();
@@ -54,6 +55,14 @@ public class Level {
 	private Sprite SDKHoverTile = null; //Just in SDK
 	private Vector2i SDKHoverCoords = null;
 	CoordinateHandler CoordinateHandler = new CoordinateHandler();
+	
+	public int getPixelWidth() {
+		return pixelWidth;
+	}
+
+	public int getPixelHeight() {
+		return pixelHeight;
+	}
 	
 	public Sprite getSDKHoverTile() {
 		return SDKHoverTile;
@@ -242,6 +251,8 @@ public class Level {
 		TileIDS.put(-1, EmptyTile);
 		this.width = width;
 		this.height = height;
+		this.pixelWidth = width * Vector2i.TILE_SIZEX;
+		this.pixelHeight = height * Vector2i.TILE_SIZEY;
 		Layer mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(mainLayer);
@@ -328,6 +339,8 @@ public class Level {
 		this.workingDir.mkdirs();
 		this.width = width;
 		this.height = height;
+		this.pixelWidth = width * Vector2i.TILE_SIZEX;
+		this.pixelHeight = height * Vector2i.TILE_SIZEY;
 		Layer mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(mainLayer);
@@ -369,6 +382,8 @@ public class Level {
 		this.workingDir.mkdirs();
 		this.width = width;
 		this.height = height;
+		this.pixelWidth = width * Vector2i.TILE_SIZEX;
+		this.pixelHeight = height * Vector2i.TILE_SIZEY;
 		Layer mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		LayerList.add(mainLayer);
@@ -399,6 +414,8 @@ public class Level {
 		workingDir.mkdirs();
 		this.width = 64;
 		this.height = 64;
+		this.pixelWidth = width * Vector2i.TILE_SIZEX;
+		this.pixelHeight = height * Vector2i.TILE_SIZEY;
 		colltype = CollisionType.BASIC;
 		Layer mainLayer = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
 		Layer Layer2 = new Layer(new int[width * height],LayerType.DEFAULT_LAYER);
@@ -479,6 +496,8 @@ public class Level {
 						name = (String) config.get("Name");
 						width = Integer.parseInt((String) config.get("Width"));
 						height = Integer.parseInt((String) config.get("Height"));
+						this.pixelWidth = width * Vector2i.TILE_SIZEX;
+						this.pixelHeight = height * Vector2i.TILE_SIZEY;
 						Layers = Integer.parseInt((String) config.get("Layers"));
 						colltype = CollisionType.valueOf((String) config.get("CollisionType"));
 						
@@ -548,10 +567,9 @@ public class Level {
 			entity.update();
 		}
 		if(engine.getPlayer() != null) {
-			Entity player = engine.getPlayer();
-			int playerLayer = player.getLayer();
+			int cameraLayer = engine.getCamera().getLayer();
 			for(int i = 1; i <= RenderLayers.size(); i++) {
-				if(i == playerLayer || i >= (playerLayer - layersRenderedUnder) && i <= (playerLayer + layersRenderedAbove)) {
+				if(i == cameraLayer || i >= (cameraLayer - layersRenderedUnder) && i <= (cameraLayer + layersRenderedAbove)) {
 					RenderLayers.set(i - 1, true);
 				} else {
 					RenderLayers.set(i - 1, false);
@@ -577,6 +595,12 @@ public class Level {
 		if(render) {
 				xScroll = xScroll - screen.width / 2;
 				yScroll = yScroll - screen.height / 2;
+				if(engine.getCamera().isFixingatExtremes()) { 
+					if(xScroll <= engine.getCamera().getMinX()) xScroll = engine.getCamera().getMinX();
+					if(xScroll + (screen.width - 2) >= engine.getCamera().getMaxX()) xScroll = engine.getCamera().getMaxX() - (screen.width - 2);
+					if(yScroll <= engine.getCamera().getMinY()) yScroll = engine.getCamera().getMinY();
+					if(yScroll + (screen.height - 9) >= engine.getCamera().getMaxY()) yScroll = engine.getCamera().getMaxY() - (screen.height - 9);
+				}
 				screen.setOffset(xScroll, yScroll);
 				x0double = xScroll;
 				x0 = xScroll >> PDR;
