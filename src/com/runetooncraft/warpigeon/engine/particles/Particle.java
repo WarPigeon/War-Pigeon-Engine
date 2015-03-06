@@ -11,9 +11,34 @@ import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 public class Particle extends Entity {
 	
 	private List<Particle> particles = new ArrayList<Particle>();
+	
+	public Particle getParticle(int i) {
+		if(particles.size() > i) {
+			return particles.get(i);
+		} else {
+			return null;
+		}
+	}
+
+	public void setParticle(int i, Particle p) {
+		if(particles.size() > i) {
+			particles.set(i, p);
+		}
+	}
+
 	private ParticleType type;
 	private Sprite sprite;
 	private boolean spawned = false;
+	
+	/**
+	 * @usage getParticles(int).isSpawned(); will return spawn state of particle number
+	 * @usage isSpawned(); will return spawn state of particle 0
+	 * @return
+	 */
+	public boolean isSpawned() {
+		return spawned;
+	}
+
 	protected double xx,yy,xa,ya;
 	int alpha = 100;
 	int spawnRadiusX;
@@ -74,15 +99,18 @@ public class Particle extends Entity {
 	}
 	
 	private int time = 0;
+	private int fadeCount = 100;
 	public void updateIndividual() {
 		if(spawned) {
 			time++;
 			if(time >= 9200) time = 0;
 			if(time >= (type.getLife() - type.getFadeTime())) {
-				alpha = (type.getLife() - time);
+				alpha = (fadeCount);
+				fadeCount-=(100/type.getFadeTime());
 			}
 			if(time >= type.getLife()) {
 				spawned = false;
+				fadeCount = 100;
 				time = 0;
 				alpha = 100;
 			}

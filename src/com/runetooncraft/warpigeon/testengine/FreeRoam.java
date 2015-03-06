@@ -53,6 +53,7 @@ public class FreeRoam extends WPEngine4 {
 		AnimatedSprite FA = new AnimatedSprite(ForwardAnims, Sprites.KNIGHT_FORWARDIDLE);
 		AnimatedSprite BA = new AnimatedSprite(BackwardAnims, Sprites.KNIGHT_BACKWARDIDLE);
 		player = new PlayerMain(KL, 10, 13, FA, BA, FA, FA, 32, 32);
+		player.setLayer(1);
 		player.init(level,this);
 		//NPC1 Setup
 		for(int i = 0; i <=0; i++) {
@@ -61,15 +62,11 @@ public class FreeRoam extends WPEngine4 {
 			level.add(npc);
 		}
 		Particle particle = new Particle(new Sprite(4,4,0xC2C1C2), 128, 128, new BasicSpread(), 5, 4);
-		level.add(player);
+		particle.setLayer(1);
 		level.add(particle);
+		level.add(player);
 		//Start
 		start();
-//		getScreenEngine2D().SetSpriteWall(Sprites.Grass);
-//		getScreenEngine2D().RandomAllPixelColors();
-//		level.setTile(new TileCoordinate(0, 0), Tiles.VoidTile);
-//		level.setTile(new TileCoordinate(1, 0), Tiles.VoidTile);
-//		level.setTile(new TileCoordinate(2, 2), Tiles.VoidTile);
 	}
 	
 	private void setIconImage() {

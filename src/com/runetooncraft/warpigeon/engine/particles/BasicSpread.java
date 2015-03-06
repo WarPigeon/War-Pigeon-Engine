@@ -32,7 +32,7 @@ public class BasicSpread implements ParticleType {
 
 	@Override
 	public int getFadeTime() {
-		return 100;
+		return 25;
 	}
 
 
