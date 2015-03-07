@@ -16,6 +16,7 @@ import com.runetooncraft.warpigeon.engine.entity.mob.Player;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.Layer.*;
+import com.runetooncraft.warpigeon.engine.level.lighting.LightingType;
 import com.runetooncraft.warpigeon.engine.level.specialtiles.removeCollisionTile;
 import com.runetooncraft.warpigeon.engine.utils.FileSystem;
 import com.runetooncraft.warpigeon.engine.utils.MouseEvents;
@@ -55,7 +56,23 @@ public class Level {
 	private Sprite SDKHoverTile = null; //Just in SDK
 	private Vector2i SDKHoverCoords = null;
 	CoordinateHandler CoordinateHandler = new CoordinateHandler();
+	private LightingType lightingType = LightingType.BASIC_AMBIENT;
+	private Layer lightingLayer;
+	public static Tile BlackTile = new Tile(new Sprite(Vector2i.TILE_SIZEX,Vector2i.TILE_SIZEY,0),-10, "Black Tile");
 	
+	public Layer getLightingLayer() {
+		return lightingLayer;
+	}
+	
+	public LightingType getLightingtype() {
+		return lightingType;
+	}
+
+	public void setLightingtype(LightingType lightingType, Layer lightingLayer) {
+		this.lightingType = lightingType;
+		this.lightingLayer = lightingLayer;
+	}
+
 	public int getPixelWidth() {
 		return pixelWidth;
 	}
@@ -559,6 +576,12 @@ public class Level {
 	 * - Layer render Range is updated according to the player's layer position
 	 */
 	public void update() {
+		for(int layer = 0; layer < LayerList.size(); layer++) {
+			Layer l = LayerList.get(layer);
+			if(RenderLayers.get(layer).equals(true)) {
+				l.update(engine);
+			}
+		}
 		for(int e = 0; e < Que.size(); e++) {
 			Entity entity = Que.get(e);
 			if(entity.shouldChangeLayer()) {
@@ -622,6 +645,9 @@ public class Level {
 					Layer coll = collisionLayers.get(collLayerselected - 1);
 					coll.render(this,screen,y0,y1,x0,x1);
 				}
+				if(!lightingType.equals(LightingType.BASIC_AMBIENT)) {
+					lightingLayer.render(this,screen,y0,y1,x0,x1);
+				}
 				if(isSDK) {
 					if(SDKHoverTile != null && SDKHoverCoords != null) {
 						screen.renderSpriteWithAlpha(SDKHoverCoords.getPixelX(), SDKHoverCoords.getPixelY(), SDKHoverTile, 40);
@@ -669,6 +695,11 @@ public class Level {
 		} else {
 			return EmptyTile;
 		}
+	}
+	
+	public int getIntfromArray(int[] p, int x, int y) {
+		if(x < 0 || y < 0 || x >= width || y >= height) return 0;
+		return p[x + y * width];
 	}
 	
 	public Tile getTileLayerCollision(Layer layer, int x, int y) {

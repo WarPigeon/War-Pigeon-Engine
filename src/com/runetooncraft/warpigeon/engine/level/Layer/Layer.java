@@ -2,6 +2,7 @@ package com.runetooncraft.warpigeon.engine.level.Layer;
 
 import java.util.ArrayList;
 
+import com.runetooncraft.warpigeon.engine.WPEngine4;
 import com.runetooncraft.warpigeon.engine.entity.Entity;
 import com.runetooncraft.warpigeon.engine.graphics.ScreenEngine2D;
 import com.runetooncraft.warpigeon.engine.level.Level;
@@ -60,6 +61,8 @@ public class Layer {
 					level.getTileLayer(this,x,y).render(x, y, screen, this);
 				} else if(type.equals(LayerType.COLLISION_LAYER)) {
 					level.getTileLayerCollision(this,x,y).render(x, y, screen, this);
+				} else if(type.equals(LayerType.LIGHTING_LAYER)) {
+					screen.renderPixelWithAlpha(x, y, 0, level.getIntfromArray(tiles, x, y));
 				}
 			}
 		}
@@ -69,4 +72,6 @@ public class Layer {
 			}
 		}
 	}
+	
+	public void update(WPEngine4 engine) {}
 }

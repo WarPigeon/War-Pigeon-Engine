@@ -133,6 +133,19 @@ public class ScreenEngine2D {
 		}
 	}
 	
+	public void renderPixelWithAlpha(int xp, int yp, int col, int alphaPercentage) {
+		xp -= xOffset;
+		yp -= yOffset;
+		if (col != 0xFFFF00D0) pixels[xp + yp * width] = AlphaFade(pixels[xp + yp * width],col,alphaPercentage);
+	}
+	
+	public void renderPixel(int xp, int yp, int col, int alphaPercentage) {
+		xp -= xOffset;
+		yp -= yOffset;
+		if (col != 0xFFFF00D0) pixels[xp + yp * width] = col;
+	}
+	
+	
 	public void renderCollisionLayerTile(int xp, int yp, Tile tile) {
 		xp -= xOffset;
 		yp -= yOffset;
