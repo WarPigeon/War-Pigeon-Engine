@@ -14,6 +14,8 @@ import com.runetooncraft.warpigeon.engine.graphics.AnimatedSprite;
 import com.runetooncraft.warpigeon.engine.graphics.Sprite;
 import com.runetooncraft.warpigeon.engine.level.CoordinateHandler;
 import com.runetooncraft.warpigeon.engine.level.Level;
+import com.runetooncraft.warpigeon.engine.level.lighting.LightingType;
+import com.runetooncraft.warpigeon.engine.level.lighting.SpotLightingLayer;
 import com.runetooncraft.warpigeon.engine.particles.BasicSpread;
 import com.runetooncraft.warpigeon.engine.particles.Particle;
 import com.runetooncraft.warpigeon.engine.utils.MediaFile;
@@ -71,6 +73,9 @@ public class FreeRoam extends WPEngine4 {
 		particle.setLayer(1);
 		level.add(particle);
 		level.add(player);
+		SpotLightingLayer lightinglayer = new SpotLightingLayer(new int[(level.getWidth()*32)*(level.getHeight()*32)],LightingType.SPOT_LIGHT, "Lighting Layer", 100, 5, 5);
+		lightinglayer.addSpottedEntity(player, 8, 8);
+		level.setLightingtype(LightingType.SPOT_LIGHT, lightinglayer);
 		//Start
 		start();
 	}

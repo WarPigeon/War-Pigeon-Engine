@@ -20,30 +20,17 @@ public class SpotLightingLayer extends Layer {
 	public SpotLightingLayer(int[] pixels, LightingType lightingType, int darkestPercentage, int FadeRangeX, int FadeRangeY) {
 		super(pixels, LayerType.LIGHTING_LAYER);
 		this.DarkestPercentage = darkestPercentage;
+		this.lightingType = lightingType;
 		this.FadeRangeX = FadeRangeX;
 		this.FadeRangeY = FadeRangeY;
 		setupLighting(lightingType);
 	}
 
-	public SpotLightingLayer(int[] pixels, LightingType lightingType, int fillID, int darkestPercentage, int FadeRangeX, int FadeRangeY) {
-		super(pixels, LayerType.LIGHTING_LAYER, fillID);
-		this.DarkestPercentage = darkestPercentage;
-		this.FadeRangeX = FadeRangeX;
-		this.FadeRangeY = FadeRangeY;
-		setupLighting(lightingType);
-	}
 	
 	public SpotLightingLayer(int[] pixels, LightingType lightingType, String name, int darkestPercentage, int FadeRangeX, int FadeRangeY) {
 		super(pixels, LayerType.LIGHTING_LAYER, name);
 		this.DarkestPercentage = darkestPercentage;
-		this.FadeRangeX = FadeRangeX;
-		this.FadeRangeY = FadeRangeY;
-		setupLighting(lightingType);
-	}
-	
-	public SpotLightingLayer(int[] pixels, LightingType lightingType, String name, int fillID, int darkestPercentage, int FadeRangeX, int FadeRangeY) {
-		super(pixels, LayerType.LIGHTING_LAYER, name, fillID);
-		this.DarkestPercentage = darkestPercentage;
+		this.lightingType = lightingType;
 		this.FadeRangeX = FadeRangeX;
 		this.FadeRangeY = FadeRangeY;
 		setupLighting(lightingType);
@@ -113,6 +100,7 @@ public class SpotLightingLayer extends Layer {
 				Entity e = spotList.get(i);
 				int RadiusX = spotRadiusX.get(i);
 				int RadiusY = spotRadiusY.get(i);
+				System.out.println(engine.getLevel().getLeftBoundXScrolldouble()); //stopped here
 				int LeftX = e.getX() - RadiusX;
 				int LeftY = e.getY() - RadiusY;
 				int CenterX = e.getX();

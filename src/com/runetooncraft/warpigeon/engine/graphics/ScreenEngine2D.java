@@ -136,12 +136,15 @@ public class ScreenEngine2D {
 	public void renderPixelWithAlpha(int xp, int yp, int col, int alphaPercentage) {
 		xp -= xOffset;
 		yp -= yOffset;
-		if (col != 0xFFFF00D0) pixels[xp + yp * width] = AlphaFade(pixels[xp + yp * width],col,alphaPercentage);
+		if (xp <= 0 || yp <= 0 || xp >= (width << Level.PDRX) || yp >= (height << Level.PDRY)) return;
+		//System.out.println("asdf");
+		//if (col != 0xFFFF00D0) pixels[xp + yp * width] = AlphaFade(pixels[xp + yp * width],col,alphaPercentage);
 	}
 	
 	public void renderPixel(int xp, int yp, int col, int alphaPercentage) {
 		xp -= xOffset;
 		yp -= yOffset;
+		if (xp >= 0 || yp >= 0 || xp <= (width << Level.PDRX) || yp <= (height << Level.PDRY)) return;
 		if (col != 0xFFFF00D0) pixels[xp + yp * width] = col;
 	}
 	

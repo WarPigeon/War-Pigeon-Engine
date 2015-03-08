@@ -57,7 +57,7 @@ public class Level {
 	private Vector2i SDKHoverCoords = null;
 	CoordinateHandler CoordinateHandler = new CoordinateHandler();
 	private LightingType lightingType = LightingType.BASIC_AMBIENT;
-	private Layer lightingLayer;
+	private Layer lightingLayer = null;
 	public static Tile BlackTile = new Tile(new Sprite(Vector2i.TILE_SIZEX,Vector2i.TILE_SIZEY,0),-10, "Black Tile");
 	
 	public Layer getLightingLayer() {
@@ -602,6 +602,9 @@ public class Level {
 		if(isSDK) {
 			SDKHoverCoords = CoordinateHandler.getTileCoordinateAtMouse(MouseEvents.mouseX, MouseEvents.mouseY, engine.getScreenEngine2D(), this);
 		}
+		if(lightingLayer != null) {
+			lightingLayer.update(engine);
+		}
 	}
 	
 	/**
@@ -646,7 +649,7 @@ public class Level {
 					coll.render(this,screen,y0,y1,x0,x1);
 				}
 				if(!lightingType.equals(LightingType.BASIC_AMBIENT)) {
-					lightingLayer.render(this,screen,y0,y1,x0,x1);
+					lightingLayer.render(this,screen,yScroll,yScroll + screen.height + screen.ImageToPixelRatio,xScroll,xScroll + screen.width + screen.ImageToPixelRatio); //Scroll because this deals with pixels
 				}
 				if(isSDK) {
 					if(SDKHoverTile != null && SDKHoverCoords != null) {

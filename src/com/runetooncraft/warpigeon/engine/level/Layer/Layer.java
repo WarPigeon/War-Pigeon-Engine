@@ -53,7 +53,6 @@ public class Layer {
 	public void fillArray(int id) {
 		Arrays.fill(tiles, id);
 	}
-
 	public void render(Level level, ScreenEngine2D screen, int y0, int y1, int x0, int x1) {
 		for (int y = y0; y < y1; y++) {
 			for (int x = x0; x < x1; x++) {
@@ -62,7 +61,7 @@ public class Layer {
 				} else if(type.equals(LayerType.COLLISION_LAYER)) {
 					level.getTileLayerCollision(this,x,y).render(x, y, screen, this);
 				} else if(type.equals(LayerType.LIGHTING_LAYER)) {
-					screen.renderPixelWithAlpha(x, y, 0, level.getIntfromArray(tiles, x, y));
+					screen.renderPixelWithAlpha(x, y, 0, tiles[x + (y * (level.getWidth() << 32))]);
 				}
 			}
 		}
